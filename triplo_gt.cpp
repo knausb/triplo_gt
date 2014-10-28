@@ -1,293 +1,621 @@
 // Compile with:
-// g++ -std=c++0x qc.cpp -o qc
+// g++ -std=c++0x gt.cpp -lgmpxx -lgmp -o gt
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
 #include <stdio.h>
+#include <math.h> /* log10 */
+#include <gmp.h> // GNU multiple precision arithmetic library, not standard: libgmp3-dev.
 #include <boost/algorithm/string.hpp> // Not standard on Macs or Ubuntu: libboost1.46-dev.
 
 using namespace std;
 using namespace boost;
 
 
+/* Functions */
 
-void cntA(long long AAg[], long long AAe[], int samp, string counts){
-  vector <string> cnts;
-  split(cnts, counts, is_any_of(","));
-  AAg[samp] = AAg[samp] + stoi(cnts[0]) + stoi(cnts[1]);
-  AAe[samp] = AAe[samp] + stoi(cnts[2]) + stoi(cnts[3]) +
-                          stoi(cnts[4]) + stoi(cnts[5]) +
-                          stoi(cnts[6]) + stoi(cnts[7]);
+void refA(string nucs, int sampn, int nuc_cnt[][8]){
+  for (int i = 0; i < nucs.size(); i++){
+    if (nucs[i] == '.') nuc_cnt[sampn][0]++;
+    if (nucs[i] == ',') nuc_cnt[sampn][1]++;
+    if (nucs[i] == 'C') nuc_cnt[sampn][2]++;
+    if (nucs[i] == 'c') nuc_cnt[sampn][3]++;
+    if (nucs[i] == 'G') nuc_cnt[sampn][4]++;
+    if (nucs[i] == 'g') nuc_cnt[sampn][5]++;
+    if (nucs[i] == 'T') nuc_cnt[sampn][6]++;
+    if (nucs[i] == 't') nuc_cnt[sampn][7]++;
+  }
 }
 
-void cntC(long long CCg[], long long CCe[], int samp, string counts){
-  vector <string> cnts;
-  split(cnts, counts, is_any_of(","));
-  CCg[samp] = CCg[samp] + stoi(cnts[2]) + stoi(cnts[3]);
-  CCe[samp] = CCe[samp] + stoi(cnts[0]) + stoi(cnts[1]) +
-                          stoi(cnts[4]) + stoi(cnts[5]) +
-                          stoi(cnts[6]) + stoi(cnts[7]);
+void refC(string nucs, int sampn, int nuc_cnt[][8]){
+  for (int i = 0; i < nucs.size(); i++){
+    if (nucs[i] == 'A') nuc_cnt[sampn][0]++;
+    if (nucs[i] == 'a') nuc_cnt[sampn][1]++;
+    if (nucs[i] == '.') nuc_cnt[sampn][2]++;
+    if (nucs[i] == ',') nuc_cnt[sampn][3]++;
+    if (nucs[i] == 'G') nuc_cnt[sampn][4]++;
+    if (nucs[i] == 'g') nuc_cnt[sampn][5]++;
+    if (nucs[i] == 'T') nuc_cnt[sampn][6]++;
+    if (nucs[i] == 't') nuc_cnt[sampn][7]++;
+  }
 }
 
-void cntG(long long GGg[], long long GGe[], int samp, string counts){
-  vector <string> cnts;
-  split(cnts, counts, is_any_of(","));
-  GGg[samp] = GGg[samp] + stoi(cnts[4]) + stoi(cnts[5]);
-  GGe[samp] = GGe[samp] + stoi(cnts[0]) + stoi(cnts[1]) +
-                          stoi(cnts[2]) + stoi(cnts[3]) +
-                          stoi(cnts[6]) + stoi(cnts[7]);
+void refG(string nucs, int sampn, int nuc_cnt[][8]){
+  for (int i = 0; i < nucs.size(); i++){
+    if (nucs[i] == 'A') nuc_cnt[sampn][0]++;
+    if (nucs[i] == 'a') nuc_cnt[sampn][1]++;
+    if (nucs[i] == 'C') nuc_cnt[sampn][2]++;
+    if (nucs[i] == 'c') nuc_cnt[sampn][3]++;
+    if (nucs[i] == '.') nuc_cnt[sampn][4]++;
+    if (nucs[i] == ',') nuc_cnt[sampn][5]++;
+    if (nucs[i] == 'T') nuc_cnt[sampn][6]++;
+    if (nucs[i] == 't') nuc_cnt[sampn][7]++;
+  }
 }
 
-void cntT(long long TTg[], long long TTe[], int samp, string counts){
-  vector <string> cnts;
-  split(cnts, counts, is_any_of(","));
-  TTg[samp] = TTg[samp] + stoi(cnts[6]) + stoi(cnts[7]);
-  TTe[samp] = TTe[samp] + stoi(cnts[0]) + stoi(cnts[1]) +
-                          stoi(cnts[2]) + stoi(cnts[3]) +
-                          stoi(cnts[4]) + stoi(cnts[5]);
+void refT(string nucs, int sampn, int nuc_cnt[][8]){
+  for (int i = 0; i < nucs.size(); i++){
+    if (nucs[i] == 'A') nuc_cnt[sampn][0]++;
+    if (nucs[i] == 'a') nuc_cnt[sampn][1]++;
+    if (nucs[i] == 'C') nuc_cnt[sampn][2]++;
+    if (nucs[i] == 'c') nuc_cnt[sampn][3]++;
+    if (nucs[i] == 'G') nuc_cnt[sampn][4]++;
+    if (nucs[i] == 'g') nuc_cnt[sampn][5]++;
+    if (nucs[i] == '.') nuc_cnt[sampn][6]++;
+    if (nucs[i] == ',') nuc_cnt[sampn][7]++;
+  }
 }
 
-void cnt_homo(long long nHo[], int samp, string GT){
-  if(GT == "A/A"){nHo[samp]++;}
-  if(GT == "C/C"){nHo[samp]++;}
-  if(GT == "G/G"){nHo[samp]++;}
-  if(GT == "T/T"){nHo[samp]++;}
-}
-
-void cnt_het(long long nHe[], int samp, string GT){
-  if(GT == "A/C"){nHe[samp]++;}
-  if(GT == "A/G"){nHe[samp]++;}
-  if(GT == "A/T"){nHe[samp]++;}
-  if(GT == "C/G"){nHe[samp]++;}
-  if(GT == "C/T"){nHe[samp]++;}
-  if(GT == "G/T"){nHe[samp]++;}
+void get_rd(int rds[], int sampn, int nuc_cnts[][8]){
+//  cout << "\nget_rd sampn: " << sampn << "\n";
+  for(int i=0; i<sampn; i++){ // Samples
+    rds[i] = nuc_cnts[i][0];
+    for(int j=1; j<8; j++){
+      rds[i] = rds[i] + nuc_cnts[i][j];
+    }
+  }
 }
 
 
-void cnt_tri(long long int ntrip[], int samp, string GT){
-    if(GT == "A/A/C"){ntrip[samp]++;}
-    if(GT == "A/A/G"){ntrip[samp]++;}
-    if(GT == "A/A/T"){ntrip[samp]++;}
-    if(GT == "C/C/A"){ntrip[samp]++;}
-    if(GT == "C/C/G"){ntrip[samp]++;}
-    if(GT == "C/C/T"){ntrip[samp]++;}
-    if(GT == "G/G/A"){ntrip[samp]++;}
-    if(GT == "G/G/C"){ntrip[samp]++;}
-    if(GT == "G/G/T"){ntrip[samp]++;}
-    if(GT == "T/T/A"){ntrip[samp]++;}
-    if(GT == "T/T/C"){ntrip[samp]++;}
-    if(GT == "T/T/G"){ntrip[samp]++;}
 
-    if(GT == "A/C/G"){ntrip[samp]++;}
-    if(GT == "A/C/T"){ntrip[samp]++;}
-    if(GT == "A/G/T"){ntrip[samp]++;}
-    if(GT == "C/G/T"){ntrip[samp]++;}
-}
+/* Likelihoods */
+void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
+//  cout << "\nmult_pl nsamp: " << nsamp << "\n";
+  for(int i=0; i<nsamp; i++){
+    float mls [26]; // Maximum likelihoods.
+    mpz_t fac [5]; // Factorials n, A, C, G, T.
+    mpf_t pos [3]; // Floats for num, den, pos;
+    int nuc_cnt[4];
+    nuc_cnt[0] = nuc_cnts[i][0] + nuc_cnts[i][1];
+    nuc_cnt[1] = nuc_cnts[i][2] + nuc_cnts[i][3];
+    nuc_cnt[2] = nuc_cnts[i][4] + nuc_cnts[i][5];
+    nuc_cnt[3] = nuc_cnts[i][6] + nuc_cnts[i][7];
+    int rd = nuc_cnt[0] + nuc_cnt[1] + nuc_cnt[2] + nuc_cnt[3];
 
-void print_out(int nsamp, long long rds[], long long nGT[], long long nNA[], long long AAg[], long long AAe[], long long CCg[], long long CCe[], long long GGg[], long long GGe[], long long TTg[], long long TTe[], long long nHo[], long long nHe[], long long ntrip[]){
-  /* Print header */
+    /* Subtract minimum threshold before 
+       genotype calling.  */
+    if(nuc_cnt[0] >= min_cnt){
+      nuc_cnt[0] = nuc_cnt[0] - min_cnt;
+    } else {
+      nuc_cnt[0] = 0;
+    }
+    if(nuc_cnt[1] >= min_cnt){
+      nuc_cnt[1] = nuc_cnt[1] - min_cnt;
+    } else {
+      nuc_cnt[1] = 0;
+    }
+    if(nuc_cnt[2] >= min_cnt){
+      nuc_cnt[2] = nuc_cnt[2] - min_cnt;
+    } else {
+      nuc_cnt[2] = 0;
+    }
+    if(nuc_cnt[3] >= min_cnt){
+      nuc_cnt[3] = nuc_cnt[3] - min_cnt;
+    } else {
+      nuc_cnt[3] = 0;
+    }
+
+//    cout << "\nrd = " << rd << "\n";
+
+    // Initialize mp ints.
+    for(int j=0; j<5; j++){
+      mpz_init(fac[j]);
+      mpz_set_ui(fac[j],0);
+    }
+
+    // Initialize mp floats.
+    for(int j=0; j<3; j++){
+      mpf_init(pos[j]);
+      mpf_set_ui(pos[j],0); 
+    }
+
+    /* Count section. */
+    // Factorials.
+    mpz_fac_ui(fac[0], rd);
+    mpz_fac_ui(fac[1], nuc_cnt[0]);
+    mpz_fac_ui(fac[2], nuc_cnt[1]);
+    mpz_fac_ui(fac[3], nuc_cnt[2]);
+    mpz_fac_ui(fac[4], nuc_cnt[3]);
+
+    // Multiply denominators.
+    mpz_mul(fac[1],fac[1],fac[2]);
+    mpz_mul(fac[1],fac[1],fac[3]);
+    mpz_mul(fac[1],fac[1],fac[4]);
+
+    // Recast mp ints to floats for division.
+    mpf_set_z(pos[1], fac[0]);
+    mpf_set_z(pos[2], fac[1]);
+
+    // Divide.
+    mpf_div(pos[0], pos[1], pos[2]);
+    double posd = mpf_get_d(pos[0]);
+
+    /* Homozygotes. */
+    // AA, CC, GG, TT.
+    mls[0] = posd * pow(1-(3*err)/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[1]+nuc_cnt[2]+nuc_cnt[3]);
+    mls[1] = posd * pow(1-(3*err)/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[0]+nuc_cnt[2]+nuc_cnt[3]);
+    mls[2] = posd * pow(1-(3*err)/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[3]);
+    mls[3] = posd * pow(1-(3*err)/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[2]);
+
+    // Biallelic heterozygotes.
+    // AC, AG, AT, CG, CT, GT.
+    mls[4] = posd * pow(0.5-err/4, nuc_cnt[0]+nuc_cnt[1]) * pow(err/4, nuc_cnt[2]+nuc_cnt[3]);
+    mls[5] = posd * pow(0.5-err/4, nuc_cnt[0]+nuc_cnt[2]) * pow(err/4, nuc_cnt[1]+nuc_cnt[3]);
+    mls[6] = posd * pow(0.5-err/4, nuc_cnt[0]+nuc_cnt[3]) * pow(err/4, nuc_cnt[1]+nuc_cnt[2]);
+    mls[7] = posd * pow(0.5-err/4, nuc_cnt[1]+nuc_cnt[2]) * pow(err/4, nuc_cnt[0]+nuc_cnt[3]);
+    mls[8] = posd * pow(0.5-err/4, nuc_cnt[1]+nuc_cnt[3]) * pow(err/4, nuc_cnt[0]+nuc_cnt[2]);
+    mls[9] = posd * pow(0.5-err/4, nuc_cnt[2]+nuc_cnt[3]) * pow(err/4, nuc_cnt[0]+nuc_cnt[1]);
+
+    // Biallelic triploid loci.
+    // AAC, AAG, AAT, CCA, CCG, CCT, GGA, GGC, GGT, TTA, TTC, TTG.
+    float prop3 = 0.333333;
+    float prop6 = 0.666667;
+    mls[10] = posd * pow(prop6-err/4, nuc_cnt[0]) * pow(prop3-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[2]+nuc_cnt[3]);
+    mls[11] = posd * pow(prop6-err/4, nuc_cnt[0]) * pow(prop3-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[1]+nuc_cnt[3]);
+    mls[12] = posd * pow(prop6-err/4, nuc_cnt[0]) * pow(prop3-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[1]+nuc_cnt[2]);
+
+    mls[13] = posd * pow(prop6-err/4, nuc_cnt[1]) * pow(prop3-err/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[2]+nuc_cnt[3]);
+    mls[14] = posd * pow(prop6-err/4, nuc_cnt[1]) * pow(prop3-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[0]+nuc_cnt[3]);
+    mls[15] = posd * pow(prop6-err/4, nuc_cnt[1]) * pow(prop3-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]+nuc_cnt[2]);
+
+    mls[16] = posd * pow(prop6-err/4, nuc_cnt[2]) * pow(prop3-err/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[1]+nuc_cnt[3]);
+    mls[17] = posd * pow(prop6-err/4, nuc_cnt[2]) * pow(prop3-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[0]+nuc_cnt[3]);
+    mls[18] = posd * pow(prop6-err/4, nuc_cnt[2]) * pow(prop3-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]+nuc_cnt[1]);
+
+    mls[19] = posd * pow(prop6-err/4, nuc_cnt[3]) * pow(prop3-err/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[1]+nuc_cnt[2]);
+    mls[20] = posd * pow(prop6-err/4, nuc_cnt[3]) * pow(prop3-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[0]+nuc_cnt[2]);
+    mls[21] = posd * pow(prop6-err/4, nuc_cnt[3]) * pow(prop3-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[0]+nuc_cnt[1]);
+
+    // Triallelic triploid loci.
+    // ACG, ACT, AGT, CGT.
+    mls[22] = posd * pow(prop3-err/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[2]) * pow(err/4, nuc_cnt[3]);
+    mls[23] = posd * pow(prop3-err/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[3]) * pow(err/4, nuc_cnt[2]);
+    mls[24] = posd * pow(prop3-err/4, nuc_cnt[0]+nuc_cnt[2]+nuc_cnt[3]) * pow(err/4, nuc_cnt[1]);
+    mls[25] = posd * pow(prop3-err/4, nuc_cnt[1]+nuc_cnt[2]+nuc_cnt[3]) * pow(err/4, nuc_cnt[0]);
 
 /*
-  cout << "RD" << "\t";
-  cout << "nGT" << "\t" << "nNA" << "\t" << "nHo" << "\t" << "nHe";
-  cout << "\t" << "AAc" << "\t" << "AAe" << "\t" << "CCc" << "\t" << "CCe";
-  cout << "\t" << "GGc" << "\t" << "GGe" << "\t" << "TTc" << "\t" << "TTe";
-  cout << "\t" << "nTrip";
-  cout << "\n";
+    cout << "\n";
+    cout << "\n";
+    cout << "posd: " << posd << "\n";
+    cout << "CC: " << pow(1-(3*err)/4, nuc_cnt[1]);
+    cout << "\n";
+    cout << "CCe: " << pow(err/4, nuc_cnt[0]+nuc_cnt[2]+nuc_cnt[3]);
+    cout << "\n";
+
+    cout << "Nuc cnt:";
+    cout << nuc_cnt[0];
+    for(int j=1; j<4; j++){cout << "," << nuc_cnt[j];}
+    cout << "\n";
+    cout << "A,C,G,T,AC,AG,AT,CG,CT,GT,AAC,AAG,AAT,CCA,CCG,CCT,GGA,GGC,GGT,TTA,TTC,TTG,ACG,ACT,AGT,CGT\n";
+    cout << "MLS:\n";
+    cout << mls[0];
+    for (int j=1; j<26; j++){
+      cout << "," << mls[j];
+    }
 */
 
-  cout << "RD";
-  for(int i=0; i<nsamp; i++){cout << "\t" << rds[i];}
-  cout << "\n";
+    // Phred scale the likelihoods.
+    for (int j = 0; j < 26; j++){
+      if (mls[j] == 0){
+        mls[j] = 9999;
+      } else {
+        mls[j] = trunc(-10 * log10(mls[j]));
+        if(mls[j] == -0){mls[j] = 0;}
+      }
+    }
 
-  cout << "nGT";
-  for(int i=0; i<nsamp; i++){cout << "\t" << nGT[i];}
-  cout << "\n";
-
-  cout << "nNA";
-  for(int i=0; i<nsamp; i++){cout << "\t" << nNA[i];}
-  cout << "\n";
-
-  cout << "AAg";
-  for(int i=0; i<nsamp; i++){cout << "\t" << AAg[i];}
-  cout << "\n";
-
-  cout << "AAe";
-  for(int i=0; i<nsamp; i++){cout << "\t" << AAe[i];}
-  cout << "\n";
-
-  cout << "CCg";
-  for(int i=0; i<nsamp; i++){cout << "\t" << CCg[i];}
-  cout << "\n";
-
-  cout << "CCe";
-  for(int i=0; i<nsamp; i++){cout << "\t" << CCe[i];}
-  cout << "\n";
-
-  cout << "GGg";
-  for(int i=0; i<nsamp; i++){cout << "\t" << GGg[i];}
-  cout << "\n";
-
-  cout << "GGe";
-  for(int i=0; i<nsamp; i++){cout << "\t" << GGe[i];}
-  cout << "\n";
-
-  cout << "TTg";
-  for(int i=0; i<nsamp; i++){cout << "\t" << TTg[i];}
-  cout << "\n";
-
-  cout << "TTe";
-  for(int i=0; i<nsamp; i++){cout << "\t" << TTe[i];}
-  cout << "\n";
-
-  cout << "nHo";
-  for(int i=0; i<nsamp; i++){cout << "\t" << nHo[i];}
-  cout << "\n";
-
-  cout << "nHe";
-  for(int i=0; i<nsamp; i++){cout << "\t" << nHe[i];}
-  cout << "\n";
-
-  cout << "ntrip";
-  for(int i=0; i<nsamp; i++){cout << "\t" << ntrip[i];}
-  cout << "\n";
-
+//    cout << "\nGot here.\n";
+    // Set parent array values.
+//    cout << "\n";
+    for (int j = 0; j < 26; j++){
+      pls[i][j] = int(mls[j]);
+//      cout << pls[i][j] << "\t" << mls[j] << "\n";
+    }
+    // Clean up the mpz_t handles or else we will leak memory
+    for (int j=0; j<5; j++){mpz_clear(fac[j]);}
+    for (int j=0; j<3; j++){mpf_clear(pos[j]);}
+  }
 }
+
+
+/* Determine the genotype. */
+void det_gt(string gts[], int nsamp, int rds[], int nuc_cnts[][8], int pls[][26]){
+  for(int i=0; i<nsamp; i++){
+    if(rds[i] > 0){
+      int k = 0;
+      for (int j = 1; j < 26; j++){
+        if(pls[i][j] < pls[i][k]){k = j;}
+      }
+
+      if(k==0){gts[i] = "A/A";}
+      if(k==1){gts[i] = "C/C";}
+      if(k==2){gts[i] = "G/G";}
+      if(k==3){gts[i] = "T/T";}
+      if(k==4){gts[i] = "A/C";}
+      if(k==5){gts[i] = "A/G";}
+      if(k==6){gts[i] = "A/T";}
+      if(k==7){gts[i] = "C/G";}
+      if(k==8){gts[i] = "C/T";}
+      if(k==9){gts[i] = "G/T";}
+
+      if(k==10){gts[i] = "A/A/C";}
+      if(k==11){gts[i] = "A/A/G";}
+      if(k==12){gts[i] = "A/A/T";}
+      if(k==13){gts[i] = "C/C/A";}
+      if(k==14){gts[i] = "C/C/G";}
+      if(k==15){gts[i] = "C/C/T";}
+      if(k==16){gts[i] = "G/G/A";}
+      if(k==17){gts[i] = "G/G/C";}
+      if(k==18){gts[i] = "G/G/T";}
+      if(k==19){gts[i] = "T/T/A";}
+      if(k==20){gts[i] = "T/T/C";}
+      if(k==21){gts[i] = "T/T/G";}
+
+      if(k==22){gts[i] = "A/C/G";}
+      if(k==23){gts[i] = "A/C/T";}
+      if(k==24){gts[i] = "A/G/T";}
+      if(k==25){gts[i] = "C/G/T";}
+    }
+  }
+}
+
+int cnt_gts(int nsamp, string gts[]){
+  int unigt [26] = {};
+  for(int i=0; i<nsamp; i++){
+    if(gts[i]=="A/A"){unigt[0] = 1;}
+    if(gts[i]=="C/C"){unigt[1] = 1;}
+    if(gts[i]=="G/G"){unigt[2] = 1;}
+    if(gts[i]=="T/T"){unigt[3] = 1;}
+
+    if(gts[i]=="A/C"){unigt[4] = 1;}
+    if(gts[i]=="A/G"){unigt[5] = 1;}
+    if(gts[i]=="A/T"){unigt[6] = 1;}
+    if(gts[i]=="C/G"){unigt[7] = 1;}
+    if(gts[i]=="C/T"){unigt[8] = 1;}
+    if(gts[i]=="G/T"){unigt[9] = 1;}
+
+    if(gts[i]=="A/A/C"){unigt[10] = 1;}
+    if(gts[i]=="A/A/G"){unigt[11] = 1;}
+    if(gts[i]=="A/A/T"){unigt[12] = 1;}
+    if(gts[i]=="C/C/A"){unigt[13] = 1;}
+    if(gts[i]=="C/C/G"){unigt[14] = 1;}
+    if(gts[i]=="C/C/T"){unigt[15] = 1;}
+    if(gts[i]=="G/G/A"){unigt[16] = 1;}
+    if(gts[i]=="G/G/C"){unigt[17] = 1;}
+    if(gts[i]=="G/G/T"){unigt[18] = 1;}
+    if(gts[i]=="T/T/A"){unigt[19] = 1;}
+    if(gts[i]=="T/T/C"){unigt[20] = 1;}
+    if(gts[i]=="T/T/G"){unigt[21] = 1;}
+
+    if(gts[i]=="A/C/G"){unigt[22] = 1;}
+    if(gts[i]=="A/C/T"){unigt[23] = 1;}
+    if(gts[i]=="A/G/T"){unigt[24] = 1;}
+    if(gts[i]=="C/G/T"){unigt[25] = 1;}
+  }
+
+  int cnt=0;
+  for(int i=0; i<26; i++){cnt = cnt+unigt[i];}
+  return(cnt);
+}
+
+void min_tresh(string gts[], int nsamp, int min_cnt, int nuc_cnts[][8]){
+  for(int i=0; i<nsamp; i++){
+    int nuc_cnt[4];
+    nuc_cnt[0] = nuc_cnts[i][0] + nuc_cnts[i][1];
+    nuc_cnt[1] = nuc_cnts[i][2] + nuc_cnts[i][3];
+    nuc_cnt[2] = nuc_cnts[i][4] + nuc_cnts[i][5];
+    nuc_cnt[3] = nuc_cnts[i][6] + nuc_cnts[i][7];
+
+    /* Homozygotes */
+    if(gts[i] == "A/A"){if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}}
+    if(gts[i] == "C/C"){if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}}
+    if(gts[i] == "G/G"){if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}}
+    if(gts[i] == "T/T"){if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}}
+
+    /* Diploid heterozygotes */
+    if(gts[i] == "A/C"){
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "A/G"){
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "A/T"){
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "C/G"){
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "C/T"){
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "G/T"){
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+    }
+
+    /* Triploid biallelic heterozygotes */
+    if(gts[i] == "A/A/C"){
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "A/A/G"){
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "A/A/T"){
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "C/C/A"){
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "C/C/G"){
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "C/C/T"){
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "G/G/A"){
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "G/G/C"){
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "G/G/T"){
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "T/T/A"){
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "T/T/C"){
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "T/T/G"){
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+    }
+
+    /* Triploid triallelic heterozygotes */
+    if(gts[i] == "A/C/G"){
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "A/C/T"){
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "A/G/T"){
+      if(nuc_cnt[0] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+    }
+    if(gts[i] == "C/G/T"){
+      if(nuc_cnt[1] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[2] < min_cnt){gts[i] = "./.";}
+      if(nuc_cnt[3] < min_cnt){gts[i] = "./.";}
+    }
+//    cout << "\n";
+//    cout << gts[i] << ":" << min_cnt << ":" << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2] << "," << nuc_cnt[3] << "\n";
+  }
+}
+
+
+/* Print functions */
+
+void print_header(float error, int min_cnt, string sfile){
+//  cout << sfile << "\n";
+  cout << "##fileformat=VCFv4.2\n";
+  cout << "##source=gtV0.0.0\n";
+  cout << "##FILTER=<ID=NA,Description=\"Per nucleotide minimum threshold of " << min_cnt << "\">\n";
+  cout << "##FILTER=<ID=NA,Description=\"Error rate of " << error << " used for likelihood calculation\">\n";
+  cout << "##FORMAT=<ID=RD,Number=1,Type=Integer,Description=\"Read depth\">\n";
+  cout << "##FORMAT=<ID=CT,Number=4,Type=Integer,Description=\"Count of each nucleotide (A,C,G,T)\">\n";
+  cout << "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">\n";
+  cout << "##FORMAT=<ID=PL,Number=26,Type=Integer,Description=\"Phred scaled likelihood for 26 genotpyes\">\n";
+  cout << "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT";
+
+  if(sfile != "NA"){
+    string line;
+    ifstream myfile (sfile);
+    if (myfile.is_open())
+    {
+      while ( getline (myfile,line) )
+      {
+      cout << "\t" << line;
+      }
+    myfile.close();
+    }
+    else cout << "Unable to open file"; 
+  }
+
+  cout << "\n";
+}
+
+void print_fix(vector <string> fields){
+  cout << fields[0] << "\t" << fields[1] << "\t" << ".";
+  cout << "\t" << fields[2] << "\t" << ".";
+  cout << "\t" << "." << "\t" << ".";
+  cout << "\t" << ".";
+}
+
+void print_locus(vector <string> fields, int counts, int phred, int nsamp, int rds[], int nuc_cnts[][8], int pls[][26], string gts[]){
+  /* Print fixed portion of locus. */
+  print_fix(fields);
+
+  cout << "\t";
+  cout << "RD";
+  if(counts == 1){cout << ":CT";}
+  if(phred == 1){cout << ":PL";}
+  cout << ":GT";
+
+  for(int i=0; i<nsamp; i++){
+    cout << "\t";
+    // Read depth.
+    cout << rds[i];
+    // Counts.
+    if(counts == 1){
+      cout << ":" << nuc_cnts[i][0];
+      for(int j=1; j<8; j++){cout << "," << nuc_cnts[i][j];}
+    }
+    // Phred-scaled likelihoods.
+    if(phred == 1){
+      cout << ":" << pls[i][0];
+      for(int j=1; j<25; j++){cout << "," << pls[i][j];}
+    }
+    // Genotype.
+    cout << ":" << gts[i];
+  }
+  cout << "\n";
+}
+
 
 
 /* Main */
 
-int main(){
+int main(int argc, char **argv) {
   string lineInput;
-  string test;
   vector <string> fields;
-  vector <string> format;
-  int nsites = 0;
+  int opt, header = 0, counts = 0, phred = 0;
+//  float error = 0.0;  // Can not be zero!!!
+//  float error = 0.01;
+//  float error = 0.000001;
+  float error = 0.000000001;
+  int min_cnt = 3; // Minimum threshold.
+  string sfile = "NA";
 
-/*
-  while(getline(cin, lineInput)){
-    std::string test = lineInput.substr(0, 1);
-    if (!(test == "#"))
-    {
-//        ++numlines;
+  // Parse command line options.
+  while ((opt = getopt(argc, argv, "ce:hm:ps:")) != -1) {
+    switch (opt) {
+      case 'c':
+        counts = 1;
+        break;
+      case 'e':
+        error = atof(optarg);
+        break;
+      case 'h':
+        header = 1;
+        break;
+      case 'm':
+        min_cnt = atoi(optarg);
+        break;
+      case 'p':
+        phred = 1;
+        break;
+      case 's':
+        sfile = optarg;
+        break;
+      default: /* '?' */
+        fprintf(stderr, "Usage: %s [-h]\n", argv[0]);
+        exit(EXIT_FAILURE);
     }
-    else break;
-  }
-*/
-
-
-
-
-  /* Initialize with the first line. */
-  getline(cin, lineInput);
-  split( fields, lineInput, is_any_of( "\t " ) );
-  int nsamp = fields.size()-9;
-
-//  long long int stats [nsamp][12]; // nGT, nNA, nHo, nHe, AAg, AAe, CCg, CCe, GGg, GGe, TTg, TTe.
-  long long rds[nsamp];
-  long long ntrip[nsamp];
-  long long nGT[nsamp]; 
-  long long nNA[nsamp];
-  long long nHo[nsamp];
-  long long nHe[nsamp];
-  long long AAg[nsamp];
-  long long AAe[nsamp];
-  long long CCg[nsamp];
-  long long CCe[nsamp];
-  long long GGg[nsamp];
-  long long GGe[nsamp];
-  long long TTg[nsamp];
-  long long TTe[nsamp];
-
-  /* Initialize to zero */
-  for(int i=0; i<nsamp; i++){
-    rds[i] = 0;
-    ntrip[i] = 0;
-    nGT[i] = 0;
-    nNA[i] = 0;
-    nHo[i] = 0;
-    nHe[i] = 0;
-    AAg[i] = 0;
-    AAe[i] = 0;
-    CCg[i] = 0;
-    CCe[i] = 0;
-    GGg[i] = 0;
-    GGe[i] = 0;
-    TTg[i] = 0;
-    TTe[i] = 0;
   }
 
-  /* Determine format positions */
-  int RD = 0, CT = 0, GT = 0;
-  split( format, fields[8], is_any_of( ":" ) );
-  for(int i=0; i<format.size(); i++){
-    if(format[i] == "RD"){RD = i;}
-    if(format[i] == "CT"){CT = i;}
-    if(format[i] == "GT"){GT = i;}
-  }
-
-  /* Iterate over samples */
-  /* Samples start on line 9 of VCF files */
-
-  for(int i=9; i < fields.size(); i++){ // Samples.
-//    for(int j=0; j<12; j++){stats[i-9][j] = 0;} // Initialize to zero.
-    split( format, fields[i], is_any_of( ":" ) );
-    cnt_homo(nHo, i-9, format[GT]);
-    cnt_het(nHe, i-9, format[GT]);
-    if(format[GT] == "./."){nNA[i-9]++;}
-//    if(format[GT] == "./."){nNA[i-9]++;}
-    cnt_tri(ntrip, i-9, format[GT]);
-    rds[i-9] = rds[i-9] + stoi(format[RD]);
-    if(format[GT] == "A/A"){cntA(AAg, AAe, i-9, format[CT]);}
-    if(format[GT] == "C/C"){cntC(CCg, CCe, i-9, format[CT]);}
-    if(format[GT] == "G/G"){cntG(GGg, GGe, i-9, format[CT]);}
-    if(format[GT] == "T/T"){cntT(TTg, TTe, i-9, format[CT]);}
-
-
-//);}
-  }
-
+  /* Header. */
+  if(header == 1){print_header(error, min_cnt, sfile);}
 
   /* Parse line by line. */
-  while (getline(cin, lineInput)) {
+  while (getline(cin,lineInput)) {
     split( fields, lineInput, is_any_of( "\t " ) );
+    int nsamp = (fields.size()-3)/3;  // Determine the number of samples.
+    int nuc_cnts [nsamp][8]; // A,a,C,c,G,g,T,t.
+    int rds [nsamp]; // Read depth.
+    for(int i=0; i<nsamp; i++){rds[i] = 0;}
+    string gts [nsamp]; // Genotypes.
+//    for(int i=0; i<nsamp; i++){gts[i] = "NA";}
+    for(int i=0; i<nsamp; i++){gts[i] = "./.";}
 
-    /* Iterate over samples */
-    for(int i=9; i < fields.size(); i++){
-      split( format, fields[i], is_any_of( ":" ) );
-      cnt_homo(nHo, i-9, format[GT]);
-      cnt_het(nHe, i-9, format[GT]);
-      if(format[GT] == "./."){nNA[i-9]++;}
-      if(format[GT] == "A/A"){cntA(AAg, AAe, i-9, format[CT]);}
-      if(format[GT] == "C/C"){cntC(CCg, CCe, i-9, format[CT]);}
-      if(format[GT] == "G/G"){cntG(GGg, GGe, i-9, format[CT]);}
-      if(format[GT] == "T/T"){cntT(TTg, TTe, i-9, format[CT]);}
-      cnt_tri(ntrip, i-9, format[GT]);
-      rds[i-9] = rds[i-9] + stoi(format[RD]);
+    /* Diploid PLs. */
+//    int pls[] = {0,0,0,0,0,0,0,0,0,0}; // AA,CC,GG,TT,AC,AG,AT,CG,CT,GT.
+
+    /* Triploid PLs. */
+    /*
+    AA,CC,GG,TT,AC,AG,AT,CG,CT,GT, : 10
+    AAC,AAG,AAT,CCA,CCG,CCT, : 6
+    GGA,GGC,GGT,TTA,TTC,TTG, : 6
+    ACG,ACT,AGT,CGT. : 4
+    */
+    int pls [nsamp][26];
+
+    /* Process each sample in the line. */
+    int sampn = -1;  // sample counter.
+    for(int i = 4; i <= fields.size(); i++){
+      if((i-1) % 3 == 0){
+        /* New sample */
+        sampn++;
+        for(int j=0; j<8; j++){nuc_cnts[sampn][j] = 0;}
+        if(fields[i] == "*"){
+          // No data.
+          //for(int j=0; j<8; j++){nuc_cnts[sampn][j] = 0;}
+        } else {
+          // Count each nucleotide.
+          if(fields[2] == "A"){refA(fields[i], sampn, nuc_cnts);}
+          if(fields[2] == "C"){refC(fields[i], sampn, nuc_cnts);}
+          if(fields[2] == "G"){refG(fields[i], sampn, nuc_cnts);}
+          if(fields[2] == "T"){refG(fields[i], sampn, nuc_cnts);}
+        }
       }
-  }
-
-
-  for(int i=0; i<nsamp; i++){
-    nGT[i] = nHo[i] + nHe[i] + ntrip[i];
-  }
-
-  /* Print output */
-  print_out(nsamp, rds, nGT, nNA, AAg, AAe, CCg, CCe, GGg, GGe, TTg, TTe, nHo, nHe, ntrip);
-
-  /*
-  for(int i=0; i<nsamp; i++){ // Sample
-    cout << rds[i] << "\t";
-    cout << stats[i][0];
-    for(int j=1; j<12; j++){ // Stat
-      cout << "\t" << stats[i][j];
     }
-    cout << "\t" << ntrip[i];
-//    cout << "\t" << stats[i][5] / (stats[i][4] + stats[i][5]);
-    cout << "\n";
-  }
-  */
 
+    /* Get read depths */
+    get_rd(rds, nsamp, nuc_cnts);
+//    get_rd(rds, sampn, nuc_cnts);
+
+    /* Calculate Phred-scaled likelihoods */
+    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
+//    mult_pl(pls, sampn, error, nuc_cnts);
+
+    /* Determine a genotype */
+    det_gt(gts, nsamp, rds, nuc_cnts, pls);
+
+    /* Minimum threshold. */
+    min_tresh(gts, nsamp, min_cnt, nuc_cnts);
+
+    /* Print locus. */
+//    vector <string> vals;
+//    vals = unique(gts);
+
+    int unique_gt = cnt_gts(nsamp, gts);
+    if(unique_gt > 1){
+      print_locus(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
+    }
+
+  }
   return 0;
 }
 
