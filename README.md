@@ -9,5 +9,6 @@ Dependencies:
 
 [Boost C++ libraries](http://www.boost.org/)
 
+[SAMtools](http://samtools.sourceforge.net/)
 
 
