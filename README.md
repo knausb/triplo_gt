@@ -6,7 +6,7 @@ Genotypcaller for genotypes of ploidy up to three
 
 ---
 
-## Dependencies:
+#### Dependencies:
 
 [GNU multiple precision arithmetic library](https://gmplib.org/)
 
