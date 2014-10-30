@@ -196,14 +196,17 @@ void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt
 
     /* Biallelic tetraploid loci */
     /* AAAC, AAAG, AAAT, CCCA, CCCG, CCCT, GGGA, GGGC, GGGT, TTTA, TTTC, TTTG. */
-
+//    mls[26];
+//    mls[37];
 
     /* Triallelic tetraploid loci */
     /* AACG, AACT, AAGT, CCAG, CCAT, CCGT, GGAC, GGAT, GGCT, TTAC, TTAG, TTCG */
-
+//    mls[38];
+//    mls[49];
 
     /* Tetra-allelic tetraploid loci */
     /* ACGT */
+//    mls[50];
 
 
 

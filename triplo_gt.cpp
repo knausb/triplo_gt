@@ -194,6 +194,12 @@ void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt
     mls[24] = posd * pow(prop3-err/4, nuc_cnt[0]+nuc_cnt[2]+nuc_cnt[3]) * pow(err/4, nuc_cnt[1]);
     mls[25] = posd * pow(prop3-err/4, nuc_cnt[1]+nuc_cnt[2]+nuc_cnt[3]) * pow(err/4, nuc_cnt[0]);
 
+
+
+
+
+
+
 /*
     cout << "\n";
     cout << "\n";
