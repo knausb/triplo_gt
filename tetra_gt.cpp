@@ -1,5 +1,5 @@
 // Compile with:
-// g++ -std=c++0x gt.cpp -lgmpxx -lgmp -o gt
+// g++ -std=c++0x tetra_gt.cpp -lgmpxx -lgmp -o tetra_gt
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -80,13 +80,16 @@ void get_rd(int rds[], int sampn, int nuc_cnts[][8]){
 
 
 /* Likelihoods */
-void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
-//  cout << "\nmult_pl nsamp: " << nsamp << "\n";
+//void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
+void mult_pl(int pls[][51], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
   for(int i=0; i<nsamp; i++){
-    float mls [26]; // Maximum likelihoods.
+    float mls [51]; // Likelihoods.
+//    float mls [26]; // Likelihoods.
     mpz_t fac [5]; // Factorials n, A, C, G, T.
     mpf_t pos [3]; // Floats for num, den, pos;
     int nuc_cnt[4];
+
+    /* Add forward and reverse counts */
     nuc_cnt[0] = nuc_cnts[i][0] + nuc_cnts[i][1];
     nuc_cnt[1] = nuc_cnts[i][2] + nuc_cnts[i][3];
     nuc_cnt[2] = nuc_cnts[i][4] + nuc_cnts[i][5];
@@ -115,8 +118,6 @@ void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt
     } else {
       nuc_cnt[3] = 0;
     }
-
-//    cout << "\nrd = " << rd << "\n";
 
     // Initialize mp ints.
     for(int j=0; j<5; j++){
@@ -174,15 +175,12 @@ void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt
     mls[10] = posd * pow(prop6-err/4, nuc_cnt[0]) * pow(prop3-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[2]+nuc_cnt[3]);
     mls[11] = posd * pow(prop6-err/4, nuc_cnt[0]) * pow(prop3-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[1]+nuc_cnt[3]);
     mls[12] = posd * pow(prop6-err/4, nuc_cnt[0]) * pow(prop3-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[1]+nuc_cnt[2]);
-
     mls[13] = posd * pow(prop6-err/4, nuc_cnt[1]) * pow(prop3-err/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[2]+nuc_cnt[3]);
     mls[14] = posd * pow(prop6-err/4, nuc_cnt[1]) * pow(prop3-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[0]+nuc_cnt[3]);
     mls[15] = posd * pow(prop6-err/4, nuc_cnt[1]) * pow(prop3-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]+nuc_cnt[2]);
-
     mls[16] = posd * pow(prop6-err/4, nuc_cnt[2]) * pow(prop3-err/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[1]+nuc_cnt[3]);
     mls[17] = posd * pow(prop6-err/4, nuc_cnt[2]) * pow(prop3-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[0]+nuc_cnt[3]);
     mls[18] = posd * pow(prop6-err/4, nuc_cnt[2]) * pow(prop3-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]+nuc_cnt[1]);
-
     mls[19] = posd * pow(prop6-err/4, nuc_cnt[3]) * pow(prop3-err/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[1]+nuc_cnt[2]);
     mls[20] = posd * pow(prop6-err/4, nuc_cnt[3]) * pow(prop3-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[0]+nuc_cnt[2]);
     mls[21] = posd * pow(prop6-err/4, nuc_cnt[3]) * pow(prop3-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[0]+nuc_cnt[1]);
@@ -196,44 +194,40 @@ void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt
 
     /* Biallelic tetraploid loci */
     /* AAAC, AAAG, AAAT, CCCA, CCCG, CCCT, GGGA, GGGC, GGGT, TTTA, TTTC, TTTG. */
-//    mls[26];
-//    mls[37];
+    mls[26] = posd * pow(0.75-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[2]+nuc_cnt[3]);
+    mls[27] = posd * pow(0.75-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[1]+nuc_cnt[3]);
+    mls[28] = posd * pow(0.75-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[1]+nuc_cnt[2]);
+    mls[29] = posd * pow(0.75-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[2]+nuc_cnt[3]);
+    mls[30] = posd * pow(0.75-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[0]+nuc_cnt[3]);
+    mls[31] = posd * pow(0.75-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]+nuc_cnt[2]);
+    mls[32] = posd * pow(0.75-err/4, nuc_cnt[2]) * pow(0.25-err/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[1]+nuc_cnt[3]);
+    mls[33] = posd * pow(0.75-err/4, nuc_cnt[2]) * pow(0.25-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[0]+nuc_cnt[3]);
+    mls[34] = posd * pow(0.75-err/4, nuc_cnt[2]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]+nuc_cnt[1]);
+    mls[35] = posd * pow(0.75-err/4, nuc_cnt[3]) * pow(0.25-err/4, nuc_cnt[0]) * pow(err/4, nuc_cnt[1]+nuc_cnt[2]);
+    mls[36] = posd * pow(0.75-err/4, nuc_cnt[3]) * pow(0.25-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[0]+nuc_cnt[2]);
+    mls[37] = posd * pow(0.75-err/4, nuc_cnt[3]) * pow(0.25-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[0]+nuc_cnt[1]);
 
     /* Triallelic tetraploid loci */
     /* AACG, AACT, AAGT, CCAG, CCAT, CCGT, GGAC, GGAT, GGCT, TTAC, TTAG, TTCG */
-//    mls[38];
-//    mls[49];
+    mls[38] = posd * pow(0.5-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[3]);
+    mls[39] = posd * pow(0.5-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[2]);
+    mls[40] = posd * pow(0.5-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[2]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[1]);
+    mls[41] = posd * pow(0.5-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[2]) * pow(err/4, nuc_cnt[3]);
+    mls[42] = posd * pow(0.5-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[2]);
+    mls[43] = posd * pow(0.5-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[2]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]);
+    mls[44] = posd * pow(0.5-err/4, nuc_cnt[2]) * pow(0.25-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[3]);
+    mls[45] = posd * pow(0.5-err/4, nuc_cnt[2]) * pow(0.25-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[1]);
+    mls[46] = posd * pow(0.5-err/4, nuc_cnt[2]) * pow(0.25-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]);
+    mls[47] = posd * pow(0.5-err/4, nuc_cnt[3]) * pow(0.25-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[1]) * pow(err/4, nuc_cnt[3]);
+    mls[48] = posd * pow(0.5-err/4, nuc_cnt[3]) * pow(0.25-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[1]);
+    mls[49] = posd * pow(0.5-err/4, nuc_cnt[3]) * pow(0.25-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[3]) * pow(err/4, nuc_cnt[0]);
 
     /* Tetra-allelic tetraploid loci */
     /* ACGT */
-//    mls[50];
-
-
-
-
-/*
-    cout << "\n";
-    cout << "\n";
-    cout << "posd: " << posd << "\n";
-    cout << "CC: " << pow(1-(3*err)/4, nuc_cnt[1]);
-    cout << "\n";
-    cout << "CCe: " << pow(err/4, nuc_cnt[0]+nuc_cnt[2]+nuc_cnt[3]);
-    cout << "\n";
-
-    cout << "Nuc cnt:";
-    cout << nuc_cnt[0];
-    for(int j=1; j<4; j++){cout << "," << nuc_cnt[j];}
-    cout << "\n";
-    cout << "A,C,G,T,AC,AG,AT,CG,CT,GT,AAC,AAG,AAT,CCA,CCG,CCT,GGA,GGC,GGT,TTA,TTC,TTG,ACG,ACT,AGT,CGT\n";
-    cout << "MLS:\n";
-    cout << mls[0];
-    for (int j=1; j<26; j++){
-      cout << "," << mls[j];
-    }
-*/
+    mls[50] = posd * pow(0.25-err/4, nuc_cnt[0]) * pow(0.25-err/4, nuc_cnt[1]) * pow(0.25-err/4, nuc_cnt[2]) * pow(0.25-err/4, nuc_cnt[3]);
 
     // Phred scale the likelihoods.
-    for (int j = 0; j < 26; j++){
+    for (int j = 0; j < 51; j++){
       if (mls[j] == 0){
         mls[j] = 9999;
       } else {
@@ -242,13 +236,11 @@ void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt
       }
     }
 
-//    cout << "\nGot here.\n";
-    // Set parent array values.
-//    cout << "\n";
-    for (int j = 0; j < 26; j++){
+    /* Transfer likelihoods to parent array. */
+    for (int j = 0; j < 51; j++){
       pls[i][j] = int(mls[j]);
-//      cout << pls[i][j] << "\t" << mls[j] << "\n";
     }
+
     // Clean up the mpz_t handles or else we will leak memory
     for (int j=0; j<5; j++){mpz_clear(fac[j]);}
     for (int j=0; j<3; j++){mpf_clear(pos[j]);}
@@ -257,14 +249,19 @@ void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt
 
 
 /* Determine the genotype. */
-void det_gt(string gts[], int nsamp, int rds[], int nuc_cnts[][8], int pls[][26]){
-  for(int i=0; i<nsamp; i++){
-    if(rds[i] > 0){
-      int k = 0;
-      for (int j = 1; j < 26; j++){
+//void det_gt(string gts[], int nsamp, int rds[], int nuc_cnts[][8], int pls[][26]){
+void det_gt(string gts[], int nsamp, int rds[], int nuc_cnts[][8], int pls[][51]){
+  for(int i=0; i<nsamp; i++){ // Iterate over samples.
+    if(rds[i] > 0){ // Only deal with loci where read depth is greater than 1.
+
+//      for (int j = 1; j < 26; j++){
+      int k = 0; // Indicator for the maximum likelihood,
+      /* Scroll through likelihoods to determine the ML */
+      for (int j = 1; j < 51; j++){
         if(pls[i][j] < pls[i][k]){k = j;}
       }
 
+      /* k indicates the maximum likelihood. */
       if(k==0){gts[i] = "A/A";}
       if(k==1){gts[i] = "C/C";}
       if(k==2){gts[i] = "G/G";}
@@ -293,6 +290,37 @@ void det_gt(string gts[], int nsamp, int rds[], int nuc_cnts[][8], int pls[][26]
       if(k==23){gts[i] = "A/C/T";}
       if(k==24){gts[i] = "A/G/T";}
       if(k==25){gts[i] = "C/G/T";}
+
+      /* Biallelic tetraploids */
+      if(k==26){gts[i] = "A/A/A/C";}
+      if(k==27){gts[i] = "A/A/A/G";}
+      if(k==28){gts[i] = "A/A/A/T";}
+      if(k==29){gts[i] = "C/C/C/A";}
+      if(k==30){gts[i] = "C/C/C/G";}
+      if(k==31){gts[i] = "C/C/C/T";}
+      if(k==32){gts[i] = "G/G/G/A";}
+      if(k==33){gts[i] = "G/G/G/C";}
+      if(k==34){gts[i] = "G/G/G/T";}
+      if(k==35){gts[i] = "T/T/T/A";}
+      if(k==36){gts[i] = "T/T/T/C";}
+      if(k==37){gts[i] = "T/T/T/G";}
+
+      /* Triallelic tetraploids */
+      if(k==38){gts[i] = "A/A/C/G";}
+      if(k==39){gts[i] = "A/A/C/T";}
+      if(k==40){gts[i] = "A/A/G/T";}
+      if(k==41){gts[i] = "C/C/A/G";}
+      if(k==42){gts[i] = "C/C/A/T";}
+      if(k==43){gts[i] = "C/C/G/T";}
+      if(k==44){gts[i] = "G/G/A/C";}
+      if(k==45){gts[i] = "G/G/A/T";}
+      if(k==46){gts[i] = "G/G/C/T";}
+      if(k==47){gts[i] = "T/T/A/C";}
+      if(k==48){gts[i] = "T/T/A/G";}
+      if(k==49){gts[i] = "T/T/C/G";}
+
+      /* Tetra-allelic tetraploids */
+      if(k==50){gts[i] = "A/C/G/T";}
     }
   }
 }
@@ -491,7 +519,8 @@ void print_fix(vector <string> fields){
   cout << "\t" << ".";
 }
 
-void print_locus(vector <string> fields, int counts, int phred, int nsamp, int rds[], int nuc_cnts[][8], int pls[][26], string gts[]){
+//void print_locus(vector <string> fields, int counts, int phred, int nsamp, int rds[], int nuc_cnts[][8], int pls[][26], string gts[]){
+void print_locus(vector <string> fields, int counts, int phred, int nsamp, int rds[], int nuc_cnts[][8], int pls[][51], string gts[]){
   /* Print fixed portion of locus. */
   print_fix(fields);
 
@@ -522,8 +551,9 @@ void print_locus(vector <string> fields, int counts, int phred, int nsamp, int r
 }
 
 
-
+/* ##### */
 /* Main */
+/* ##### */
 
 int main(int argc, char **argv) {
   string lineInput;
@@ -574,7 +604,6 @@ int main(int argc, char **argv) {
     int rds [nsamp]; // Read depth.
     for(int i=0; i<nsamp; i++){rds[i] = 0;}
     string gts [nsamp]; // Genotypes.
-//    for(int i=0; i<nsamp; i++){gts[i] = "NA";}
     for(int i=0; i<nsamp; i++){gts[i] = "./.";}
 
     /* Diploid PLs. */
@@ -587,7 +616,9 @@ int main(int argc, char **argv) {
     GGA,GGC,GGT,TTA,TTC,TTG, : 6
     ACG,ACT,AGT,CGT. : 4
     */
-    int pls [nsamp][26];
+//    int pls [nsamp][26];
+    int pls [nsamp][51];
+
 
     /* Process each sample in the line. */
     int sampn = -1;  // sample counter.
