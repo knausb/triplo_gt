@@ -252,11 +252,12 @@ void mult_pl(int pls[][51], int nsamp, float err, int nuc_cnts[][8], int min_cnt
 //void det_gt(string gts[], int nsamp, int rds[], int nuc_cnts[][8], int pls[][26]){
 void det_gt(string gts[], int nsamp, int rds[], int nuc_cnts[][8], int pls[][51]){
   for(int i=0; i<nsamp; i++){ // Iterate over samples.
-    if(rds[i] > 0){ // Only deal with loci where read depth is greater than 1.
 
+    /* Only deal with loci where read depth is greater than 1. */
+    if(rds[i] > 0){ 
+      /* Scroll through likelihoods to determine the ML */
 //      for (int j = 1; j < 26; j++){
       int k = 0; // Indicator for the maximum likelihood,
-      /* Scroll through likelihoods to determine the ML */
       for (int j = 1; j < 51; j++){
         if(pls[i][j] < pls[i][k]){k = j;}
       }
