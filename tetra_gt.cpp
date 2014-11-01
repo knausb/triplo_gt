@@ -849,10 +849,8 @@ int main(int argc, char **argv) {
       print_locus(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
 
 
-      // Debug
-      debug1(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts, error, min_cnt);
-
-
+      /* Debug */
+//      debug1(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts, error, min_cnt);
 
     }
   }
