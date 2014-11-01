@@ -78,7 +78,7 @@ void get_rd(int rds[], int sampn, int nuc_cnts[][8]){
 }
 
 
-void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt){
+void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int debug=0){
   int nuc_cnt[4];
   /* Add forward and reverse counts. */
   nuc_cnt[0] = nuc_cnts[0] + nuc_cnts[1];
