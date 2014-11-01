@@ -689,7 +689,7 @@ void print_locus(vector <string> fields, int counts, int phred, int nsamp, int r
 
 void debug1(vector <string> fields, int counts, int phred, int nsamp, int rds[], int nuc_cnts[][8], int pls[][51], string gts[]){
       for(int i=0; i<nsamp; i++){
-        if(gts[i] == "T/T/C/G"){
+        if(gts[i] == "T/T/C/G" | gts[i] == "T/T/A/G" | gts[i] == "T/T/A/C"){
 //      cout << "\n";
       cout << gts[i];
       cout << ":";
