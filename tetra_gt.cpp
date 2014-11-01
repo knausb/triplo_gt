@@ -686,6 +686,51 @@ void print_locus(vector <string> fields, int counts, int phred, int nsamp, int r
 }
 
 
+
+void debug1(vector <string> fields, int counts, int phred, int nsamp, int rds[], int nuc_cnts[][8], int pls[][51], string gts[]){
+      for(int i=0; i<nsamp; i++){
+        if(gts[i] == "T/T/C/G"){
+//      cout << "\n";
+      cout << gts[i];
+      cout << ":";
+      cout << "\n";
+      cout << nuc_cnts[i][0];
+      for(int j=1; j<8; j++){cout << "," << nuc_cnts[i][j];}
+      cout << "\n";
+      cout << "homo:";
+      cout << pls[i][0];
+      for(int j=1; j<4; j++){cout << "," << pls[i][j];}
+      cout << "\n";
+      cout << "bihet (AC, AG, AT, CG, CT, GT):";
+      cout << pls[i][4];
+      for(int j=5; j<10; j++){cout << "," << pls[i][j];}
+      cout << "\n";
+      cout << "tridi (AAC, AAG, AAT, CCA, CCG, CCT, GGA, GGC, GGT, TTA, TTC, TTG):\n";
+      cout << pls[i][10];
+      for(int j=11; j<22; j++){cout << "," << pls[i][j];}
+      cout << "\n";
+      cout << "tritri (ACG, ACT, AGT, CGT):\n";
+      cout << pls[i][22];
+      for(int j=23; j<26; j++){cout << "," << pls[i][j];}
+      cout << "\n";
+      cout << "bitet (AAAC, AAAG, AAAT, CCCA, CCCG, CCCT, GGGA, GGGC, GGGT, TTTA, TTTC, TTTG):\n";
+      cout << pls[i][26];
+      for(int j=27; j<38; j++){cout << "," << pls[i][j];}
+      cout << "\n";
+      cout << "tritet (AACG, AACT, AAGT, CCAG, CCAT, CCGT, GGAC, GGAT, GGCT, TTAC, TTAG, TTCG):\n";
+      cout << pls[i][38];
+      for(int j=39; j<50; j++){cout << "," << pls[i][j];}
+      cout << "\n";
+      cout << "tettet (ACGT):" << pls[i][50];
+      cout << "\n";
+      cout << "\n";
+        }
+      }
+
+
+}
+
+
 /* ----- ***** ----- */
 /* ##### ----- ##### */
 
@@ -789,45 +834,7 @@ int main(int argc, char **argv) {
 
 
       // Debug
-
-      for(int i=0; i<nsamp; i++){
-        if(gts[i] == "T/T/C/G"){
-//      cout << "\n";
-      cout << gts[i];
-      cout << ":";
-      cout << "\n";
-      cout << nuc_cnts[i][0];
-      for(int j=1; j<8; j++){cout << "," << nuc_cnts[i][j];}
-      cout << "\n";
-      cout << "homo:";
-      cout << pls[i][0];
-      for(int j=1; j<4; j++){cout << "," << pls[i][j];}
-      cout << "\n";
-      cout << "bihet (AC, AG, AT, CG, CT, GT):";
-      cout << pls[i][4];
-      for(int j=5; j<10; j++){cout << "," << pls[i][j];}
-      cout << "\n";
-      cout << "tridi (AAC, AAG, AAT, CCA, CCG, CCT, GGA, GGC, GGT, TTA, TTC, TTG):\n";
-      cout << pls[i][10];
-      for(int j=11; j<22; j++){cout << "," << pls[i][j];}
-      cout << "\n";
-      cout << "tritri (ACG, ACT, AGT, CGT):\n";
-      cout << pls[i][22];
-      for(int j=23; j<26; j++){cout << "," << pls[i][j];}
-      cout << "\n";
-      cout << "bitet (AAAC, AAAG, AAAT, CCCA, CCCG, CCCT, GGGA, GGGC, GGGT, TTTA, TTTC, TTTG):\n";
-      cout << pls[i][26];
-      for(int j=27; j<38; j++){cout << "," << pls[i][j];}
-      cout << "\n";
-      cout << "tritet (AACG, AACT, AAGT, CCAG, CCAT, CCGT, GGAC, GGAT, GGCT, TTAC, TTAG, TTCG):\n";
-      cout << pls[i][38];
-      for(int j=39; j<50; j++){cout << "," << pls[i][j];}
-      cout << "\n";
-      cout << "tettet (ACGT):" << pls[i][50];
-      cout << "\n";
-      cout << "\n";
-        }
-      }
+      debug1(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
 
 
 
