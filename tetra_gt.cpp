@@ -214,9 +214,10 @@ void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int d
   mls[44] = posd * pow(0.5-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[3]);
   mls[45] = posd * pow(0.5-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[1]);
   mls[46] = posd * pow(0.5-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]);
-  mls[47] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[3]);
-  mls[48] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[1]);
-  mls[49] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]);
+
+  mls[47] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[2]);
+  mls[48] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[1]);
+  mls[49] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]);
 
   /* Tetra-allelic tetraploid loci */
   /* ACGT */
@@ -231,6 +232,14 @@ void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int d
       mls[j] = trunc(-10 * log10(mls[j]));
       if(mls[j] == -0){mls[j] = 0;}
     }
+  }
+
+  if(debug == 1){
+    cout << "\n";
+    cout << "*** Debug counts_2_plh ***\n";
+    cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2]<< "," << nuc_cnt[3] << ":";
+    cout << "posd=" << posd;
+    cout << "\n";
   }
 
   /* Transfer likelihoods to parent array. */
@@ -687,7 +696,9 @@ void print_locus(vector <string> fields, int counts, int phred, int nsamp, int r
 
 
 
-void debug1(vector <string> fields, int counts, int phred, int nsamp, int rds[], int nuc_cnts[][8], int pls[][51], string gts[]){
+void debug1(vector <string> fields, int counts, int phred, 
+            int nsamp, int rds[], int nuc_cnts[][8],
+            int pls[][51], string gts[], float error, int min_cnt){
       for(int i=0; i<nsamp; i++){
         if(gts[i] == "T/T/C/G" | gts[i] == "T/T/A/G" | gts[i] == "T/T/A/C"){
 //      cout << "\n";
@@ -723,7 +734,12 @@ void debug1(vector <string> fields, int counts, int phred, int nsamp, int rds[],
       cout << "\n";
       cout << "tettet (ACGT):" << pls[i][50];
       cout << "\n";
+
+      int debug=1;
+      counts_2_plh(pls[i], nuc_cnts[i], error, min_cnt, debug);
+
       cout << "\n";
+
         }
       }
 
@@ -834,7 +850,7 @@ int main(int argc, char **argv) {
 
 
       // Debug
-      debug1(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
+      debug1(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts, error, min_cnt);
 
 
 
