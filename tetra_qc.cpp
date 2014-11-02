@@ -1,5 +1,5 @@
 // Compile with:
-// g++ -std=c++0x triplo_qc.cpp -o triplo_qc
+// g++ -std=c++0x tetra_qc.cpp -o tetra_qc
 #include <iostream>
 #include <string>
 #include <vector>
@@ -84,7 +84,41 @@ void cnt_tri(long long int ntrip[], int samp, string GT){
     if(GT == "C/G/T"){ntrip[samp]++;}
 }
 
-void print_out(int nsamp, long long rds[], long long nGT[], long long nNA[], long long AAg[], long long AAe[], long long CCg[], long long CCe[], long long GGg[], long long GGe[], long long TTg[], long long TTe[], long long nHo[], long long nHe[], long long ntrip[]){
+void cnt_tet(long long int ntet[], int samp, string GT){
+    if(GT == "A/A/A/C"){ntet[samp]++;}
+    if(GT == "A/A/A/G"){ntet[samp]++;}
+    if(GT == "A/A/A/T"){ntet[samp]++;}
+    if(GT == "C/C/C/A"){ntet[samp]++;}
+    if(GT == "C/C/C/G"){ntet[samp]++;}
+    if(GT == "C/C/C/T"){ntet[samp]++;}
+    if(GT == "G/G/G/A"){ntet[samp]++;}
+    if(GT == "G/G/G/C"){ntet[samp]++;}
+    if(GT == "G/G/G/T"){ntet[samp]++;}
+    if(GT == "T/T/T/A"){ntet[samp]++;}
+    if(GT == "T/T/T/C"){ntet[samp]++;}
+    if(GT == "T/T/T/G"){ntet[samp]++;}
+
+    if(GT == "A/A/C/G"){ntet[samp]++;}
+    if(GT == "A/A/C/T"){ntet[samp]++;}
+    if(GT == "A/A/G/T"){ntet[samp]++;}
+    if(GT == "C/C/A/G"){ntet[samp]++;}
+    if(GT == "C/C/A/T"){ntet[samp]++;}
+    if(GT == "C/C/G/T"){ntet[samp]++;}
+    if(GT == "G/G/A/C"){ntet[samp]++;}
+    if(GT == "G/G/A/T"){ntet[samp]++;}
+    if(GT == "G/G/C/T"){ntet[samp]++;}
+    if(GT == "T/T/A/C"){ntet[samp]++;}
+    if(GT == "T/T/A/G"){ntet[samp]++;}
+    if(GT == "T/T/C/G"){ntet[samp]++;}
+
+    if(GT == "A/C/G/T"){ntet[samp]++;}
+}
+
+
+void print_out(int nsamp, long long rds[], long long nGT[], long long nNA[],
+               long long AAg[], long long AAe[], long long CCg[], long long CCe[],
+               long long GGg[], long long GGe[], long long TTg[], long long TTe[], 
+               long long nHo[], long long nHe[], long long ntrip[], long long ntet[]){
   /* Print header */
 
 /*
@@ -152,6 +186,11 @@ void print_out(int nsamp, long long rds[], long long nGT[], long long nNA[], lon
   for(int i=0; i<nsamp; i++){cout << "\t" << ntrip[i];}
   cout << "\n";
 
+  cout << "ntet";
+  for(int i=0; i<nsamp; i++){cout << "\t" << ntet[i];}
+  cout << "\n";
+
+
 }
 
 
@@ -186,6 +225,7 @@ int main(){
 //  long long int stats [nsamp][12]; // nGT, nNA, nHo, nHe, AAg, AAe, CCg, CCe, GGg, GGe, TTg, TTe.
   long long rds[nsamp];
   long long ntrip[nsamp];
+  long long ntet[nsamp];
   long long nGT[nsamp]; 
   long long nNA[nsamp];
   long long nHo[nsamp];
@@ -203,6 +243,7 @@ int main(){
   for(int i=0; i<nsamp; i++){
     rds[i] = 0;
     ntrip[i] = 0;
+    ntet[i] = 0;
     nGT[i] = 0;
     nNA[i] = 0;
     nHo[i] = 0;
@@ -237,13 +278,12 @@ int main(){
     if(format[GT] == "./."){nNA[i-9]++;}
 //    if(format[GT] == "./."){nNA[i-9]++;}
     cnt_tri(ntrip, i-9, format[GT]);
+    cnt_tet(ntet, i-9, format[GT]);
     rds[i-9] = rds[i-9] + stoi(format[RD]);
     if(format[GT] == "A/A"){cntA(AAg, AAe, i-9, format[CT]);}
     if(format[GT] == "C/C"){cntC(CCg, CCe, i-9, format[CT]);}
     if(format[GT] == "G/G"){cntG(GGg, GGe, i-9, format[CT]);}
     if(format[GT] == "T/T"){cntT(TTg, TTe, i-9, format[CT]);}
-
-
 //);}
   }
 
@@ -263,17 +303,18 @@ int main(){
       if(format[GT] == "G/G"){cntG(GGg, GGe, i-9, format[CT]);}
       if(format[GT] == "T/T"){cntT(TTg, TTe, i-9, format[CT]);}
       cnt_tri(ntrip, i-9, format[GT]);
+      cnt_tet(ntet, i-9, format[GT]);
       rds[i-9] = rds[i-9] + stoi(format[RD]);
       }
   }
 
 
   for(int i=0; i<nsamp; i++){
-    nGT[i] = nHo[i] + nHe[i] + ntrip[i];
+    nGT[i] = nHo[i] + nHe[i] + ntrip[i] + ntet[i];
   }
 
   /* Print output */
-  print_out(nsamp, rds, nGT, nNA, AAg, AAe, CCg, CCe, GGg, GGe, TTg, TTe, nHo, nHe, ntrip);
+  print_out(nsamp, rds, nGT, nNA, AAg, AAe, CCg, CCe, GGg, GGe, TTg, TTe, nHo, nHe, ntrip, ntet);
 
   /*
   for(int i=0; i<nsamp; i++){ // Sample
