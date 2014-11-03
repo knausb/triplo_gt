@@ -696,12 +696,12 @@ void print_locus(vector <string> fields, int counts, int phred, int nsamp, int r
 
 void print_usage(){
   cerr << "  -c print allele counts in genotpye section.\n";
-  cerr << "  -e allowable genotyping error (float).\n";
+  cerr << "  -e allowable genotyping error [default = 1e-9]; must not be zero.\n";
   cerr << "  -h print this help message.\n";
   cerr << "  -m print vcf header (meta) information.\n";
   cerr << "  -p print phred scaled likelihoods in genotype section.\n";
   cerr << "  -s file with sample names in same order as in\n     the s/bam file, one name per line.\n";
-  cerr << "  -t minimum threshold for calling an allele (integer).\n";
+  cerr << "  -t minimum threshold for calling an allele [default = 0].\n";
 
   cerr << "\n";
 
@@ -778,7 +778,7 @@ int main(int argc, char **argv) {
   string sfile = "NA";
 
   /* Parse command line options. */
-  while ((opt = getopt(argc, argv, "ce:hmpst:")) != -1) {
+  while ((opt = getopt(argc, argv, "ce:hmps:t:")) != -1) {
     switch (opt) {
       case 'c':
         counts = 1;
