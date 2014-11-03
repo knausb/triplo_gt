@@ -694,6 +694,18 @@ void print_locus(vector <string> fields, int counts, int phred, int nsamp, int r
   cout << "\n";
 }
 
+void print_usage(){
+  cerr << "  -c print allele counts in genotpye section.\n";
+  cerr << "  -e allowable genotyping error (float).\n";
+  cerr << "  -h print this help message.\n";
+  cerr << "  -m print vcf header (meta) information.\n";
+  cerr << "  -p print phred scaled likelihoods in genotype section.\n";
+  cerr << "  -s file with sample names in same order as in\n     the s/bam file, one name per line.\n";
+  cerr << "  -t minimum threshold for calling an allele (integer).\n";
+
+  cerr << "\n";
+
+}
 
 
 void debug1(vector <string> fields, int counts, int phred, 
@@ -762,11 +774,11 @@ int main(int argc, char **argv) {
   vector <string> fields;
   int opt, header = 0, counts = 0, phred = 0;
   float error = 0.000000001; // Can not be zero!!!
-  int min_cnt = 3; // Minimum threshold.
+  int min_cnt = 0; // Minimum threshold.
   string sfile = "NA";
 
   /* Parse command line options. */
-  while ((opt = getopt(argc, argv, "ce:hm:ps:")) != -1) {
+  while ((opt = getopt(argc, argv, "ce:hmpst:")) != -1) {
     switch (opt) {
       case 'c':
         counts = 1;
@@ -775,10 +787,11 @@ int main(int argc, char **argv) {
         error = atof(optarg);
         break;
       case 'h':
-        header = 1;
-        break;
+        print_usage();
+        exit(EXIT_FAILURE);
+//        break;
       case 'm':
-        min_cnt = atoi(optarg);
+        header = 1;
         break;
       case 'p':
         phred = 1;
@@ -786,8 +799,12 @@ int main(int argc, char **argv) {
       case 's':
         sfile = optarg;
         break;
+      case 't':
+        min_cnt = atoi(optarg);
+        break;
       default: /* '?' */
-        fprintf(stderr, "Usage: %s [-h]\n", argv[0]);
+        fprintf(stderr, "Usage: %s [-ce:hmpst:]\n", argv[0]);
+        print_usage();
         exit(EXIT_FAILURE);
     }
   }
