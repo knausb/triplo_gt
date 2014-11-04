@@ -1,5 +1,5 @@
 // Compile with:
-// g++ -std=c++0x tetra_gt.cpp -lgmpxx -lgmp -o tetra_gt
+// g++ -std=c++0x hexa_gt.cpp -lgmpxx -lgmp -o hexa_gt
 #include <iostream>
 #include <fstream>
 #include <string>
