@@ -28,8 +28,6 @@ void print_usage(){
   cerr << "  -w window size [default = 1e3].\n";
 
 
-
-
   cerr << "  -c print allele counts in genotpye section.\n";
   cerr << "  -e allowable genotyping error [default = 1e-9]; must not be zero.\n";
   cerr << "  -m print vcf header (meta) information.\n";
@@ -41,6 +39,17 @@ void print_usage(){
 
 }
 
+void print_header(vector <string> snames){
+  cout << "##fileformat=PVCFv0.0\n";
+  cout << "##source=pwinv0.0\n";
+  cout << "#CHROM\tSTART\tEND\tFORMAT";
+  for(int i=0; i<snames.size(); i++){
+    cout << "\t" << snames[i];
+  }
+  cout << "\n";
+}
+
+
 /* ----- ----- ***** ----- ----- */
 /*             Main              */
 /* ----- ----- ***** ----- ----- */
@@ -50,90 +59,84 @@ int main(int argc, char **argv) {
   string line;
   vector <string> fields;
   vector <string> snames;
-//  int opt, header = 0, counts = 0, phred = 0;
-//  float error = 0.000000001; // Can not be zero!!!
-//  int min_cnt = 0; // Minimum threshold.
-  string infile = "NA";
   int opt, win = 999;
   int nsamp;
 
   /* Parse command line options. */
-  while ((opt = getopt(argc, argv, "hi:w:")) != -1) {
+  while ((opt = getopt(argc, argv, "h:w:")) != -1) {
     switch (opt) {
       case 'h':
         print_usage();
         exit(EXIT_FAILURE);
-      case 'i':
-        infile = optarg;
-        break;
       case 'w':
         win = atoi(optarg) - 1;
         break;
       default: /* '?' */
-        fprintf(stderr, "Usage: %s [-ce:hmpst:]\n", argv[0]);
+        fprintf(stderr, "Usage: %s [-h:w:]\n", argv[0]);
         print_usage();
         exit(EXIT_FAILURE);
     }
   }
 
-  if(infile == "NA"){
-    cerr << "Error: no input file specified.\n";
-    print_usage();
-    exit(EXIT_FAILURE);
-  }
-
-//  cout << "Got here\n";
-
-
-
-  /* Open file and parse line by line. */
-  ifstream myfile (infile);
-  if (myfile.is_open()){
-    getline (myfile,line);
+  /* Parse line by line. */
+    getline (cin,line);
 
     /* Case no header */
     if(line[0] != '#'){
       split( fields, line, is_any_of( "\t" ) );
       nsamp = fields.size() - 9;  // Determine the number of samples.
-//      string snames[nsamp];
-//      for(int i=10; i<fields.size(); i++){
-//        snames[i-10] = fields[i];
-//        snames[i-10].append("Sample_", i-10);
-//      }
+      for(int i=9; i<fields.size(); i++){
+        cout << fields[i] << "\n";
+        snames.push_back(fields[i]);
+      }
     }
 
     /* Omit meta lines. */
-    while(line[0] == '#' & line[1] == '#') getline(myfile,line);
+    while(line[0] == '#' & line[1] == '#') getline(cin,line);
 
     /* Manage header line. */
     if(line[0] == '#' & line[1] == 'C'){
       split( fields, line, is_any_of( "\t" ) );
       nsamp = fields.size() - 9;  // Determine the number of samples.
-//      for(int i=10; i<fields.size(); i++){
-//        snames[i-10] = fields[i];
-//      }
+      for(int i=9; i<fields.size(); i++){
+//        cout << fields[i] << "\n";
+        snames.push_back(fields[i]);
+      }
     }
 
-//    for(int i=0; i < nsamp; i++){cout << snames[i] << "\n";}
+//    cout << "\n\n";
+//    for(int i=0; i<snames.size(); i++){cout << snames[i] << "\n";}
 
-    cout << line << '\n';
 
 
-    while ( getline (myfile,line) ){
+//    cout << line << '\n';
+
+    /* 
+       Probably have a line reading issue here.
+       If there was no header we're on a data line.
+       If there was a header, we're on that.
+       Perhaps just require that there is a meta and header line.
+
+   */
+
+    print_header(snames);
+
+    int start = 1;
+    int stop = start + win;
+    while ( getline (cin,line) ){
+      vector < vector<int> > rds(nsamp);
+
 
 //      cout << line << '\n';
       split( fields, line, is_any_of( "\t" ) );
-      cout << fields[0] << "\t" << fields[1] << "\n";
+//      cout << fields[0] << "\t" << fields[1] << "\n";
+
+
+
 
     }
-    myfile.close();
-  }
-
-  else cout << "Unable to open file"; 
-
 
   /*  */
-
 
   return 0;
 }
