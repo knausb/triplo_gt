@@ -322,12 +322,14 @@ void proc_win(string chromo, int start, int stop, vector <string> lines){
   /* Print. */
   cout << chromo << "\t" << start << "\t" << stop;
   cout << "\t" << lines.size() << "\t";
-  cout << "GT:RD:P1,P2,P3,P4";
+  cout << "." << "\t" << "." << "\t" << "." << "\t" << "." << "\t";
+  cout << "GT:RD:PD";
+//  cout << "GT:RD:P1,P2,P3,P4";
 
   for(int i=0; i<nsamps; i++){
     cout << "\t" << nGTs[i] << ":" << RDs[i];
     cout << ":" << P1[i] << "," << P2[i] << "," << P3[i] << "," << P4[i];
-    cout << "\t";
+//    cout << "\t";
   }
 
   cout << "\n";
@@ -358,7 +360,12 @@ void print_usage(){
 void print_header(vector <string> snames){
   cout << "##fileformat=PVCFv0.0\n";
   cout << "##source=pwinv0.0\n";
-  cout << "#CHROM\tSTART\tEND\tVARIANTS\tFORMAT";
+  cout << "##FORMAT=<ID=GT,Number=1,Type=Integer,Description=\"Number of genotypes called\">\n";
+  cout << "##FORMAT=<ID=RD,Number=1,Type=Integer,Description=\"Read depth over all called genotypes\">\n";
+  cout << "##FORMAT=<ID=PD,Number=4,Type=Integer,Description=\"Number for each class of genotypes (1,2,3,4)\">\n";
+  cout << "#CHROM\tSTART\tEND\tVARIANTS\t";
+  cout << "POS" << "\t" << "QUAL" << "\t" << "." << "\t" << "." << "\t";
+  cout << "FORMAT";
   for(int i=0; i<snames.size(); i++){
     cout << "\t" << snames[i];
   }
@@ -368,7 +375,9 @@ void print_header(vector <string> snames){
 void print_null(string chromo, int start, int stop, vector <string> snames){
   cout << chromo << "\t" << start << "\t" << stop << "\t";
   cout << 0 << "\t";
-  cout << "GT:RD:P1,P2,P3,P4";
+  cout << "." << "\t" << "." << "\t" << "." << "\t" << "." << "\t";
+//  cout << "GT:RD:P1,P2,P3,P4";
+  cout << "GT:RD:PD";
   for(int i=0; i<snames.size(); i++){
     cout << "\t" << "0:0:0,0,0,0";
   }
