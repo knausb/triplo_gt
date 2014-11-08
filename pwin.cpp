@@ -62,7 +62,7 @@ void count_gts(int nGT[], int P1[], int P2[], int P3[], int P4[], int sampn, str
     P2[sampn]++;
   }
 
-  /* Triploids. */
+  /* Bi-allelic triploids. */
   if(GT == "A/A/C"){
     nGT[sampn]++;
     P3[sampn]++;
@@ -112,9 +112,129 @@ void count_gts(int nGT[], int P1[], int P2[], int P3[], int P4[], int sampn, str
     P3[sampn]++;
   }
 
-  /* Tetraploids. */
+  /* Tri-allelic triploids. */
+  if(GT == "A/C/G"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "A/C/T"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "A/G/T"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "C/G/T"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
 
+  /* Bi-allelic tetraploids. */
+  if(GT == "A/A/A/C"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "A/A/A/G"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "A/A/A/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "C/C/C/A"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "C/C/C/G"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "C/C/C/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "G/G/G/A"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "G/G/G/C"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "G/G/G/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "T/T/T/A"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "T/T/T/C"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "T/T/T/G"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
 
+  /* Tri-allelic tetraploids. */
+  if(GT == "A/A/C/G"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "A/A/C/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "A/A/G/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "C/C/A/G"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "C/C/A/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "C/C/G/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "G/G/A/C"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "G/G/A/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "G/G/C/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "T/T/A/C"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "T/T/A/G"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+  if(GT == "T/T/C/G"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+
+  /* Tetra-allelic tetraploids. */
+  if(GT == "A/C/G/T"){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
 
 }
 

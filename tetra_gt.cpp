@@ -810,6 +810,7 @@ int main(int argc, char **argv) {
   }
 
   /* Header. */
+//  cout << sfile << "\n";
   if(header == 1){print_header(error, min_cnt, sfile);}
 
   /* Parse line by line or site by site. */
