@@ -16,7 +16,202 @@ using namespace boost;
 /*           Functions           */
 /* ----- ----- ***** ----- ----- */
 
+void count_gts(int nGT[], int P1[], int P2[], int P3[], int P4[], int sampn, string GT){
 
+  /* Homozygotes. */
+  if(GT == "A/A"){
+    nGT[sampn]++;
+    P1[sampn]++;
+  }
+  if(GT == "C/C"){
+    nGT[sampn]++;
+    P1[sampn]++;
+  }
+  if(GT == "G/G"){
+    nGT[sampn]++;
+    P1[sampn]++;
+  }
+  if(GT == "T/T"){
+    nGT[sampn]++;
+    P1[sampn]++;
+  }
+
+  /* Heterozygotes. */
+  if(GT == "A/C"){
+    nGT[sampn]++;
+    P2[sampn]++;
+  }
+  if(GT == "A/G"){
+    nGT[sampn]++;
+    P2[sampn]++;
+  }
+  if(GT == "A/T"){
+    nGT[sampn]++;
+    P2[sampn]++;
+  }
+  if(GT == "C/G"){
+    nGT[sampn]++;
+    P2[sampn]++;
+  }
+  if(GT == "C/T"){
+    nGT[sampn]++;
+    P2[sampn]++;
+  }
+  if(GT == "G/T"){
+    nGT[sampn]++;
+    P2[sampn]++;
+  }
+
+  /* Triploids. */
+  if(GT == "A/A/C"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "A/A/G"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "A/A/T"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "C/C/A"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "C/C/G"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "C/C/T"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "G/G/A"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "G/G/C"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "G/G/T"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "T/T/A"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "T/T/C"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+  if(GT == "T/T/G"){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+
+  /* Tetraploids. */
+
+
+
+}
+
+
+
+
+void proc_win(string chromo, int start, int stop, vector <string> lines){
+
+/*
+  cout << "proc_win\n";
+  cout << lines[0];
+  cout << "\n";
+  cout << "\n";
+*/
+
+//  cout << "Got here\n";
+
+  /* Initialize on first row (variant). */
+
+  vector <string> fields;
+  split( fields, lines[0], is_any_of( "\t" ) );
+  vector <string> format;
+  vector <string> sample;
+
+//  cout << fields[8] << "\n";
+
+  int nsamps = fields.size() - 9;
+
+  int nGTs[nsamps];
+  int RDs[nsamps];
+  int P1[nsamps];
+  int P2[nsamps];
+  int P3[nsamps];
+  int P4[nsamps];
+
+  /* Initialize dynamic arrays to zero. */
+  for(int i=0; i<nsamps; i++){
+    nGTs[i] = 0;
+    RDs[i] = 0;
+    P1[i] = 0;
+    P2[i] = 0;
+    P3[i] = 0;
+    P4[i] = 0;
+  }
+
+  /* Determine format positions */
+  int RD = 0, CT = 0, GT = 0;
+  split( format, fields[8], is_any_of( ":" ) );
+  for(int i=0; i<format.size(); i++){
+    if(format[i] == "RD"){RD = i;}
+    if(format[i] == "CT"){CT = i;}
+    if(format[i] == "GT"){GT = i;}
+  }
+
+  /* Iterate over samples. */
+  for(int i=9; i<fields.size(); i++){
+    split(sample, fields[i], is_any_of(":"));
+    RDs[i-9] = RDs[i-9] + atoi(sample[RD].c_str());
+    count_gts(nGTs, P1, P2, P3, P4, i-9, sample[GT]);
+  }
+
+
+  /* Iterate over rows (variants). */
+  for(int i=1; i<lines.size(); i++){
+    split( fields, lines[i], is_any_of( "\t" ) );
+    /* Determine format positions */
+    split( format, fields[8], is_any_of( ":" ) );
+    for(int j=0; j<format.size(); j++){
+      if(format[j] == "RD"){RD = j;}
+      if(format[j] == "CT"){CT = j;}
+      if(format[j] == "GT"){GT = j;}
+    }
+
+    /* Iterate over samples. */
+    for(int j=9; j<fields.size(); j++){
+      split(sample, fields[j], is_any_of(":"));
+      RDs[j-9] = RDs[j-9] + atoi(sample[RD].c_str());
+      count_gts(nGTs, P1, P2, P3, P4, j-9, sample[GT]);
+    }
+
+  }
+
+
+
+  /* Print. */
+  cout << chromo << "\t" << start << "\t" << stop;
+  cout << "\t" << lines.size() << "\t";
+  cout << "GT:RD:P1,P2,P3,P4";
+
+  for(int i=0; i<nsamps; i++){
+    cout << "\t" << nGTs[i] << ":" << RDs[i];
+    cout << ":" << P1[i] << "," << P2[i] << "," << P3[i] << "," << P4[i];
+    cout << "\t";
+  }
+
+  cout << "\n";
+}
 
 /* ----- ----- ***** ----- ----- */
 /*        Print functions        */
@@ -43,7 +238,7 @@ void print_usage(){
 void print_header(vector <string> snames){
   cout << "##fileformat=PVCFv0.0\n";
   cout << "##source=pwinv0.0\n";
-  cout << "#CHROM\tSTART\tEND\tFORMAT";
+  cout << "#CHROM\tSTART\tEND\tVARIANTS\tFORMAT";
   for(int i=0; i<snames.size(); i++){
     cout << "\t" << snames[i];
   }
@@ -52,6 +247,7 @@ void print_header(vector <string> snames){
 
 void print_null(string chromo, int start, int stop, vector <string> snames){
   cout << chromo << "\t" << start << "\t" << stop << "\t";
+  cout << 0 << "\t";
   cout << "GT:RD:P1,P2,P3,P4";
   for(int i=0; i<snames.size(); i++){
     cout << "\t" << "0:0:0,0,0,0";
@@ -116,6 +312,7 @@ int main(int argc, char **argv) {
 
   int start = 1;
   int stop = start + win;
+  int last = start;
 
   /* Read in the first line. */
   getline (cin,line);
@@ -140,42 +337,44 @@ int main(int argc, char **argv) {
     split( fields, line, is_any_of( "\t" ) );
 
     if(atoi(fields[1].c_str()) <= stop){
+      /* Continue current window. */
       lines.push_back(line);
     } else {
-      cout << "Window " << start << " to " << stop << "\n";
-      cout << "lines contains " << lines.size() << " elements\n";
-      cout << lines[0] << "\n";
-      cout << lines[lines.size()-1] << "\n";
-      cout << "\n";
+      /* Process window. */
+//      cout << "Got here.\n";
+      proc_win(fields[0], start, stop, lines);
 
-//      proc_win();
-      lines.clear();
+
+      /* Begin new window. */
 
       /* Begin the next window. */
-      lines.push_back(line);
-      // last???
+
+//      lines.push_back(line);
+      last = stop;
       start = stop + 1;
       stop = start + win;
-      split( fields, line, is_any_of( "\t" ) );
+//      split( fields, line, is_any_of( "\t" ) );
+
+      /* Do we have empty windows? */
       if(atoi(fields[1].c_str()) > stop){
-        int i = atoi(fields[1].c_str())/(win+1);
-        for(int j=0; j<i; j++){
+//        cout << "POS: " << fields[1] << ". Stop: " << stop << "\n";
+        int i = (atoi(fields[1].c_str())-stop)/(win+1);
+
+//        cout << "Jump " << i+1 << " windows.\n";
+        for(int j=0; j<=i; j++){
+//          cout << j+1 << "\t";
           print_null(fields[0], start, stop, snames);
+          last = stop;
           start = stop + 1;
           stop = start + win;
         }
+//        cout << "\n";
       }
+
+      lines.clear();
+      lines.push_back(line);
     }
   }
-//    vector < vector<int> > rds(nsamp);
-//      cout << line << '\n';
-//    split( fields, line, is_any_of( "\t" ) );
-//      cout << fields[0] << "\t" << fields[1] << "\n";
-
-
-//  }
-
-
 
 
   /*  */
