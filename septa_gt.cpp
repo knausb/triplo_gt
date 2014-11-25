@@ -9,10 +9,75 @@
 #include <gmp.h> // GNU multiple precision arithmetic library, not standard: libgmp3-dev.
 #include <boost/algorithm/string.hpp> // Not standard on Macs or Ubuntu: libboost1.46-dev.
 
+using namespace std;
+//using namespace boost;
 
 /* ----- ----- ***** ----- ----- */
 /*           Functions           */
 /* ----- ----- ***** ----- ----- */
+
+void refA(std::string nucs, int sampn, int nuc_cnt[][8]){
+  for (int i = 0; i < nucs.size(); i++){
+    if (nucs[i] == '.') nuc_cnt[sampn][0]++;
+    if (nucs[i] == ',') nuc_cnt[sampn][1]++;
+    if (nucs[i] == 'C') nuc_cnt[sampn][2]++;
+    if (nucs[i] == 'c') nuc_cnt[sampn][3]++;
+    if (nucs[i] == 'G') nuc_cnt[sampn][4]++;
+    if (nucs[i] == 'g') nuc_cnt[sampn][5]++;
+    if (nucs[i] == 'T') nuc_cnt[sampn][6]++;
+    if (nucs[i] == 't') nuc_cnt[sampn][7]++;
+  }
+}
+
+void refC(std::string nucs, int sampn, int nuc_cnt[][8]){
+  for (int i = 0; i < nucs.size(); i++){
+    if (nucs[i] == 'A') nuc_cnt[sampn][0]++;
+    if (nucs[i] == 'a') nuc_cnt[sampn][1]++;
+    if (nucs[i] == '.') nuc_cnt[sampn][2]++;
+    if (nucs[i] == ',') nuc_cnt[sampn][3]++;
+    if (nucs[i] == 'G') nuc_cnt[sampn][4]++;
+    if (nucs[i] == 'g') nuc_cnt[sampn][5]++;
+    if (nucs[i] == 'T') nuc_cnt[sampn][6]++;
+    if (nucs[i] == 't') nuc_cnt[sampn][7]++;
+  }
+}
+
+void refG(std::string nucs, int sampn, int nuc_cnt[][8]){
+  for (int i = 0; i < nucs.size(); i++){
+    if (nucs[i] == 'A') nuc_cnt[sampn][0]++;
+    if (nucs[i] == 'a') nuc_cnt[sampn][1]++;
+    if (nucs[i] == 'C') nuc_cnt[sampn][2]++;
+    if (nucs[i] == 'c') nuc_cnt[sampn][3]++;
+    if (nucs[i] == '.') nuc_cnt[sampn][4]++;
+    if (nucs[i] == ',') nuc_cnt[sampn][5]++;
+    if (nucs[i] == 'T') nuc_cnt[sampn][6]++;
+    if (nucs[i] == 't') nuc_cnt[sampn][7]++;
+  }
+}
+
+void refT(std::string nucs, int sampn, int nuc_cnt[][8]){
+  for (int i = 0; i < nucs.size(); i++){
+    if (nucs[i] == 'A') nuc_cnt[sampn][0]++;
+    if (nucs[i] == 'a') nuc_cnt[sampn][1]++;
+    if (nucs[i] == 'C') nuc_cnt[sampn][2]++;
+    if (nucs[i] == 'c') nuc_cnt[sampn][3]++;
+    if (nucs[i] == 'G') nuc_cnt[sampn][4]++;
+    if (nucs[i] == 'g') nuc_cnt[sampn][5]++;
+    if (nucs[i] == '.') nuc_cnt[sampn][6]++;
+    if (nucs[i] == ',') nuc_cnt[sampn][7]++;
+  }
+}
+
+void get_rd(int rds[], int sampn, int nuc_cnts[][8]){
+//  cout << "\nget_rd sampn: " << sampn << "\n";
+  for(int i=0; i<sampn; i++){ // Samples
+    rds[i] = nuc_cnts[i][0];
+    for(int j=1; j<8; j++){
+      rds[i] = rds[i] + nuc_cnts[i][j];
+    }
+  }
+}
+
 
 
 
@@ -20,6 +85,18 @@
 /* ----- ----- ***** ----- ----- */
 /*        Print functions        */
 /* ----- ----- ***** ----- ----- */
+
+void print_usage(){
+  cerr << "  -c print allele counts in genotpye section.\n";
+  cerr << "  -e allowable genotyping error [default = 1e-9]; must not be zero.\n";
+  cerr << "  -h print this help message.\n";
+  cerr << "  -m print vcf header (meta) information.\n";
+  cerr << "  -p print phred scaled likelihoods in genotype section.\n";
+  cerr << "  -s file with sample names in same order as in\n     the s/bam file, one name per line.\n";
+  cerr << "  -t minimum threshold for calling an allele [default = 0].\n";
+  cerr << "\n";
+}
+
 
 void print_header(float error, int min_cnt, string sfile){
   cout << "##fileformat=VCFv4.2\n";
@@ -105,14 +182,15 @@ int main(int argc, char **argv) {
 
   /* Parse line by line or site by site. */
   while (getline(cin,lineInput)) {
-    split( fields, lineInput, is_any_of( "\t " ) );
+    split( fields, lineInput, boost::algorithm::is_any_of( "\t " ) );
     /* Declare variables */
-//    int nsamp = (fields.size()-3)/3;  // Determine the number of samples.
-    int nsamp = (fields.size()-2)/2;  // Determine the number of samples.
+    int nsamp = (fields.size()-3)/3;  // Determine the number of samples.
+//    int nsamp = (fields.size()-2)/2;  // Determine the number of samples.
     int nuc_cnts [nsamp][8]; // A,a,C,c,G,g,T,t.
     int rds [nsamp]; // Read depth.
     string gts [nsamp]; // Genotypes.
-    int pls [nsamp][51];  // Phred scaled likelihoods. 
+//    int pls [nsamp][51];  // Phred scaled likelihoods. 
+    int pls [nsamp][26];  // Phred scaled likelihoods. 
 
     /* Initialize variables. */
     for(int i=0; i<nsamp; i++){
@@ -135,7 +213,7 @@ int main(int argc, char **argv) {
           if(fields[2] == "A"){refA(fields[i], sampn, nuc_cnts);}
           if(fields[2] == "C"){refC(fields[i], sampn, nuc_cnts);}
           if(fields[2] == "G"){refG(fields[i], sampn, nuc_cnts);}
-          if(fields[2] == "T"){refG(fields[i], sampn, nuc_cnts);}
+          if(fields[2] == "T"){refT(fields[i], sampn, nuc_cnts);}
         }
       }
     }
@@ -144,24 +222,21 @@ int main(int argc, char **argv) {
     get_rd(rds, nsamp, nuc_cnts);
 
     /* Calculate Phred-scaled likelihoods */
-    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
+//    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
 
     /* Determine a genotype */
-    det_gt(gts, nsamp, rds, nuc_cnts, pls);
+//    det_gt(gts, nsamp, rds, nuc_cnts, pls);
 
     /* Minimum threshold. */
-    min_tresh(gts, nsamp, min_cnt, nuc_cnts);
+//    min_tresh(gts, nsamp, min_cnt, nuc_cnts);
 
     /* Print locus. */
-    int unique_gt = cnt_gts(nsamp, gts);
-    if(unique_gt > 1){
-      print_locus(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
-
-
+//    int unique_gt = cnt_gts(nsamp, gts);
+//    if(unique_gt > 1){
+//      print_locus(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
       /* Debug */
 //      debug1(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts, error, min_cnt);
-
-    }
+//    }
   }
   return 0;
 }

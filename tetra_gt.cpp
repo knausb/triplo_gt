@@ -844,7 +844,7 @@ int main(int argc, char **argv) {
           if(fields[2] == "A"){refA(fields[i], sampn, nuc_cnts);}
           if(fields[2] == "C"){refC(fields[i], sampn, nuc_cnts);}
           if(fields[2] == "G"){refG(fields[i], sampn, nuc_cnts);}
-          if(fields[2] == "T"){refG(fields[i], sampn, nuc_cnts);}
+          if(fields[2] == "T"){refT(fields[i], sampn, nuc_cnts);}
         }
       }
     }
