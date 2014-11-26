@@ -290,7 +290,10 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
 
 /* Likelihoods */
 //void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
+
+/* Parse each site to samples */
 void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8]){
+  cout <<  "##### New site (row) #####\n";
   for(int i=0; i<nsamp; i++){
 //    counts_2_plh(pls[i], nuc_cnts[i], err, min_cnt);
     counts_2_plh(pls[i], nuc_cnts[i], err);
@@ -403,6 +406,7 @@ int main(int argc, char **argv) {
 
   /* Parse line by line or site by site. */
   while (getline(cin,lineInput)) {
+    cout << "##### ----- New variant (row) ----- #####\n";
 //    cout << lineInput << "\n";
     split( fields, lineInput, boost::algorithm::is_any_of( "\t " ) );
     /* Declare variables */
@@ -426,6 +430,7 @@ int main(int argc, char **argv) {
       if((i-1) % 3 == 0){
         /* New sample */
         sampn++;
+        cout << "Processing sample " << sampn << "\n";
         for(int j=0; j<8; j++){nuc_cnts[sampn][j] = 0;}
         if(fields[i] == "*"){
           cout << fields[i] << ": no data string\n";
