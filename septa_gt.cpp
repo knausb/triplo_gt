@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <array>
 #include <vector>
 #include <stdio.h>
 #include <math.h> /* log10 */
@@ -128,6 +129,10 @@ double possible_counts(int nuc_cnt[4]){
 }
 
 
+/* Create type and function to help sort nucleotides. */
+typedef std::pair<int,int> mypair;
+bool comparator ( const mypair& l, const mypair& r)
+    { return l.first > r.first; }
 
 
 //void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int debug=0){
@@ -145,50 +150,66 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2] << "," << nuc_cnt[3] << ":"; 
 
 
-  char bases[4] = {'A','C','G','T'};
+  /* Sort nucleotide counts. */
+  vector<pair<int,int>> moves = {
+    {nuc_cnt[0], 0},
+    {nuc_cnt[1], 1},
+    {nuc_cnt[2], 2},
+    {nuc_cnt[3], 3}
+  };
 
+  std::sort(moves.begin(), moves.end(), comparator);
 
-
+  cout << moves[0].first << "," << moves[1].first;
+  cout << "," << moves[2].first << "," << moves[3].first;
+  cout << ":" << moves[0].second << "," << moves[1].second;
+  cout << "," << moves[2].second << "," << moves[3].second;
+//  cout << "\n";
 
   /* Possible ways to obtain observed counts */
-  double posd = possible_counts(nuc_cnt);
-  cout << " posd=" << posd;
+  double poss_counts = possible_counts(nuc_cnt);
+  cout << " poss_counts=" << poss_counts;
   cout << "\n";
-
-  /* Likelihoods. */
-  float mls [26];
-  for(int j=0; j<26; j++){mls[j]=0;}
-
-
-
-
 
 
   /* --*-- --*-- --*-- */
   /*       Models.     */
   /* --*-- --*-- --*-- */
 
-  /* Homozygotes. */
+  /* Likelihoods. */
+  float mls [26];
+  for(int j=0; j<26; j++){mls[j]=0;}
+
+  /* Homozygote. */
+  mls[0] = poss_counts * pow(1-(3*error)/4, moves[0].first) * pow(error/4, moves[1].first+moves[2].first+moves[3].first);
+
+
+
   /* AA, CC, GG, TT. */
   /* 00, 11, 22, 33. */
+/*
   mls[0] = posd * pow(1-(3*error)/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]+nuc_cnt[3]);
   mls[1] = posd * pow(1-(3*error)/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]+nuc_cnt[3]);
   mls[2] = posd * pow(1-(3*error)/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[3]);
   mls[3] = posd * pow(1-(3*error)/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[2]);
+*/
 
   /* Biallelic heterozygotes. */
   /* AC, AG, AT, CG, CT, GT. */
   /* 01, 02, 03, 12, 13, 23 */
+/*
   mls[4] = posd * pow(0.5-error/4, nuc_cnt[0]+nuc_cnt[1]) * pow(error/4, nuc_cnt[2]+nuc_cnt[3]);
   mls[5] = posd * pow(0.5-error/4, nuc_cnt[0]+nuc_cnt[2]) * pow(error/4, nuc_cnt[1]+nuc_cnt[3]);
   mls[6] = posd * pow(0.5-error/4, nuc_cnt[0]+nuc_cnt[3]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]);
   mls[7] = posd * pow(0.5-error/4, nuc_cnt[1]+nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[3]);
   mls[8] = posd * pow(0.5-error/4, nuc_cnt[1]+nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]);
   mls[9] = posd * pow(0.5-error/4, nuc_cnt[2]+nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]);
+*/
 
   /* Biallelic triploid loci. */
   /* AAC, AAG, AAT, CCA, CCG, CCT, GGA, GGC, GGT, TTA, TTC, TTG. */
   /* 001, 002, 003, 110, 112, 113, 220, 221, 223, 330, 331, 332. */
+/*
   float prop3 = 0.333333;
   float prop6 = 0.666667;
   mls[10] = posd * pow(prop6-error/4, nuc_cnt[0]) * pow(prop3-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[2]+nuc_cnt[3]);
@@ -203,14 +224,17 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   mls[19] = posd * pow(prop6-error/4, nuc_cnt[3]) * pow(prop3-error/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]);
   mls[20] = posd * pow(prop6-error/4, nuc_cnt[3]) * pow(prop3-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]);
   mls[21] = posd * pow(prop6-error/4, nuc_cnt[3]) * pow(prop3-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]);
+*/
 
   /* Triallelic triploid loci. */
   /* ACG, ACT, AGT, CGT. */
   /* 012, 013, 023, 123. */
+/*
   mls[22] = posd * pow(prop3-error/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[2]) * pow(error/4, nuc_cnt[3]);
   mls[23] = posd * pow(prop3-error/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[3]) * pow(error/4, nuc_cnt[2]);
   mls[24] = posd * pow(prop3-error/4, nuc_cnt[0]+nuc_cnt[2]+nuc_cnt[3]) * pow(error/4, nuc_cnt[1]);
   mls[25] = posd * pow(prop3-error/4, nuc_cnt[1]+nuc_cnt[2]+nuc_cnt[3]) * pow(error/4, nuc_cnt[0]);
+*/
 
   /* Biallelic tetraploid loci */
   /* AAAC, AAAG, AAAT, CCCA, CCCG, CCCT, GGGA, GGGC, GGGT, TTTA, TTTC, TTTG. */
@@ -271,7 +295,7 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
     cout << "\n";
     cout << "*** Debug counts_2_phredlh ***\n";
     cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2]<< "," << nuc_cnt[3] << ":";
-    cout << "posd=" << posd;
+    cout << "poss_counts=" << poss_counts;
     cout << "\n";
   }
 
