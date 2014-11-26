@@ -90,10 +90,13 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   nuc_cnt[2] = nuc_cnts[4] + nuc_cnts[5];
   nuc_cnt[3] = nuc_cnts[6] + nuc_cnts[7];
 
+  cout << "counts_2_plh\n";
+  cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2] << "," << nuc_cnt[3] << "\n"; 
+
+
+
   char bases[4] = {'A','C','G','T'};
 
-  cout << "Made it here\n";
-  cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2]<< "," << nuc_cnt[3] << "\n";
 
 
   /* Floor counts below threshold before 
@@ -119,6 +122,10 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   /* Likelihoods. */
   float mls [26];
   for(int j=0; j<26; j++){mls[j]=0;}
+
+
+
+
 
 
 
