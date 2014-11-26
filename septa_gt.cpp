@@ -146,8 +146,8 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   nuc_cnt[3] = nuc_cnts[6] + nuc_cnts[7];
 
 
-  cout << "counts_2_plh\t";
-  cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2] << "," << nuc_cnt[3] << ":"; 
+//  cout << "counts_2_plh\t";
+//  cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2] << "," << nuc_cnt[3] << ":"; 
 
 
   /* Sort nucleotide counts. */
@@ -160,16 +160,16 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
 
   std::sort(moves.begin(), moves.end(), comparator);
 
-  cout << moves[0].first << "," << moves[1].first;
-  cout << "," << moves[2].first << "," << moves[3].first;
-  cout << ":" << moves[0].second << "," << moves[1].second;
-  cout << "," << moves[2].second << "," << moves[3].second;
+//  cout << moves[0].first << "," << moves[1].first;
+//  cout << "," << moves[2].first << "," << moves[3].first;
+//  cout << ":" << moves[0].second << "," << moves[1].second;
+//  cout << "," << moves[2].second << "," << moves[3].second;
 //  cout << "\n";
 
   /* Possible ways to obtain observed counts */
   double poss_counts = possible_counts(nuc_cnt);
-  cout << " poss_counts=" << poss_counts;
-  cout << "\n";
+//  cout << " poss_counts=" << poss_counts;
+//  cout << "\n";
 
 
   /* --*-- --*-- --*-- */
@@ -181,102 +181,154 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   for(int j=0; j<26; j++){mls[j]=0;}
 
   /* Homozygote. */
-  mls[0] = poss_counts * pow(1-(3*error)/4, moves[0].first) * pow(error/4, moves[1].first+moves[2].first+moves[3].first);
+  mls[0] = poss_counts * 
+             pow(1-(3*error)/4, moves[0].first) * 
+             pow(error/4, moves[1].first+moves[2].first+moves[3].first);
 
+  /* Biallelic heterozygote. */
+  mls[1] = poss_counts *
+             pow(0.5-error/4, moves[0].first+moves[1].first) *
+             pow(error/4, moves[2].first+moves[3].first);
 
-
-  /* AA, CC, GG, TT. */
-  /* 00, 11, 22, 33. */
-/*
-  mls[0] = posd * pow(1-(3*error)/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]+nuc_cnt[3]);
-  mls[1] = posd * pow(1-(3*error)/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]+nuc_cnt[3]);
-  mls[2] = posd * pow(1-(3*error)/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[3]);
-  mls[3] = posd * pow(1-(3*error)/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[2]);
-*/
-
-  /* Biallelic heterozygotes. */
-  /* AC, AG, AT, CG, CT, GT. */
-  /* 01, 02, 03, 12, 13, 23 */
-/*
-  mls[4] = posd * pow(0.5-error/4, nuc_cnt[0]+nuc_cnt[1]) * pow(error/4, nuc_cnt[2]+nuc_cnt[3]);
-  mls[5] = posd * pow(0.5-error/4, nuc_cnt[0]+nuc_cnt[2]) * pow(error/4, nuc_cnt[1]+nuc_cnt[3]);
-  mls[6] = posd * pow(0.5-error/4, nuc_cnt[0]+nuc_cnt[3]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]);
-  mls[7] = posd * pow(0.5-error/4, nuc_cnt[1]+nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[3]);
-  mls[8] = posd * pow(0.5-error/4, nuc_cnt[1]+nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]);
-  mls[9] = posd * pow(0.5-error/4, nuc_cnt[2]+nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]);
-*/
-
-  /* Biallelic triploid loci. */
-  /* AAC, AAG, AAT, CCA, CCG, CCT, GGA, GGC, GGT, TTA, TTC, TTG. */
-  /* 001, 002, 003, 110, 112, 113, 220, 221, 223, 330, 331, 332. */
-/*
-  float prop3 = 0.333333;
-  float prop6 = 0.666667;
-  mls[10] = posd * pow(prop6-error/4, nuc_cnt[0]) * pow(prop3-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[2]+nuc_cnt[3]);
-  mls[11] = posd * pow(prop6-error/4, nuc_cnt[0]) * pow(prop3-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[1]+nuc_cnt[3]);
-  mls[12] = posd * pow(prop6-error/4, nuc_cnt[0]) * pow(prop3-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]);
-  mls[13] = posd * pow(prop6-error/4, nuc_cnt[1]) * pow(prop3-error/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[2]+nuc_cnt[3]);
-  mls[14] = posd * pow(prop6-error/4, nuc_cnt[1]) * pow(prop3-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[3]);
-  mls[15] = posd * pow(prop6-error/4, nuc_cnt[1]) * pow(prop3-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]);
-  mls[16] = posd * pow(prop6-error/4, nuc_cnt[2]) * pow(prop3-error/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[1]+nuc_cnt[3]);
-  mls[17] = posd * pow(prop6-error/4, nuc_cnt[2]) * pow(prop3-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[0]+nuc_cnt[3]);
-  mls[18] = posd * pow(prop6-error/4, nuc_cnt[2]) * pow(prop3-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]);
-  mls[19] = posd * pow(prop6-error/4, nuc_cnt[3]) * pow(prop3-error/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]);
-  mls[20] = posd * pow(prop6-error/4, nuc_cnt[3]) * pow(prop3-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]);
-  mls[21] = posd * pow(prop6-error/4, nuc_cnt[3]) * pow(prop3-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]);
-*/
+  /* Biallelic triploid. */
+  float prop3 = 0.3333333;
+  float prop6 = 0.6666667;
+  mls[2] = poss_counts * 
+              pow(prop6-error/4, moves[0].first) * 
+              pow(prop3-error/4, moves[1].first) *
+              pow(error/4, moves[2].first+moves[3].first);
 
   /* Triallelic triploid loci. */
-  /* ACG, ACT, AGT, CGT. */
-  /* 012, 013, 023, 123. */
-/*
-  mls[22] = posd * pow(prop3-error/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[2]) * pow(error/4, nuc_cnt[3]);
-  mls[23] = posd * pow(prop3-error/4, nuc_cnt[0]+nuc_cnt[1]+nuc_cnt[3]) * pow(error/4, nuc_cnt[2]);
-  mls[24] = posd * pow(prop3-error/4, nuc_cnt[0]+nuc_cnt[2]+nuc_cnt[3]) * pow(error/4, nuc_cnt[1]);
-  mls[25] = posd * pow(prop3-error/4, nuc_cnt[1]+nuc_cnt[2]+nuc_cnt[3]) * pow(error/4, nuc_cnt[0]);
-*/
+  mls[3] = poss_counts *
+             pow(prop3-error/4, moves[0].first+moves[1].first+moves[2].first) *
+             pow(error/4, moves[3].first);
 
   /* Biallelic tetraploid loci */
-  /* AAAC, AAAG, AAAT, CCCA, CCCG, CCCT, GGGA, GGGC, GGGT, TTTA, TTTC, TTTG. */
-  /* 0001, 0002, 0003, 1110, 1112, 1113, 2220, 2221, 2223, 3330, 3331, 3332. */
-/*
-  mls[26] = posd * pow(0.75-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[2]+nuc_cnt[3]);
-  mls[27] = posd * pow(0.75-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[1]+nuc_cnt[3]);
-  mls[28] = posd * pow(0.75-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]);
-  mls[29] = posd * pow(0.75-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[2]+nuc_cnt[3]);
-  mls[30] = posd * pow(0.75-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[3]);
-  mls[31] = posd * pow(0.75-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]);
-  mls[32] = posd * pow(0.75-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[1]+nuc_cnt[3]);
-  mls[33] = posd * pow(0.75-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[0]+nuc_cnt[3]);
-  mls[34] = posd * pow(0.75-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]);
-  mls[35] = posd * pow(0.75-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]);
-  mls[36] = posd * pow(0.75-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]);
-  mls[37] = posd * pow(0.75-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]);
-*/
+  mls[4] = poss_counts *
+             pow(0.75-error/4, moves[0].first) *
+             pow(0.25-error/4, moves[1].first) *
+             pow(error/4, moves[2].first+moves[3].first);
 
   /* Triallelic tetraploid loci */
-  /* AACG, AACT, AAGT, CCAG, CCAT, CCGT, GGAC, GGAT, GGCT, TTAC, TTAG, TTCG */
-  /* 0012, 0013, 0023, 1102, 1103, 1123, 3301, 2203, 2213, 3301, 3302, 3312 */
-/*
-  mls[38] = posd * pow(0.5-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[3]);
-  mls[39] = posd * pow(0.5-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[2]);
-  mls[40] = posd * pow(0.5-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[1]);
-  mls[41] = posd * pow(0.5-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[3]);
-  mls[42] = posd * pow(0.5-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[2]);
-  mls[43] = posd * pow(0.5-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]);
-  mls[44] = posd * pow(0.5-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[3]);
-  mls[45] = posd * pow(0.5-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[1]);
-  mls[46] = posd * pow(0.5-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[0]);
-
-  mls[47] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[2]);
-  mls[48] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[1]);
-  mls[49] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]);
-*/
+  mls[5] = poss_counts *
+             pow(0.5-error/4, moves[0].first) *
+             pow(0.25-error/4, moves[1].first) *
+             pow(0.25-error/4, moves[2].first) *
+             pow(error/4, moves[3].first);
 
   /* Tetra-allelic tetraploid loci */
-  /* ACGT */
-  /* 0123 */
-//  mls[50] = posd * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[3]);
+  mls[6] = poss_counts *
+             pow(0.25-error/4, moves[0].first) *
+             pow(0.25-error/4, moves[1].first) *
+             pow(0.25-error/4, moves[2].first) *
+             pow(0.25-error/4, moves[3].first);
+
+  /* Bi-allelic pentaploid */
+  mls[7] = poss_counts *
+             pow(0.8-error/4, moves[0].first) *
+             pow(0.2-error/4, moves[1].first) *
+             pow(error/4, moves[2].first+moves[3].first);
+  mls[8] = poss_counts *
+             pow(0.6-error/4, moves[0].first) *
+             pow(0.4-error/4, moves[1].first) *
+             pow(error/4, moves[2].first+moves[3].first);
+
+  /* Tri-allelic pentaploid */
+  mls[9] = poss_counts *
+             pow(0.6-error/4, moves[0].first) *
+             pow(0.2-error/4, moves[1].first) *
+             pow(0.2-error/4, moves[1].first) *
+             pow(error/4, moves[3].first);
+  mls[10] = poss_counts *
+             pow(0.4-error/4, moves[0].first) *
+             pow(0.4-error/4, moves[1].first) *
+             pow(0.2-error/4, moves[1].first) *
+             pow(error/4, moves[3].first);
+
+  /* Tetra-allelic pentaploid */
+  mls[11] = poss_counts *
+              pow(0.4-error/4, moves[0].first) *
+              pow(0.2-error/4, moves[1].first) *
+              pow(0.2-error/4, moves[2].first) *
+              pow(0.2-error/4, moves[3].first);
+
+  /* Bi-allelic hexaploid */
+  mls[12] = poss_counts *
+              pow(0.8333333-error/4, moves[0].first) *
+              pow(0.1666667-error/4, moves[1].first) *
+              pow(error/4, moves[2].first+moves[3].first);
+
+  /* Tri-allelic hexaploid */
+  mls[13] = poss_counts *
+              pow(0.6666667-error/4, moves[0].first) *
+              pow(0.1666667-error/4, moves[1].first) *
+              pow(0.1666667-error/4, moves[1].first) *
+              pow(error/4, moves[3].first);
+  mls[14] = poss_counts *
+              pow(0.5-error/4, moves[0].first) *
+              pow(0.3333333-error/4, moves[1].first) *
+              pow(0.1666667-error/4, moves[1].first) *
+              pow(error/4, moves[3].first);
+
+  /* Tetra-allelic hexaploid */
+  mls[15] = poss_counts *
+              pow(0.5-error/4, moves[0].first) *
+              pow(0.1666667-error/4, moves[1].first) *
+              pow(0.1666667-error/4, moves[2].first) *
+              pow(0.1666667-error/4, moves[3].first);
+  mls[16] = poss_counts *
+              pow(0.3333333-error/4, moves[0].first) *
+              pow(0.3333333-error/4, moves[1].first) *
+              pow(0.1666667-error/4, moves[2].first) *
+              pow(0.1666667-error/4, moves[3].first);
+
+  /* Bi-allelic septaploid */
+  mls[17] = poss_counts *
+              pow(0.8571429-error/4, moves[0].first) *
+              pow(0.1428571-error/4, moves[1].first) *
+              pow(error/4, moves[2].first+moves[3].first);
+  mls[18] = poss_counts *
+              pow(0.7142857-error/4, moves[0].first) *
+              pow(0.2857143-error/4, moves[1].first) *
+              pow(error/4, moves[2].first+moves[3].first);
+  mls[19] = poss_counts *
+              pow(0.5714286-error/4, moves[0].first) *
+              pow(0.4285714-error/4, moves[1].first) *
+              pow(error/4, moves[2].first+moves[3].first);
+
+  /* Tri-allelic septaploid */
+  mls[20] = poss_counts *
+              pow(0.7142857-error/4, moves[0].first) *
+              pow(0.1428571-error/4, moves[1].first) *
+              pow(0.1428571-error/4, moves[1].first) *
+              pow(error/4, moves[3].first);
+  mls[21] = poss_counts *
+              pow(0.5714286-error/4, moves[0].first) *
+              pow(0.2857143-error/4, moves[1].first) *
+              pow(0.1428571-error/4, moves[1].first) *
+              pow(error/4, moves[3].first);
+  mls[22] = poss_counts *
+              pow(0.3333333-error/4, moves[0].first) *
+              pow(0.3333333-error/4, moves[1].first) *
+              pow(0.1428571-error/4, moves[1].first) *
+              pow(error/4, moves[3].first);
+
+  /* Tetra-allelic septaploid */
+  mls[23] = poss_counts *
+              pow(0.5714286-error/4, moves[0].first) *
+              pow(0.1428571-error/4, moves[1].first) *
+              pow(0.1428571-error/4, moves[2].first) *
+              pow(0.1428571-error/4, moves[3].first);
+  mls[24] = poss_counts *
+              pow(0.4285714-error/4, moves[0].first) *
+              pow(0.2857143-error/4, moves[1].first) *
+              pow(0.1428571-error/4, moves[2].first) *
+              pow(0.1428571-error/4, moves[3].first);
+  mls[25] = poss_counts *
+              pow(0.2857143-error/4, moves[0].first) *
+              pow(0.2857143-error/4, moves[1].first) *
+              pow(0.2857143-error/4, moves[2].first) *
+              pow(0.1428571-error/4, moves[3].first);
 
 
   /* Phred scale the likelihoods. */
@@ -474,7 +526,6 @@ int main(int argc, char **argv) {
     /* Calculate Phred-scaled likelihoods */
 //    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
     mult_pl(pls, nsamp, error, nuc_cnts);
-
 
     /* Determine a genotype */
 //    det_gt(gts, nsamp, rds, nuc_cnts, pls);
