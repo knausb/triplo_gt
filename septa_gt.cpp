@@ -79,55 +79,9 @@ void get_rd(int rds[], int sampn, int nuc_cnts[][8]){
 }
 
 
-
-//void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int debug=0){
-void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
-
-  /* Add forward and reverse counts. */
-  int nuc_cnt[4];
-  nuc_cnt[0] = nuc_cnts[0] + nuc_cnts[1];
-  nuc_cnt[1] = nuc_cnts[2] + nuc_cnts[3];
-  nuc_cnt[2] = nuc_cnts[4] + nuc_cnts[5];
-  nuc_cnt[3] = nuc_cnts[6] + nuc_cnts[7];
-
-  cout << "counts_2_plh\n";
-  cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2] << "," << nuc_cnt[3] << "\n"; 
-
-
-
-  char bases[4] = {'A','C','G','T'};
-
-
-
-  /* Floor counts below threshold before 
-     genotype calling. */
-/*
-  if(nuc_cnt[0] < min_cnt){
-    nuc_cnt[0] = 0;
-  }
-  if(nuc_cnt[1] < min_cnt){
-    nuc_cnt[1] = 0;
-  }
-  if(nuc_cnt[2] < min_cnt){
-    nuc_cnt[2] = 0;
-  }
-  if(nuc_cnt[3] < min_cnt){
-    nuc_cnt[3] = 0;
-  }
-*/
-
-  /* Read depth. */
+/* Calculate possibe ways of getting counts */
+double possible_counts(int nuc_cnt[4]){
   int rd = nuc_cnt[0] + nuc_cnt[1] + nuc_cnt[2] + nuc_cnt[3];
-
-  /* Likelihoods. */
-  float mls [26];
-  for(int j=0; j<26; j++){mls[j]=0;}
-
-
-
-
-
-
 
   /* Multiple precision variables. */
   mpz_t fac [5]; // Factorials n, A, C, G, T.
@@ -165,6 +119,46 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   mpf_div(pos[0], pos[1], pos[2]);
 //    cout << "pos0=" << pos[0] << "\n";
   double posd = mpf_get_d(pos[0]);
+
+  // Clean up the mpz_t handles or else we will leak memory
+  for (int j=0; j<5; j++){mpz_clear(fac[j]);}
+  for (int j=0; j<3; j++){mpf_clear(pos[j]);}
+
+  return(posd);
+}
+
+
+
+
+//void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int debug=0){
+void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
+
+  /* Add forward and reverse counts. */
+  int nuc_cnt[4];
+  nuc_cnt[0] = nuc_cnts[0] + nuc_cnts[1];
+  nuc_cnt[1] = nuc_cnts[2] + nuc_cnts[3];
+  nuc_cnt[2] = nuc_cnts[4] + nuc_cnts[5];
+  nuc_cnt[3] = nuc_cnts[6] + nuc_cnts[7];
+
+
+  cout << "counts_2_plh\t";
+  cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2] << "," << nuc_cnt[3] << ":"; 
+
+
+  char bases[4] = {'A','C','G','T'};
+
+
+
+
+  /* Possible ways to obtain observed counts */
+  double posd = possible_counts(nuc_cnt);
+  cout << " posd=" << posd;
+  cout << "\n";
+
+  /* Likelihoods. */
+  float mls [26];
+  for(int j=0; j<26; j++){mls[j]=0;}
+
 
 
 
@@ -221,6 +215,7 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   /* Biallelic tetraploid loci */
   /* AAAC, AAAG, AAAT, CCCA, CCCG, CCCT, GGGA, GGGC, GGGT, TTTA, TTTC, TTTG. */
   /* 0001, 0002, 0003, 1110, 1112, 1113, 2220, 2221, 2223, 3330, 3331, 3332. */
+/*
   mls[26] = posd * pow(0.75-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[2]+nuc_cnt[3]);
   mls[27] = posd * pow(0.75-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[1]+nuc_cnt[3]);
   mls[28] = posd * pow(0.75-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]);
@@ -233,10 +228,12 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   mls[35] = posd * pow(0.75-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(error/4, nuc_cnt[1]+nuc_cnt[2]);
   mls[36] = posd * pow(0.75-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[0]+nuc_cnt[2]);
   mls[37] = posd * pow(0.75-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]+nuc_cnt[1]);
+*/
 
   /* Triallelic tetraploid loci */
   /* AACG, AACT, AAGT, CCAG, CCAT, CCGT, GGAC, GGAT, GGCT, TTAC, TTAG, TTCG */
   /* 0012, 0013, 0023, 1102, 1103, 1123, 3301, 2203, 2213, 3301, 3302, 3312 */
+/*
   mls[38] = posd * pow(0.5-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[3]);
   mls[39] = posd * pow(0.5-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[2]);
   mls[40] = posd * pow(0.5-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[3]) * pow(error/4, nuc_cnt[1]);
@@ -250,14 +247,17 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   mls[47] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(error/4, nuc_cnt[2]);
   mls[48] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[1]);
   mls[49] = posd * pow(0.5-error/4, nuc_cnt[3]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(error/4, nuc_cnt[0]);
+*/
 
   /* Tetra-allelic tetraploid loci */
   /* ACGT */
   /* 0123 */
-  mls[50] = posd * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[3]);
+//  mls[50] = posd * pow(0.25-error/4, nuc_cnt[0]) * pow(0.25-error/4, nuc_cnt[1]) * pow(0.25-error/4, nuc_cnt[2]) * pow(0.25-error/4, nuc_cnt[3]);
+
 
   /* Phred scale the likelihoods. */
-  for (int j = 0; j < 51; j++){
+//  for (int j = 0; j < 51; j++){
+  for (int j = 0; j < 26; j++){
     if (mls[j] == 0){
       mls[j] = 9999;
     } else {
@@ -266,7 +266,7 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
     }
   }
 
-  debug = 1;
+//  debug = 1;
   if(debug == 1){
     cout << "\n";
     cout << "*** Debug counts_2_phredlh ***\n";
@@ -282,9 +282,6 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
     mlhs[j] = int(mls[j]);
   }
 
-  // Clean up the mpz_t handles or else we will leak memory
-  for (int j=0; j<5; j++){mpz_clear(fac[j]);}
-  for (int j=0; j<3; j++){mpf_clear(pos[j]);}
 }
 
 
@@ -293,7 +290,7 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
 
 /* Parse each site to samples */
 void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8]){
-  cout <<  "##### New site (row) #####\n";
+//  cout <<  "##### New site (row) #####\n";
   for(int i=0; i<nsamp; i++){
 //    counts_2_plh(pls[i], nuc_cnts[i], err, min_cnt);
     counts_2_plh(pls[i], nuc_cnts[i], err);
@@ -406,7 +403,7 @@ int main(int argc, char **argv) {
 
   /* Parse line by line or site by site. */
   while (getline(cin,lineInput)) {
-    cout << "##### ----- New variant (row) ----- #####\n";
+//    cout << "##### ----- New variant (row) ----- #####\n";
 //    cout << lineInput << "\n";
     split( fields, lineInput, boost::algorithm::is_any_of( "\t " ) );
     /* Declare variables */
@@ -430,15 +427,15 @@ int main(int argc, char **argv) {
       if((i-1) % 3 == 0){
         /* New sample */
         sampn++;
-        cout << "Processing sample " << sampn << "\n";
+//        cout << "Processing sample " << sampn << "\n";
         for(int j=0; j<8; j++){nuc_cnts[sampn][j] = 0;}
         if(fields[i] == "*"){
-          cout << fields[i] << ": no data string\n";
+//          cout << fields[i] << ": no data string\n";
           // No data.
           //for(int j=0; j<8; j++){nuc_cnts[sampn][j] = 0;}
         } else {
           // Count each nucleotide.
-          cout << fields[i] << ": count string\n";
+//          cout << fields[i] << ": count string\n";
           if(fields[2] == "A"){refA(fields[i], sampn, nuc_cnts);}
           if(fields[2] == "C"){refC(fields[i], sampn, nuc_cnts);}
           if(fields[2] == "G"){refG(fields[i], sampn, nuc_cnts);}
@@ -453,6 +450,7 @@ int main(int argc, char **argv) {
     /* Calculate Phred-scaled likelihoods */
 //    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
     mult_pl(pls, nsamp, error, nuc_cnts);
+
 
     /* Determine a genotype */
 //    det_gt(gts, nsamp, rds, nuc_cnts, pls);
