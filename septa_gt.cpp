@@ -81,16 +81,24 @@ void get_rd(int rds[], int sampn, int nuc_cnts[][8]){
 
 
 //void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int debug=0){
-void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int min_cnt, int debug=0){
-  int nuc_cnt[4];
+void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
+
   /* Add forward and reverse counts. */
+  int nuc_cnt[4];
   nuc_cnt[0] = nuc_cnts[0] + nuc_cnts[1];
   nuc_cnt[1] = nuc_cnts[2] + nuc_cnts[3];
   nuc_cnt[2] = nuc_cnts[4] + nuc_cnts[5];
   nuc_cnt[3] = nuc_cnts[6] + nuc_cnts[7];
 
+  char bases[4] = {'A','C','G','T'};
+
+  cout << "Made it here\n";
+  cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2]<< "," << nuc_cnt[3] << "\n";
+
+
   /* Floor counts below threshold before 
      genotype calling. */
+/*
   if(nuc_cnt[0] < min_cnt){
     nuc_cnt[0] = 0;
   }
@@ -103,12 +111,18 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int min_cnt, int d
   if(nuc_cnt[3] < min_cnt){
     nuc_cnt[3] = 0;
   }
+*/
+
+  /* Read depth. */
   int rd = nuc_cnt[0] + nuc_cnt[1] + nuc_cnt[2] + nuc_cnt[3];
 
   /* Likelihoods. */
-  float mls [51];
-  for(int j=0; j<51; j++){mls[j]=0;}
+  float mls [26];
+  for(int j=0; j<26; j++){mls[j]=0;}
 
+
+
+  /* Multiple precision variables. */
   mpz_t fac [5]; // Factorials n, A, C, G, T.
   mpf_t pos [3]; // Floats for num, den, pos;
 
@@ -144,6 +158,14 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int min_cnt, int d
   mpf_div(pos[0], pos[1], pos[2]);
 //    cout << "pos0=" << pos[0] << "\n";
   double posd = mpf_get_d(pos[0]);
+
+
+
+
+
+  /* --*-- --*-- --*-- */
+  /*       Models.     */
+  /* --*-- --*-- --*-- */
 
   /* Homozygotes. */
   /* AA, CC, GG, TT. */
@@ -237,16 +259,18 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int min_cnt, int d
     }
   }
 
+  debug = 1;
   if(debug == 1){
     cout << "\n";
-    cout << "*** Debug counts_2_plh ***\n";
+    cout << "*** Debug counts_2_phredlh ***\n";
     cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2]<< "," << nuc_cnt[3] << ":";
     cout << "posd=" << posd;
     cout << "\n";
   }
 
   /* Transfer likelihoods to parent array. */
-  for (int j = 0; j < 51; j++){
+//  for (int j = 0; j < 51; j++){
+  for (int j = 0; j < 26; j++){
 //    pls[i][j] = int(mls[j]);
     mlhs[j] = int(mls[j]);
   }
@@ -258,10 +282,11 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int min_cnt, int d
 
 
 /* Likelihoods */
-void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
+//void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
+void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8]){
   for(int i=0; i<nsamp; i++){
-    counts_2_plh(pls[i], nuc_cnts[i], err, min_cnt);
-
+//    counts_2_plh(pls[i], nuc_cnts[i], err, min_cnt);
+    counts_2_plh(pls[i], nuc_cnts[i], err);
   }
 }
 
@@ -272,21 +297,23 @@ void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt
 /* ----- ----- ***** ----- ----- */
 
 void print_usage(){
+  cerr << "\n";
   cerr << "  -c print allele counts in genotpye section.\n";
   cerr << "  -e allowable genotyping error [default = 1e-9]; must not be zero.\n";
   cerr << "  -h print this help message.\n";
   cerr << "  -m print vcf header (meta) information.\n";
   cerr << "  -p print phred scaled likelihoods in genotype section.\n";
   cerr << "  -s file with sample names in same order as in\n     the s/bam file, one name per line.\n";
-  cerr << "  -t minimum threshold for calling an allele [default = 0].\n";
+//  cerr << "  -t minimum threshold for calling an allele [default = 0].\n";
   cerr << "\n";
 }
 
 
-void print_header(float error, int min_cnt, string sfile){
+//void print_header(float error, int min_cnt, string sfile){
+void print_header(float error, string sfile){
   cout << "##fileformat=VCFv4.2\n";
   cout << "##source=gtV0.0.0\n";
-  cout << "##FILTER=<ID=NA,Description=\"Per nucleotide minimum threshold of " << min_cnt << "\">\n";
+//  cout << "##FILTER=<ID=NA,Description=\"Per nucleotide minimum threshold of " << min_cnt << "\">\n";
   cout << "##FILTER=<ID=NA,Description=\"Error rate of " << error << " used for likelihood calculation\">\n";
   cout << "##FORMAT=<ID=RD,Number=1,Type=Integer,Description=\"Read depth\">\n";
   cout << "##FORMAT=<ID=CT,Number=4,Type=Integer,Description=\"Count of each nucleotide (A,C,G,T)\">\n";
@@ -327,11 +354,12 @@ int main(int argc, char **argv) {
   int counts = 0; // print counts 
   int phred = 0; // Scale likelihoods as phred values
   float error = 0.000000001; // Can not be zero!!!
-  int min_cnt = 0; // Minimum threshold.
+//  int min_cnt = 0; // Minimum threshold.
   string sfile = "NA";
 
   /* Parse command line options. */
-  while ((opt = getopt(argc, argv, "ce:hmps:t:")) != -1) {
+//  while ((opt = getopt(argc, argv, "ce:hmps:t:")) != -1) {
+  while ((opt = getopt(argc, argv, "ce:hmps:")) != -1) {
     switch (opt) {
       case 'c': // print counts
         counts = 1;
@@ -348,25 +376,27 @@ int main(int argc, char **argv) {
       case 'p': // phred scale likelihoods
         phred = 1;
         break;
-      case 's': // Figure this out!!!
+      case 's': // file containing sample names
         sfile = optarg;
         break;
-      case 't': // Minimum threshold
-        min_cnt = atoi(optarg);
-        break;
+//      case 't': // Minimum threshold
+//        min_cnt = atoi(optarg);
+//        break;
       default: /* '?' */
-        fprintf(stderr, "Usage: %s [-ce:hmpst:]\n", argv[0]);
+//        fprintf(stderr, "Usage: %s [-ce:hmpst:]\n", argv[0]);
+        fprintf(stderr, "Usage: %s [-ce:hmps]\n", argv[0]);
         print_usage();
         exit(EXIT_FAILURE);
     }
   }
 
   /* Print header */
-  if(header == 1){print_header(error, min_cnt, sfile);}
-
+//  if(header == 1){print_header(error, min_cnt, sfile);}
+  if(header == 1){print_header(error, sfile);}
 
   /* Parse line by line or site by site. */
   while (getline(cin,lineInput)) {
+//    cout << lineInput << "\n";
     split( fields, lineInput, boost::algorithm::is_any_of( "\t " ) );
     /* Declare variables */
     int nsamp = (fields.size()-3)/3;  // Determine the number of samples.
@@ -391,10 +421,12 @@ int main(int argc, char **argv) {
         sampn++;
         for(int j=0; j<8; j++){nuc_cnts[sampn][j] = 0;}
         if(fields[i] == "*"){
+          cout << fields[i] << ": no data string\n";
           // No data.
           //for(int j=0; j<8; j++){nuc_cnts[sampn][j] = 0;}
         } else {
           // Count each nucleotide.
+          cout << fields[i] << ": count string\n";
           if(fields[2] == "A"){refA(fields[i], sampn, nuc_cnts);}
           if(fields[2] == "C"){refC(fields[i], sampn, nuc_cnts);}
           if(fields[2] == "G"){refG(fields[i], sampn, nuc_cnts);}
@@ -408,6 +440,7 @@ int main(int argc, char **argv) {
 
     /* Calculate Phred-scaled likelihoods */
 //    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
+    mult_pl(pls, nsamp, error, nuc_cnts);
 
     /* Determine a genotype */
 //    det_gt(gts, nsamp, rds, nuc_cnts, pls);
