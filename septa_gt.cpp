@@ -128,6 +128,12 @@ double possible_counts(int nuc_cnt[4]){
   return(posd);
 }
 
+void int_to_nucs(vector <string> gts[26], vector<pair<int,int>> moves){
+
+
+
+}
+
 
 /* Create type and function to help sort nucleotides. */
 typedef std::pair<int,int> mypair;
@@ -341,6 +347,10 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
       if(mls[j] == -0){mls[j] = 0;}
     }
   }
+
+  /* Convert int to nucleotides */
+  vector <string> gts[26];
+//  int_to_nucs(gts, moves);
 
 //  debug = 1;
   if(debug == 1){
