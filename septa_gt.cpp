@@ -128,9 +128,77 @@ double possible_counts(int nuc_cnt[4]){
   return(posd);
 }
 
-void int_to_nucs(vector <string> gts[26], vector<pair<int,int>> moves){
+void int_to_nucs(string gts[26], vector<pair<int,int>> moves){
+
+  /* Convert pairs to array of ints. */
+  int nucs[4];
+  for(int i=0; i<4; i++){
+    nucs[i] = moves[i].second;
+  }
+
+//  cout << nucs[0] << "," << nucs[1] << "," << nucs[2] << "," << nucs[3];
+//  cout << "\n";
+  cout << nucs[0] << "," << nucs[1] << "," << nucs[2] << "," << nucs[3];
+  cout << "\n";
+
+  /* Array indices */
+  /* 0 = Homozyote 1/0/0/0 */
+  /* 1 = Bi-allelic heterozyote 1/1 */
+  /* 2 = Bi-allelic triploid 2/1 */
+  /* 3 = Tri-allelic triploid 1/1/1 */
+
+  /* 4 = Bi-allelic tetraploid loci 3/1/0/0 */
+  /* 5 = Tri-allelic tetraploid loci 2/1/1/0 */
+  /* 6 = Tetra-allelic tetraploid loci 1/1/1/1 */
+
+  /* 7 = Bi-allelic pentaploid 4/1/0/0 */
+  /* 8 = Bi-allelic pentaploid 3/2/0/0 */
+  /* 9 = Tri-allelic pentaploid 3/1/1/0 */
+  /* 10 = Tri-allelic pentaploid 2/2/1/0 */
+  /* 11 = Tetra-allelic pentaploid 2/1/1/1 */
 
 
+
+
+
+  /* 12 = Bi-allelic hexaploid loci */
+  /* 13 = Tri-allelic hexaploid loci 4/1/1 */
+  /* 14 = Tri-allelic hexaploid loci 3/2/1 */
+  /* 15 = Tetra-allelic hexaploid loci 3/1/1/1 */
+  /* 16 = Tetra-allelic hexaploid loci 2/2/1/1 */
+
+  /* 17 = Bi-allelic septaploid loci 6/1 */
+  /* 18 = Bi-allelic septaploid loci 5/2 */
+  /* 19 = Bi-allelic septaploid loci 4/3 */
+  /* 20 = Tri-allelic septaploid loci 5/1/1 */
+  /* 21 = Tri-allelic septaploid loci 4/2/1 */
+  /* 22 = Tri-allelic septaploid loci 3/3/1 */
+  /* 23 = Tri-allelic septaploid loci 3/2/2 */
+
+  /* 24 = Tetra-allelic septaploid loci 4/1/1/1 */
+  /* 25 = Tetra-allelic septaploid loci 3/2/1/1 */
+  /* 26 = Tetra-allelic septaploid loci 2/2/2/1 */
+
+
+  if(nucs[0] == 0){
+    gts[0] = "A/A/A/A/A/A";
+    if(nucs[1] == 1){
+      gts[1] == "A/A/A/C/C/C";
+      gts[2] == "A/A/A/A/C/C";
+      if(nucs[2] == 2){
+        gts[3] = "A/A/C/C/G/G";
+      }
+    }
+
+  } else if (nucs[0] == 1) {
+
+  } else if (nucs[0] == 2) {
+
+  } else if (nucs[0] == 3) {
+
+  }
+
+  cout << "\n";
 
 }
 
@@ -191,12 +259,12 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
              pow(1-(3*error)/4, moves[0].first) * 
              pow(error/4, moves[1].first+moves[2].first+moves[3].first);
 
-  /* Biallelic heterozygote. */
+  /* Bi-allelic heterozygote. */
   mls[1] = poss_counts *
              pow(0.5-error/4, moves[0].first+moves[1].first) *
              pow(error/4, moves[2].first+moves[3].first);
 
-  /* Biallelic triploid. */
+  /* Bi-allelic triploid. */
   float prop3 = 0.3333333;
   float prop6 = 0.6666667;
   mls[2] = poss_counts * 
@@ -204,18 +272,18 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
               pow(prop3-error/4, moves[1].first) *
               pow(error/4, moves[2].first+moves[3].first);
 
-  /* Triallelic triploid loci. */
+  /* Tri-allelic triploid loci. */
   mls[3] = poss_counts *
              pow(prop3-error/4, moves[0].first+moves[1].first+moves[2].first) *
              pow(error/4, moves[3].first);
 
-  /* Biallelic tetraploid loci */
+  /* Bi-allelic tetraploid loci */
   mls[4] = poss_counts *
              pow(0.75-error/4, moves[0].first) *
              pow(0.25-error/4, moves[1].first) *
              pow(error/4, moves[2].first+moves[3].first);
 
-  /* Triallelic tetraploid loci */
+  /* Tri-allelic tetraploid loci */
   mls[5] = poss_counts *
              pow(0.5-error/4, moves[0].first) *
              pow(0.25-error/4, moves[1].first) *
@@ -348,9 +416,11 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
     }
   }
 
-  /* Convert int to nucleotides */
-  vector <string> gts[26];
-//  int_to_nucs(gts, moves);
+  /* Convert ints to nucleotides */
+//  vector <string> gts[26];
+  string gts[26];
+//  gts[1] = "0";
+  int_to_nucs(gts, moves);
 
 //  debug = 1;
   if(debug == 1){
