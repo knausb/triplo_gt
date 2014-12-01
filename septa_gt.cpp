@@ -196,6 +196,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "A/A/C/C/G";
         gts[14] = "A/A/A/A/C/G";
         gts[15] = "A/A/A/C/C/G";
+        gts[20] = "A/A/A/A/A/C/G";
+        gts[21] = "A/A/A/A/C/C/G";
+        gts[22] = "A/A/A/C/C/C/G";
+        gts[23] = "A/A/A/C/C/G/G";
 //        if(nucs[3]==3){
           /* A/C/G/T Tetra-allelic */
           gts[6]  = "A/C/G/T";
@@ -214,6 +218,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "A/A/C/C/T";
         gts[14] = "A/A/A/A/C/T";
         gts[15] = "A/A/A/C/C/T";
+        gts[20] = "A/A/A/A/A/C/T";
+        gts[21] = "A/A/A/A/C/C/T";
+        gts[22] = "A/A/A/C/C/C/T";
+        gts[23] = "A/A/A/C/C/T/T";
           /* A/C/T/G Tetra-allelic */
           gts[6]  = "A/C/T/G";
           gts[11] = "A/A/C/T/G";
@@ -242,6 +250,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "A/A/G/G/C";
         gts[14] = "A/A/A/A/G/C";
         gts[15] = "A/A/A/G/G/C";
+        gts[20] = "A/A/A/A/A/G/C";
+        gts[21] = "A/A/A/A/G/G/C";
+        gts[22] = "A/A/A/G/G/G/C";
+        gts[23] = "A/A/A/G/G/C/C";
           /* Tetra-allelic */
           gts[6]  = "A/G/C/T";
           gts[11] = "A/A/G/C/T";
@@ -258,6 +270,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "A/A/G/G/T";
         gts[14] = "A/A/A/A/G/T";
         gts[15] = "A/A/A/G/G/T";
+        gts[20] = "A/A/A/A/A/G/T";
+        gts[21] = "A/A/A/A/G/G/T";
+        gts[22] = "A/A/A/G/G/G/T";
+        gts[23] = "A/A/A/G/G/T/T";
           /* Tetra-allelic */
           gts[6]  = "A/G/T/C";
           gts[11] = "A/A/G/T/C";
@@ -286,6 +302,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "A/A/T/T/C";
         gts[14] = "A/A/A/A/T/C";
         gts[15] = "A/A/A/T/T/C";
+        gts[20] = "A/A/A/A/A/T/C";
+        gts[21] = "A/A/A/A/T/T/C";
+        gts[22] = "A/A/A/T/T/T/C";
+        gts[23] = "A/A/A/T/T/C/C";
           /* Tetra-allelic */
           gts[6]  = "A/T/C/G";
           gts[11] = "A/A/T/C/G";
@@ -302,6 +322,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "A/A/T/T/G";
         gts[14] = "A/A/A/A/T/G";
         gts[15] = "A/A/A/T/T/G";
+        gts[20] = "A/A/A/A/A/T/G";
+        gts[21] = "A/A/A/A/T/T/G";
+        gts[22] = "A/A/A/T/T/T/G";
+        gts[23] = "A/A/A/T/T/G/G";
           /* Tetra-allelic */
           gts[6]  = "A/T/G/C";
           gts[11] = "A/A/T/G/C";
@@ -333,6 +357,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "C/C/A/A/G";
         gts[14] = "C/C/C/C/A/G";
         gts[15] = "C/C/C/A/A/G";
+        gts[20] = "C/C/C/C/C/A/G";
+        gts[21] = "C/C/C/C/A/A/G";
+        gts[22] = "C/C/C/A/A/A/G";
+        gts[23] = "C/C/C/A/A/G/G";
           /* Tetra-allelic */
           gts[6]  = "C/A/G/T";
           gts[11] = "C/C/A/G/T";
@@ -349,6 +377,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "C/C/A/A/T";
         gts[14] = "C/C/C/C/A/T";
         gts[15] = "C/C/C/A/A/T";
+        gts[20] = "C/C/C/C/C/A/T";
+        gts[21] = "C/C/C/C/A/A/T";
+        gts[22] = "C/C/C/A/A/A/T";
+        gts[23] = "C/C/C/A/A/T/T";
           /* Tetra-allelic */
           gts[6]  = "C/A/T/G";
           gts[11] = "C/C/A/T/G";
@@ -375,8 +407,13 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "C/C/G/A";
         gts[9]  = "C/C/C/G/A";
         gts[10] = "C/C/G/G/A";
-        gts[14] = "C/C/C/C/G/A";
-        gts[15] = "C/C/C/G/G/A";
+        gts[13] = "C/C/C/C/G/A";
+        gts[14] = "C/C/C/G/G/A";
+        gts[20] = "C/C/C/C/C/G/A";
+        gts[20] = "C/C/C/C/C/G/A";
+        gts[21] = "C/C/C/C/G/G/A";
+        gts[22] = "C/C/C/G/G/G/A";
+        gts[23] = "C/C/C/G/G/A/A";
           /* Tetra-allelic */
           gts[6]  = "C/G/A/T";
           gts[11] = "C/C/G/A/T";
@@ -393,6 +430,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "C/C/G/G/T";
         gts[14] = "C/C/C/C/G/T";
         gts[15] = "C/C/C/G/G/T";
+        gts[20] = "C/C/C/C/C/G/T";
+        gts[21] = "C/C/C/C/G/G/T";
+        gts[22] = "C/C/C/G/G/G/T";
+        gts[23] = "C/C/C/G/G/T/T";
           /* Tetra-allelic */
           gts[6]  = "C/G/T/A";
           gts[11] = "C/C/G/T/A";
@@ -421,6 +462,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "C/C/T/T/A";
         gts[14] = "C/C/C/C/T/A";
         gts[15] = "C/C/C/T/T/A";
+        gts[20] = "C/C/C/C/C/T/A";
+        gts[21] = "C/C/C/C/T/T/A";
+        gts[22] = "C/C/C/T/T/T/A";
+        gts[23] = "C/C/C/T/T/A/A";
           /* Tetra-allelic */
           gts[6]  = "C/T/A/G";
           gts[11] = "C/C/T/A/G";
@@ -437,6 +482,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "C/C/T/T/G";
         gts[14] = "C/C/C/C/T/G";
         gts[15] = "C/C/C/T/T/G";
+        gts[20] = "C/C/C/C/C/T/G";
+        gts[21] = "C/C/C/C/T/T/G";
+        gts[22] = "C/C/C/T/T/T/G";
+        gts[23] = "C/C/C/T/T/G/G";
           /* Tetra-allelic */
           gts[6]  = "C/T/G/A";
           gts[11] = "C/C/T/G/A";
@@ -468,6 +517,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "G/G/A/A/C";
         gts[14] = "G/G/G/G/A/C";
         gts[15] = "G/G/G/A/A/C";
+        gts[20] = "G/G/G/G/G/A/C";
+        gts[21] = "G/G/G/G/A/A/C";
+        gts[22] = "G/G/G/A/A/A/C";
+        gts[23] = "G/G/G/A/A/C/C";
           /* Tetra-allelic */
           gts[6]  = "G/A/C/T";
           gts[11] = "G/G/A/C/T";
@@ -484,6 +537,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "G/G/A/A/T";
         gts[14] = "G/G/G/G/A/T";
         gts[15] = "G/G/G/A/A/T";
+        gts[20] = "G/G/G/G/G/A/T";
+        gts[21] = "G/G/G/G/A/A/T";
+        gts[22] = "G/G/G/A/A/A/T";
+        gts[23] = "G/G/G/A/A/T/T";
           /* Tetra-allelic */
           gts[6]  = "G/A/T/C";
           gts[11] = "G/G/A/T/C";
@@ -512,6 +569,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "G/G/C/C/A";
         gts[14] = "G/G/G/G/C/A";
         gts[15] = "G/G/G/C/C/A";
+        gts[20] = "G/G/G/G/G/C/A";
+        gts[21] = "G/G/G/G/C/C/A";
+        gts[22] = "G/G/G/C/C/C/A";
+        gts[23] = "G/G/G/C/C/A/A";
           /* Tetra-allelic */
           gts[6]  = "G/C/A/T";
           gts[11] = "G/G/C/A/T";
@@ -528,6 +589,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "G/G/C/C/T";
         gts[14] = "G/G/G/G/C/T";
         gts[15] = "G/G/G/C/C/T";
+        gts[20] = "G/G/G/G/G/C/T";
+        gts[21] = "G/G/G/G/C/C/T";
+        gts[22] = "G/G/G/C/C/C/T";
+        gts[23] = "G/G/G/C/C/T/T";
           /* Tetra-allelic */
           gts[6]  = "G/C/T/A";
           gts[11] = "G/G/C/T/A";
@@ -556,6 +621,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "G/G/T/T/A";
         gts[14] = "G/G/G/G/T/A";
         gts[15] = "G/G/G/T/T/A";
+        gts[20] = "G/G/G/G/G/T/A";
+        gts[21] = "G/G/G/G/T/T/A";
+        gts[22] = "G/G/G/T/T/T/A";
+        gts[23] = "G/G/G/T/T/A/A";
           /* Tetra-allelic */
           gts[6]  = "G/T/A/C";
           gts[11] = "G/G/T/A/C";
@@ -572,6 +641,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "G/G/T/T/C";
         gts[14] = "G/G/G/G/T/C";
         gts[15] = "G/G/G/T/T/C";
+        gts[20] = "G/G/G/G/G/T/C";
+        gts[21] = "G/G/G/G/T/T/C";
+        gts[22] = "G/G/G/T/T/T/C";
+        gts[23] = "G/G/G/T/T/C/C";
           /* Tetra-allelic */
           gts[6]  = "G/T/C/A";
           gts[11] = "G/G/T/C/A";
@@ -603,6 +676,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "T/T/A/A/C";
         gts[14] = "T/T/T/T/A/C";
         gts[15] = "T/T/T/A/A/C";
+        gts[20] = "T/T/T/T/T/A/C";
+        gts[21] = "T/T/T/T/A/A/C";
+        gts[22] = "T/T/T/A/A/A/C";
+        gts[23] = "T/T/T/A/A/C/C";
           /* Tetra-allelic */
           gts[6]  = "T/A/C/G";
           gts[11] = "T/T/A/C/G";
@@ -619,6 +696,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "T/T/A/A/G";
         gts[14] = "T/T/T/T/A/G";
         gts[15] = "T/T/T/A/A/G";
+        gts[20] = "T/T/T/T/T/A/G";
+        gts[21] = "T/T/T/T/A/A/G";
+        gts[22] = "T/T/T/A/A/A/G";
+        gts[23] = "T/T/T/A/A/G/G";
           /* Tetra-allelic */
           gts[6]  = "T/A/G/C";
           gts[11] = "T/T/A/G/C";
@@ -647,6 +728,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "T/T/C/C/A";
         gts[14] = "T/T/T/T/C/A";
         gts[15] = "T/T/T/C/C/A";
+        gts[20] = "T/T/T/T/T/C/A";
+        gts[21] = "T/T/T/T/C/C/A";
+        gts[22] = "T/T/T/C/C/C/A";
+        gts[23] = "T/T/T/C/C/A/A";
           /* Tetra-allelic */
           gts[6]  = "T/C/A/G";
           gts[11] = "T/T/C/A/G";
@@ -664,6 +749,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "T/T/C/C/G";
         gts[14] = "T/T/T/T/C/G";
         gts[15] = "T/T/T/C/C/G";
+        gts[20] = "T/T/T/T/T/C/G";
+        gts[21] = "T/T/T/T/C/C/G";
+        gts[22] = "T/T/T/C/C/C/G";
+        gts[23] = "T/T/T/C/C/G/G";
           /* Tetra-allelic */
           gts[6]  = "T/C/G/A";
           gts[11] = "T/T/C/G/A";
@@ -673,7 +762,6 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
           gts[25] = "T/T/T/C/C/G/A";
           gts[26] = "T/T/C/C/G/G/A";
       }
-
     } else if(nucs[1] == 2){
       /* Bi-allelic */
       gts[1]  = "T/G";
@@ -693,6 +781,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "T/T/G/G/A";
         gts[14] = "T/T/T/T/G/A";
         gts[15] = "T/T/T/G/G/A";
+        gts[20] = "T/T/T/T/T/G/A";
+        gts[21] = "T/T/T/T/G/G/A";
+        gts[22] = "T/T/T/G/G/G/A";
+        gts[23] = "T/T/T/G/G/A/A";
           /* Tetra-allelic */
           gts[6]  = "T/G/A/C";
           gts[11] = "T/T/G/A/C";
@@ -710,6 +802,10 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[10] = "T/T/G/G/C";
         gts[14] = "T/T/T/T/G/C";
         gts[15] = "T/T/T/G/G/C";
+        gts[20] = "T/T/T/T/T/G/C";
+        gts[21] = "T/T/T/T/G/G/C";
+        gts[22] = "T/T/T/G/G/G/C";
+        gts[23] = "T/T/T/G/G/C/C";
           /* Tetra-allelic */
           gts[6]  = "T/G/C/A";
           gts[11] = "T/T/G/C/A";
@@ -912,12 +1008,12 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
               pow(0.1428571-error/4, moves[1].first) *
               pow(error/4, moves[3].first);
   mls[22] = poss_counts *
-              pow(0.3333333-error/4, moves[0].first) *
-              pow(0.3333333-error/4, moves[1].first) *
+              pow(0.4285714-error/4, moves[0].first) *
+              pow(0.4285714-error/4, moves[1].first) *
               pow(0.1428571-error/4, moves[1].first) *
               pow(error/4, moves[3].first);
   mls[23] = poss_counts *
-              pow(0.3333333-error/4, moves[0].first) *
+              pow(0.4285714-error/4, moves[0].first) *
               pow(0.2857143-error/4, moves[1].first) *
               pow(0.2857143-error/4, moves[1].first) *
               pow(error/4, moves[3].first);
@@ -995,7 +1091,7 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
 //void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
 
 /* Parse each site to samples */
-void mult_pl(int pls[][27], string gts[27]; int nsamp, float err, int nuc_cnts[][8]){
+void mult_pl(int pls[][27], int nsamp, float err, int nuc_cnts[][8]){
 //  cout <<  "##### New site (row) #####\n";
   for(int i=0; i<nsamp; i++){
 //    counts_2_plh(pls[i], nuc_cnts[i], err, min_cnt);
@@ -1120,7 +1216,7 @@ int main(int argc, char **argv) {
     string gts [nsamp]; // Genotypes.
 //    int pls [nsamp][51];  // Phred scaled likelihoods. 
     int pls [nsamp][27];  // Phred scaled likelihoods. 
-    string gts[27];
+//    string gts[27];
 
     /* Initialize variables. */
     for(int i=0; i<nsamp; i++){
@@ -1156,8 +1252,8 @@ int main(int argc, char **argv) {
 
     /* Calculate Phred-scaled likelihoods */
 //    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
-    string gts[27];
-    mult_pl(pls, gts, nsamp, error, nuc_cnts);
+//    string gts[27];
+    mult_pl(pls, nsamp, error, nuc_cnts);
 
     /* Determine a genotype */
 //    det_gt(gts, nsamp, rds, nuc_cnts, pls);
