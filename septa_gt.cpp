@@ -679,13 +679,51 @@ void int_to_nucs(string gts[26], vector<pair<int,int>> moves){
     } else if(nucs[1] == 2){
       /* Bi-allelic */
       gts[1] == "T/G";
-
+      gts[2]  == "T/T/G";
+      gts[4]  == "T/T/T/G";
+      gts[7]  == "T/T/T/T/G";
+      gts[8]  == "T/T/T/G/G";
+      gts[12] == "T/T/T/T/T/G";
+      gts[17] == "T/T/T/T/T/T/G";
+      gts[18] == "T/T/T/T/T/G/G";
+      gts[19] == "T/T/T/T/G/G/G";
+      if(nucs[2] == 0){
+        /* Tri-allelic */
+        gts[3]  == "T/G/A";
+        gts[5]  == "T/T/G/A";
+        gts[9]  == "T/T/T/G/A";
+        gts[10] == "T/T/G/G/A";
+        gts[14] == "T/T/T/T/G/A";
+        gts[15] == "T/T/T/G/G/A";
+          /* Tetra-allelic */
+          gts[6]  == "T/G/A/C";
+          gts[11] == "T/T/G/A/C";
+          gts[15] == "T/T/T/G/A/C";
+          gts[16] == "T/T/G/G/A/C";
+          gts[24] == "T/T/T/T/G/A/C";
+          gts[25] == "T/T/T/G/G/A/C";
+          gts[26] == "T/T/G/G/A/A/C";
+      } else if(nucs[2] == 1){
+        /* Tri-allelic */
+        gts[3]  == "T/G/C";
+        gts[3]  == "T/G/C";
+        gts[5]  == "T/T/G/C";
+        gts[9]  == "T/T/T/G/C";
+        gts[10] == "T/T/G/G/C";
+        gts[14] == "T/T/T/T/G/C";
+        gts[15] == "T/T/T/G/G/C";
+          /* Tetra-allelic */
+          gts[6]  == "T/G/C/A";
+          gts[11] == "T/T/G/C/A";
+          gts[15] == "T/T/T/G/C/A";
+          gts[16] == "T/T/G/G/C/A";
+          gts[24] == "T/T/T/T/G/C/A";
+          gts[25] == "T/T/T/G/G/C/A";
+          gts[26] == "T/T/G/G/C/C/A";
+      }
     }
-
   }
-
 //  cout << "\n";
-
 }
 
 
