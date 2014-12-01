@@ -194,8 +194,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "A/A/C/G";
         gts[9]  = "A/A/A/C/G";
         gts[10] = "A/A/C/C/G";
-        gts[14] = "A/A/A/A/C/G";
-        gts[15] = "A/A/A/C/C/G";
+        gts[13] = "A/A/A/A/C/G";
+        gts[14] = "A/A/A/C/C/G";
         gts[20] = "A/A/A/A/A/C/G";
         gts[21] = "A/A/A/A/C/C/G";
         gts[22] = "A/A/A/C/C/C/G";
@@ -216,8 +216,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "A/A/C/T";
         gts[9]  = "A/A/A/C/T";
         gts[10] = "A/A/C/C/T";
-        gts[14] = "A/A/A/A/C/T";
-        gts[15] = "A/A/A/C/C/T";
+        gts[13] = "A/A/A/A/C/T";
+        gts[14] = "A/A/A/C/C/T";
         gts[20] = "A/A/A/A/A/C/T";
         gts[21] = "A/A/A/A/C/C/T";
         gts[22] = "A/A/A/C/C/C/T";
@@ -248,8 +248,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "A/A/G/C";
         gts[9]  = "A/A/A/G/C";
         gts[10] = "A/A/G/G/C";
-        gts[14] = "A/A/A/A/G/C";
-        gts[15] = "A/A/A/G/G/C";
+        gts[13] = "A/A/A/A/G/C";
+        gts[14] = "A/A/A/G/G/C";
         gts[20] = "A/A/A/A/A/G/C";
         gts[21] = "A/A/A/A/G/G/C";
         gts[22] = "A/A/A/G/G/G/C";
@@ -268,8 +268,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "A/A/G/T";
         gts[9]  = "A/A/A/G/T";
         gts[10] = "A/A/G/G/T";
-        gts[14] = "A/A/A/A/G/T";
-        gts[15] = "A/A/A/G/G/T";
+        gts[13] = "A/A/A/A/G/T";
+        gts[14] = "A/A/A/G/G/T";
         gts[20] = "A/A/A/A/A/G/T";
         gts[21] = "A/A/A/A/G/G/T";
         gts[22] = "A/A/A/G/G/G/T";
@@ -300,8 +300,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "A/A/T/C";
         gts[9]  = "A/A/A/T/C";
         gts[10] = "A/A/T/T/C";
-        gts[14] = "A/A/A/A/T/C";
-        gts[15] = "A/A/A/T/T/C";
+        gts[13] = "A/A/A/A/T/C";
+        gts[14] = "A/A/A/T/T/C";
         gts[20] = "A/A/A/A/A/T/C";
         gts[21] = "A/A/A/A/T/T/C";
         gts[22] = "A/A/A/T/T/T/C";
@@ -320,8 +320,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "A/A/T/G";
         gts[9]  = "A/A/A/T/G";
         gts[10] = "A/A/T/T/G";
-        gts[14] = "A/A/A/A/T/G";
-        gts[15] = "A/A/A/T/T/G";
+        gts[13] = "A/A/A/A/T/G";
+        gts[14] = "A/A/A/T/T/G";
         gts[20] = "A/A/A/A/A/T/G";
         gts[21] = "A/A/A/A/T/T/G";
         gts[22] = "A/A/A/T/T/T/G";
@@ -355,8 +355,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "C/C/A/G";
         gts[9]  = "C/C/C/A/G";
         gts[10] = "C/C/A/A/G";
-        gts[14] = "C/C/C/C/A/G";
-        gts[15] = "C/C/C/A/A/G";
+        gts[13] = "C/C/C/C/A/G";
+        gts[14] = "C/C/C/A/A/G";
         gts[20] = "C/C/C/C/C/A/G";
         gts[21] = "C/C/C/C/A/A/G";
         gts[22] = "C/C/C/A/A/A/G";
@@ -375,8 +375,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "C/C/A/T";
         gts[9]  = "C/C/C/A/T";
         gts[10] = "C/C/A/A/T";
-        gts[14] = "C/C/C/C/A/T";
-        gts[15] = "C/C/C/A/A/T";
+        gts[13] = "C/C/C/C/A/T";
+        gts[14] = "C/C/C/A/A/T";
         gts[20] = "C/C/C/C/C/A/T";
         gts[21] = "C/C/C/C/A/A/T";
         gts[22] = "C/C/C/A/A/A/T";
@@ -428,8 +428,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "C/C/G/T";
         gts[9]  = "C/C/C/G/T";
         gts[10] = "C/C/G/G/T";
-        gts[14] = "C/C/C/C/G/T";
-        gts[15] = "C/C/C/G/G/T";
+        gts[13] = "C/C/C/C/G/T";
+        gts[14] = "C/C/C/G/G/T";
         gts[20] = "C/C/C/C/C/G/T";
         gts[21] = "C/C/C/C/G/G/T";
         gts[22] = "C/C/C/G/G/G/T";
@@ -460,8 +460,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "C/C/T/A";
         gts[9]  = "C/C/C/T/A";
         gts[10] = "C/C/T/T/A";
-        gts[14] = "C/C/C/C/T/A";
-        gts[15] = "C/C/C/T/T/A";
+        gts[13] = "C/C/C/C/T/A";
+        gts[14] = "C/C/C/T/T/A";
         gts[20] = "C/C/C/C/C/T/A";
         gts[21] = "C/C/C/C/T/T/A";
         gts[22] = "C/C/C/T/T/T/A";
@@ -480,8 +480,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "C/C/T/G";
         gts[9]  = "C/C/C/T/G";
         gts[10] = "C/C/T/T/G";
-        gts[14] = "C/C/C/C/T/G";
-        gts[15] = "C/C/C/T/T/G";
+        gts[13] = "C/C/C/C/T/G";
+        gts[14] = "C/C/C/T/T/G";
         gts[20] = "C/C/C/C/C/T/G";
         gts[21] = "C/C/C/C/T/T/G";
         gts[22] = "C/C/C/T/T/T/G";
@@ -515,8 +515,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "G/G/A/C";
         gts[9]  = "G/G/G/A/C";
         gts[10] = "G/G/A/A/C";
-        gts[14] = "G/G/G/G/A/C";
-        gts[15] = "G/G/G/A/A/C";
+        gts[13] = "G/G/G/G/A/C";
+        gts[14] = "G/G/G/A/A/C";
         gts[20] = "G/G/G/G/G/A/C";
         gts[21] = "G/G/G/G/A/A/C";
         gts[22] = "G/G/G/A/A/A/C";
@@ -535,8 +535,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "G/G/A/T";
         gts[9]  = "G/G/G/A/T";
         gts[10] = "G/G/A/A/T";
-        gts[14] = "G/G/G/G/A/T";
-        gts[15] = "G/G/G/A/A/T";
+        gts[13] = "G/G/G/G/A/T";
+        gts[14] = "G/G/G/A/A/T";
         gts[20] = "G/G/G/G/G/A/T";
         gts[21] = "G/G/G/G/A/A/T";
         gts[22] = "G/G/G/A/A/A/T";
@@ -567,8 +567,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "G/G/C/A";
         gts[9]  = "G/G/G/C/A";
         gts[10] = "G/G/C/C/A";
-        gts[14] = "G/G/G/G/C/A";
-        gts[15] = "G/G/G/C/C/A";
+        gts[13] = "G/G/G/G/C/A";
+        gts[14] = "G/G/G/C/C/A";
         gts[20] = "G/G/G/G/G/C/A";
         gts[21] = "G/G/G/G/C/C/A";
         gts[22] = "G/G/G/C/C/C/A";
@@ -587,8 +587,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "G/G/C/T";
         gts[9]  = "G/G/G/C/T";
         gts[10] = "G/G/C/C/T";
-        gts[14] = "G/G/G/G/C/T";
-        gts[15] = "G/G/G/C/C/T";
+        gts[13] = "G/G/G/G/C/T";
+        gts[14] = "G/G/G/C/C/T";
         gts[20] = "G/G/G/G/G/C/T";
         gts[21] = "G/G/G/G/C/C/T";
         gts[22] = "G/G/G/C/C/C/T";
@@ -619,8 +619,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "G/G/T/A";
         gts[9]  = "G/G/G/T/A";
         gts[10] = "G/G/T/T/A";
-        gts[14] = "G/G/G/G/T/A";
-        gts[15] = "G/G/G/T/T/A";
+        gts[13] = "G/G/G/G/T/A";
+        gts[14] = "G/G/G/T/T/A";
         gts[20] = "G/G/G/G/G/T/A";
         gts[21] = "G/G/G/G/T/T/A";
         gts[22] = "G/G/G/T/T/T/A";
@@ -639,8 +639,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "G/G/T/C";
         gts[9]  = "G/G/G/T/C";
         gts[10] = "G/G/T/T/C";
-        gts[14] = "G/G/G/G/T/C";
-        gts[15] = "G/G/G/T/T/C";
+        gts[13] = "G/G/G/G/T/C";
+        gts[14] = "G/G/G/T/T/C";
         gts[20] = "G/G/G/G/G/T/C";
         gts[21] = "G/G/G/G/T/T/C";
         gts[22] = "G/G/G/T/T/T/C";
@@ -674,8 +674,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "T/T/A/C";
         gts[9]  = "T/T/T/A/C";
         gts[10] = "T/T/A/A/C";
-        gts[14] = "T/T/T/T/A/C";
-        gts[15] = "T/T/T/A/A/C";
+        gts[13] = "T/T/T/T/A/C";
+        gts[14] = "T/T/T/A/A/C";
         gts[20] = "T/T/T/T/T/A/C";
         gts[21] = "T/T/T/T/A/A/C";
         gts[22] = "T/T/T/A/A/A/C";
@@ -694,8 +694,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "T/T/A/G";
         gts[9]  = "T/T/T/A/G";
         gts[10] = "T/T/A/A/G";
-        gts[14] = "T/T/T/T/A/G";
-        gts[15] = "T/T/T/A/A/G";
+        gts[13] = "T/T/T/T/A/G";
+        gts[14] = "T/T/T/A/A/G";
         gts[20] = "T/T/T/T/T/A/G";
         gts[21] = "T/T/T/T/A/A/G";
         gts[22] = "T/T/T/A/A/A/G";
@@ -726,8 +726,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "T/T/C/A";
         gts[9]  = "T/T/T/C/A";
         gts[10] = "T/T/C/C/A";
-        gts[14] = "T/T/T/T/C/A";
-        gts[15] = "T/T/T/C/C/A";
+        gts[13] = "T/T/T/T/C/A";
+        gts[14] = "T/T/T/C/C/A";
         gts[20] = "T/T/T/T/T/C/A";
         gts[21] = "T/T/T/T/C/C/A";
         gts[22] = "T/T/T/C/C/C/A";
@@ -747,8 +747,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "T/T/C/G";
         gts[9]  = "T/T/T/C/G";
         gts[10] = "T/T/C/C/G";
-        gts[14] = "T/T/T/T/C/G";
-        gts[15] = "T/T/T/C/C/G";
+        gts[13] = "T/T/T/T/C/G";
+        gts[14] = "T/T/T/C/C/G";
         gts[20] = "T/T/T/T/T/C/G";
         gts[21] = "T/T/T/T/C/C/G";
         gts[22] = "T/T/T/C/C/C/G";
@@ -779,8 +779,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "T/T/G/A";
         gts[9]  = "T/T/T/G/A";
         gts[10] = "T/T/G/G/A";
-        gts[14] = "T/T/T/T/G/A";
-        gts[15] = "T/T/T/G/G/A";
+        gts[13] = "T/T/T/T/G/A";
+        gts[14] = "T/T/T/G/G/A";
         gts[20] = "T/T/T/T/T/G/A";
         gts[21] = "T/T/T/T/G/G/A";
         gts[22] = "T/T/T/G/G/G/A";
@@ -800,8 +800,8 @@ void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
         gts[5]  = "T/T/G/C";
         gts[9]  = "T/T/T/G/C";
         gts[10] = "T/T/G/G/C";
-        gts[14] = "T/T/T/T/G/C";
-        gts[15] = "T/T/T/G/G/C";
+        gts[13] = "T/T/T/T/G/C";
+        gts[14] = "T/T/T/G/G/C";
         gts[20] = "T/T/T/T/T/G/C";
         gts[21] = "T/T/T/T/G/G/C";
         gts[22] = "T/T/T/G/G/G/C";
@@ -1036,8 +1036,23 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
               pow(0.1428571-error/4, moves[3].first);
 
 
+  /* Convert ints to nucleotides */
+  string gts[27];
+  int_to_nucs(gts, moves);
+
+
+  /* Identify genotype with the maximum likelihood. */
+  int maxl = 0;
+  float suml = mls[0];
+  for (int j = 1; j < 27; j++){
+    if(mls[j] > mls[maxl]){
+      maxl = j;
+    }
+    suml = suml + mls[j];
+  }
+
   /* Phred scale the likelihoods. */
-//  for (int j = 0; j < 51; j++){
+/*
   for (int j = 0; j < 27; j++){
     if (mls[j] == 0){
       mls[j] = 9999;
@@ -1046,36 +1061,42 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
       if(mls[j] == -0){mls[j] = 0;}
     }
   }
+*/
 
-  /* Convert ints to nucleotides */
-//  vector <string> gts[26];
-  string gts[27];
-//  gts[1] = "0";
-  int_to_nucs(gts, moves);
 
+
+
+  /* Debuging */
   debug = 1;
   if(debug == 1){
     cout << "\n";
     cout << "*** Debug counts_2_phredlh ***\n";
-    cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2]<< "," << nuc_cnt[3] << ":";
-    cout << "poss_counts=" << poss_counts;
-    cout << ":";
+    cout << "Counts: " << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2]<< "," << nuc_cnt[3];
     cout << "\n";
-    cout << gts[0];
-//    cout << "," << gts[1];
-//    cout << "\n";
+    cout << "possible counts=" << poss_counts;
+    cout << "\n";
+
+    cout << 0 << "\t" << mls[0] << "\t" << gts[0];
+    cout << "\n";
     for (int j = 1; j < 27; j++){
-      cout << "," << gts[j];
+      cout << j << "\t" << mls[j] << "\t" << gts[j];
+      cout << "\n";
     }
     cout << "\n";
 
-    cout << mls[0];
-    for (int j = 1; j < 27; j++){
-      cout << "," << mls[j];
-    }
-
+    cout << "Most likely genotype: " << gts[maxl];
     cout << "\n";
+//      cout << "All genotypes equally likely: sum = " << suml << " ./.";
+//      cout << "\n";
+    if(suml >= 27){
+      cout << "All genotypes equally likely: sum = " << suml;
+      cout << "\n";
+      cout << "Set genotype to null: ./.";
+      cout << "\n";
+    }
   }
+
+
 
   /* Transfer likelihoods to parent array. */
 //  for (int j = 0; j < 51; j++){

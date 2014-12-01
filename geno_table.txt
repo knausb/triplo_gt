@@ -31,3 +31,38 @@ mls[24]  = /* Tetra-allelic septaploid loci */ 4,1,1,1
 mls[25]  = /* Tetra-allelic septaploid loci */ 3,2,1,1
 mls[26]  = /* Tetra-allelic septaploid loci */ 2,2,2,1
 
+
+
+*** Debug counts_2_phredlh ***
+Counts: 2,0,0,2
+poss_counts=6
+0       3.75e-19        A/A
+1       0.375   A/T
+2       0.296296        A/A/T
+3       0.074074        A/T/C
+4       0.210938        A/A/A/T
+5       0.09375 A/A/T/C
+6       0.0234375       A/T/C/G
+7       0.1536  A/A/A/A/T
+8       0.3456  A/A/A/T/T
+9       0.003456        A/A/A/T/C
+10      0.006144        A/A/T/T/C
+11      0.0384  A/A/T/C/G
+12      0.115741        A/A/A/A/A/T
+13      0.00205761      A/A/A/A/T/C
+14      0.00462963      A/A/A/T/T/C
+15      0.0416667       A/A/A/T/C/G
+16      0.074074        A/A/T/T/C/G
+17      0.0899625       A/A/A/A/A/A/T
+18      0.249896        A/A/A/A/A/T/T
+19      0.35985 A/A/A/A/T/T/T
+20      0.00127498      A/A/A/A/A/T/C
+21      0.00326394      A/A/A/A/T/T/C
+22      0.00413093      A/A/A/T/T/T/C
+23      0.00734388      A/A/A/T/T/C/C
+24      0.0399833       A/A/A/A/T/C/G
+25      0.0899625       A/A/A/T/T/C/G
+26      0.0399833       A/A/T/T/C/C/G
+
+
+
