@@ -1,0 +1,33 @@
+mls[0]  = /* Homozygote. */
+mls[1]  = /* Bi-allelic heterozygote. */
+mls[2]  = /* Bi-allelic triploid. */
+mls[3]  = /* Tri-allelic triploid loci. */
+mls[4]  = /* Bi-allelic tetraploid loci */
+mls[5]  = /* Tri-allelic tetraploid loci */
+mls[6]  = /* Tetra-allelic tetraploid loci */
+
+mls[7]  = /* Bi-allelic pentaploid loci */ 0.8
+mls[8]  = /* Bi-allelic pentaploid loci */ 0.6
+mls[9]  = /* Tri-allelic pentaploid loci */ 0.6
+mls[10] = /* Tri-allelic pentaploid loci */ 0.4
+mls[11] = /* Tetra-allelic pentaploid loci */
+
+mls[12]  = /* Bi-allelic hexaploid loci */
+mls[13]  = /* Tri-allelic hexaploid loci */ 4,1,1
+mls[14]  = /* Tri-allelic hexaploid loci */ 3,2,1
+mls[15]  = /* Tetra-allelic hexaploid loci */ 3,1,1,1
+mls[16]  = /* Tetra-allelic hexaploid loci */ 2,2,1,1
+
+mls[17]  = /* Bi-allelic septaploid loci */ 6,1
+mls[18]  = /* Bi-allelic septaploid loci */ 5,2
+mls[19]  = /* Bi-allelic septaploid loci */ 4,3
+
+mls[20]  = /* Tri-allelic septaploid loci */ 5,1,1
+mls[21]  = /* Tri-allelic septaploid loci */ 4,2,1
+mls[22]  = /* Tri-allelic septaploid loci */ 3,3,1
+mls[23]  = /* Tri-allelic septaploid loci */ 3,2,2
+
+mls[24]  = /* Tetra-allelic septaploid loci */ 4,1,1,1
+mls[25]  = /* Tetra-allelic septaploid loci */ 3,2,1,1
+mls[26]  = /* Tetra-allelic septaploid loci */ 2,2,2,1
+
