@@ -138,8 +138,8 @@ void int_to_nucs(string gts[26], vector<pair<int,int>> moves){
 
 //  cout << nucs[0] << "," << nucs[1] << "," << nucs[2] << "," << nucs[3];
 //  cout << "\n";
-  cout << nucs[0] << "," << nucs[1] << "," << nucs[2] << "," << nucs[3];
-  cout << "\n";
+//  cout << nucs[0] << "," << nucs[1] << "," << nucs[2] << "," << nucs[3];
+//  cout << "\n";
 
   /* Array indices */
   /* 0 = Homozyote 1/0/0/0 */
@@ -174,7 +174,6 @@ void int_to_nucs(string gts[26], vector<pair<int,int>> moves){
   /* 24 = Tetra-allelic septaploid loci 4/1/1/1 */
   /* 25 = Tetra-allelic septaploid loci 3/2/1/1 */
   /* 26 = Tetra-allelic septaploid loci 2/2/2/1 */
-
 
   if(nucs[0] == 0){
     gts[0] = "A/A";
@@ -583,7 +582,6 @@ void int_to_nucs(string gts[26], vector<pair<int,int>> moves){
           gts[26] == "G/G/T/T/C/C/A";
       }
     }
-
   } else if (nucs[0] == 3) {
     gts[0] = "T/T";
     if(nucs[1] == 0){
