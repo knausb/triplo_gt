@@ -128,7 +128,7 @@ double possible_counts(int nuc_cnt[4]){
   return(posd);
 }
 
-void int_to_nucs(string gts[26], vector<pair<int,int>> moves){
+void int_to_nucs(string gts[27], vector<pair<int,int>> moves){
 
   /* Convert pairs to array of ints. */
   int nucs[4];
@@ -179,548 +179,558 @@ void int_to_nucs(string gts[26], vector<pair<int,int>> moves){
     gts[0] = "A/A";
     if(nucs[1] == 1){
       /* A/C Bi-allelic */
-      gts[1]  == "A/C";
-      gts[2]  == "A/A/C";
-      gts[4]  == "A/A/A/C";
-      gts[8]  == "A/A/A/A/C";
-      gts[9]  == "A/A/A/C/C";
-      gts[12] == "A/A/A/A/A/C";
-      gts[17] == "A/A/A/A/A/A/C";
-      gts[18] == "A/A/A/A/A/C/C";
-      gts[19] == "A/A/A/A/C/C/C";
+      gts[1]  = "A/C";
+      gts[2]  = "A/A/C";
+      gts[4]  = "A/A/A/C";
+      gts[7]  = "A/A/A/A/C";
+      gts[8]  = "A/A/A/C/C";
+      gts[12] = "A/A/A/A/A/C";
+      gts[17] = "A/A/A/A/A/A/C";
+      gts[18] = "A/A/A/A/A/C/C";
+      gts[19] = "A/A/A/A/C/C/C";
       if(nucs[2] == 2){
         /* A/C/G Tri-allelic */
-        gts[3]  == "A/C/G";
-        gts[5]  == "A/A/C/G";
-        gts[9]  == "A/A/A/C/G";
-        gts[10] == "A/A/C/C/G";
-        gts[14] == "A/A/A/A/C/G";
-        gts[15] == "A/A/A/C/C/G";
+        gts[3]  = "A/C/G";
+        gts[5]  = "A/A/C/G";
+        gts[9]  = "A/A/A/C/G";
+        gts[10] = "A/A/C/C/G";
+        gts[14] = "A/A/A/A/C/G";
+        gts[15] = "A/A/A/C/C/G";
 //        if(nucs[3]==3){
           /* A/C/G/T Tetra-allelic */
-          gts[6]  == "A/C/G/T";
-          gts[11] == "A/A/C/G/T";
-          gts[15] == "A/A/A/C/G/T";
-          gts[16] == "A/A/C/C/G/T";
-          gts[24] == "A/A/A/A/C/G/T";
-          gts[25] == "A/A/A/C/C/G/T";
-          gts[26] == "A/A/C/C/G/G/T";
+          gts[6]  = "A/C/G/T";
+          gts[11] = "A/A/C/G/T";
+          gts[15] = "A/A/A/C/G/T";
+          gts[16] = "A/A/C/C/G/T";
+          gts[24] = "A/A/A/A/C/G/T";
+          gts[25] = "A/A/A/C/C/G/T";
+          gts[26] = "A/A/C/C/G/G/T";
 //        }
       } else if(nucs[2] == 3){
         /* A/C/T Tri-allelic */
-        gts[3]  == "A/C/T";
-        gts[5]  == "A/A/C/T";
-        gts[9]  == "A/A/A/C/T";
-        gts[10] == "A/A/C/C/T";
-        gts[14] == "A/A/A/A/C/T";
-        gts[15] == "A/A/A/C/C/T";
+        gts[3]  = "A/C/T";
+        gts[5]  = "A/A/C/T";
+        gts[9]  = "A/A/A/C/T";
+        gts[10] = "A/A/C/C/T";
+        gts[14] = "A/A/A/A/C/T";
+        gts[15] = "A/A/A/C/C/T";
           /* A/C/T/G Tetra-allelic */
-          gts[6]  == "A/C/T/G";
-          gts[11] == "A/A/C/T/G";
-          gts[15] == "A/A/A/C/T/G";
-          gts[16] == "A/A/C/C/T/G";
-          gts[24] == "A/A/A/A/C/T/G";
-          gts[25] == "A/A/A/C/C/T/G";
-          gts[26] == "A/A/C/C/T/T/G";
+          gts[6]  = "A/C/T/G";
+          gts[11] = "A/A/C/T/G";
+          gts[15] = "A/A/A/C/T/G";
+          gts[16] = "A/A/C/C/T/G";
+          gts[24] = "A/A/A/A/C/T/G";
+          gts[25] = "A/A/A/C/C/T/G";
+          gts[26] = "A/A/C/C/T/T/G";
       }
     } else if(nucs[1] == 2){
       /* Bi-allelic */
-      gts[1]  == "A/G";
-      gts[2]  == "A/A/G";
-      gts[4]  == "A/A/A/G";
-      gts[7]  == "A/A/A/A/G";
-      gts[8]  == "A/A/A/G/G";
-      gts[12] == "A/A/A/A/A/G";
-      gts[17] == "A/A/A/A/A/A/G";
-      gts[18] == "A/A/A/A/A/G/G";
-      gts[19] == "A/A/A/A/G/G/G";
+      gts[1]  = "A/G";
+      gts[2]  = "A/A/G";
+      gts[4]  = "A/A/A/G";
+      gts[7]  = "A/A/A/A/G";
+      gts[8]  = "A/A/A/G/G";
+      gts[12] = "A/A/A/A/A/G";
+      gts[17] = "A/A/A/A/A/A/G";
+      gts[18] = "A/A/A/A/A/G/G";
+      gts[19] = "A/A/A/A/G/G/G";
       if(nucs[2] == 1){
         /* Tri-allelic */
-        gts[3]  == "A/G/C";
-        gts[5]  == "A/A/G/C";
-        gts[9]  == "A/A/A/G/C";
-        gts[10] == "A/A/G/G/C";
-        gts[14] == "A/A/A/A/G/C";
-        gts[15] == "A/A/A/G/G/C";
+        gts[3]  = "A/G/C";
+        gts[5]  = "A/A/G/C";
+        gts[9]  = "A/A/A/G/C";
+        gts[10] = "A/A/G/G/C";
+        gts[14] = "A/A/A/A/G/C";
+        gts[15] = "A/A/A/G/G/C";
           /* Tetra-allelic */
-          gts[6]  == "A/G/C/T";
-          gts[11] == "A/A/G/C/T";
-          gts[15] == "A/A/A/G/C/T";
-          gts[16] == "A/A/G/G/C/T";
-          gts[24] == "A/A/A/A/G/C/T";
-          gts[25] == "A/A/A/G/G/C/T";
-          gts[26] == "A/A/G/G/C/C/T";
+          gts[6]  = "A/G/C/T";
+          gts[11] = "A/A/G/C/T";
+          gts[15] = "A/A/A/G/C/T";
+          gts[16] = "A/A/G/G/C/T";
+          gts[24] = "A/A/A/A/G/C/T";
+          gts[25] = "A/A/A/G/G/C/T";
+          gts[26] = "A/A/G/G/C/C/T";
       } else if(nucs[2] == 3){
         /* Tri-allelic */
-        gts[3]  == "A/G/T";
-        gts[5]  == "A/A/G/T";
-        gts[9]  == "A/A/A/G/T";
-        gts[10] == "A/A/G/G/T";
-        gts[14] == "A/A/A/A/G/T";
-        gts[15] == "A/A/A/G/G/T";
+        gts[3]  = "A/G/T";
+        gts[5]  = "A/A/G/T";
+        gts[9]  = "A/A/A/G/T";
+        gts[10] = "A/A/G/G/T";
+        gts[14] = "A/A/A/A/G/T";
+        gts[15] = "A/A/A/G/G/T";
           /* Tetra-allelic */
-          gts[6]  == "A/G/T/C";
-          gts[11] == "A/A/G/T/C";
-          gts[15] == "A/A/A/G/T/C";
-          gts[16] == "A/A/G/G/T/C";
-          gts[24] == "A/A/A/A/G/T/C";
-          gts[25] == "A/A/A/G/G/T/C";
-          gts[26] == "A/A/G/G/T/T/C";
+          gts[6]  = "A/G/T/C";
+          gts[11] = "A/A/G/T/C";
+          gts[15] = "A/A/A/G/T/C";
+          gts[16] = "A/A/G/G/T/C";
+          gts[24] = "A/A/A/A/G/T/C";
+          gts[25] = "A/A/A/G/G/T/C";
+          gts[26] = "A/A/G/G/T/T/C";
       }
     } else if(nucs[1] == 3){
       /* Bi-allelic */
-      gts[1]  == "A/T";
-      gts[2]  == "A/A/T";
-      gts[4]  == "A/A/A/T";
-      gts[7]  == "A/A/A/A/T";
-      gts[8]  == "A/A/A/T/T";
-      gts[12] == "A/A/A/A/A/T";
-      gts[17] == "A/A/A/A/A/A/T";
-      gts[18] == "A/A/A/A/A/T/T";
-      gts[19] == "A/A/A/A/T/T/T";
+      gts[1]  = "A/T";
+      gts[2]  = "A/A/T";
+      gts[4]  = "A/A/A/T";
+      gts[7]  = "A/A/A/A/T";
+      gts[8]  = "A/A/A/T/T";
+      gts[12] = "A/A/A/A/A/T";
+      gts[17] = "A/A/A/A/A/A/T";
+      gts[18] = "A/A/A/A/A/T/T";
+      gts[19] = "A/A/A/A/T/T/T";
       if(nucs[2] == 1){
         /* Tri-allelic */
-        gts[3]  == "A/T/C";
-        gts[5]  == "A/A/T/C";
-        gts[9]  == "A/A/A/T/C";
-        gts[10] == "A/A/T/T/C";
-        gts[14] == "A/A/A/A/T/C";
-        gts[15] == "A/A/A/T/T/C";
+        gts[3]  = "A/T/C";
+        gts[5]  = "A/A/T/C";
+        gts[9]  = "A/A/A/T/C";
+        gts[10] = "A/A/T/T/C";
+        gts[14] = "A/A/A/A/T/C";
+        gts[15] = "A/A/A/T/T/C";
           /* Tetra-allelic */
-          gts[6]  == "A/T/C/G";
-          gts[11] == "A/A/T/C/G";
-          gts[15] == "A/A/A/T/C/G";
-          gts[16] == "A/A/T/T/C/G";
-          gts[24] == "A/A/A/A/T/C/G";
-          gts[25] == "A/A/A/T/T/C/G";
-          gts[26] == "A/A/T/T/C/C/G";
+          gts[6]  = "A/T/C/G";
+          gts[11] = "A/A/T/C/G";
+          gts[15] = "A/A/A/T/C/G";
+          gts[16] = "A/A/T/T/C/G";
+          gts[24] = "A/A/A/A/T/C/G";
+          gts[25] = "A/A/A/T/T/C/G";
+          gts[26] = "A/A/T/T/C/C/G";
       } else if(nucs[2] == 2){
         /* Tri-allelic */
-        gts[3]  == "A/T/G";
-        gts[5]  == "A/A/T/G";
-        gts[9]  == "A/A/A/T/G";
-        gts[10] == "A/A/T/T/G";
-        gts[14] == "A/A/A/A/T/G";
-        gts[15] == "A/A/A/T/T/G";
+        gts[3]  = "A/T/G";
+        gts[5]  = "A/A/T/G";
+        gts[9]  = "A/A/A/T/G";
+        gts[10] = "A/A/T/T/G";
+        gts[14] = "A/A/A/A/T/G";
+        gts[15] = "A/A/A/T/T/G";
           /* Tetra-allelic */
-          gts[6]  == "A/T/G/C";
-          gts[11] == "A/A/T/G/C";
-          gts[15] == "A/A/A/T/G/C";
-          gts[16] == "A/A/T/T/G/C";
-          gts[24] == "A/A/A/A/T/G/C";
-          gts[25] == "A/A/A/T/T/G/C";
-          gts[26] == "A/A/T/T/G/G/C";
+          gts[6]  = "A/T/G/C";
+          gts[11] = "A/A/T/G/C";
+          gts[15] = "A/A/A/T/G/C";
+          gts[16] = "A/A/T/T/G/C";
+          gts[24] = "A/A/A/A/T/G/C";
+          gts[25] = "A/A/A/T/T/G/C";
+          gts[26] = "A/A/T/T/G/G/C";
       }
     }
   } else if (nucs[0] == 1) {
     gts[0] = "C/C";
     if(nucs[1] == 0){
       /* Bi-allelic */
-      gts[1] == "C/A";
-      gts[2]  == "C/C/A";
-      gts[4]  == "C/C/C/A";
-      gts[7]  == "C/C/C/C/A";
-      gts[8]  == "C/C/C/A/A";
-      gts[12] == "C/C/C/C/C/A";
-      gts[17] == "C/C/C/C/C/C/A";
-      gts[18] == "C/C/C/C/C/A/A";
-      gts[19] == "C/C/C/C/A/A/A";
+      gts[1]  = "C/A";
+      gts[2]  = "C/C/A";
+      gts[4]  = "C/C/C/A";
+      gts[7]  = "C/C/C/C/A";
+      gts[8]  = "C/C/C/A/A";
+      gts[12] = "C/C/C/C/C/A";
+      gts[17] = "C/C/C/C/C/C/A";
+      gts[18] = "C/C/C/C/C/A/A";
+      gts[19] = "C/C/C/C/A/A/A";
       if(nucs[2] == 2){
         /* Tri-allelic */
-        gts[3]  == "C/A/G";
-        gts[5]  == "C/C/A/G";
-        gts[9]  == "C/C/C/A/G";
-        gts[10] == "C/C/A/A/G";
-        gts[14] == "C/C/C/C/A/G";
-        gts[15] == "C/C/C/A/A/G";
+        gts[3]  = "C/A/G";
+        gts[5]  = "C/C/A/G";
+        gts[9]  = "C/C/C/A/G";
+        gts[10] = "C/C/A/A/G";
+        gts[14] = "C/C/C/C/A/G";
+        gts[15] = "C/C/C/A/A/G";
           /* Tetra-allelic */
-          gts[6]  == "C/A/G/T";
-          gts[11] == "C/C/A/G/T";
-          gts[15] == "C/C/C/A/G/T";
-          gts[16] == "C/C/A/A/G/T";
-          gts[24] == "C/C/C/C/A/G/T";
-          gts[25] == "C/C/C/A/A/G/T";
-          gts[26] == "C/C/A/A/G/G/T";
+          gts[6]  = "C/A/G/T";
+          gts[11] = "C/C/A/G/T";
+          gts[15] = "C/C/C/A/G/T";
+          gts[16] = "C/C/A/A/G/T";
+          gts[24] = "C/C/C/C/A/G/T";
+          gts[25] = "C/C/C/A/A/G/T";
+          gts[26] = "C/C/A/A/G/G/T";
       } else if(nucs[2] == 3){
         /* Tri-allelic */
-        gts[3]  == "C/A/T";
-        gts[5]  == "C/C/A/T";
-        gts[9]  == "C/C/C/A/T";
-        gts[10] == "C/C/A/A/T";
-        gts[14] == "C/C/C/C/A/T";
-        gts[15] == "C/C/C/A/A/T";
+        gts[3]  = "C/A/T";
+        gts[5]  = "C/C/A/T";
+        gts[9]  = "C/C/C/A/T";
+        gts[10] = "C/C/A/A/T";
+        gts[14] = "C/C/C/C/A/T";
+        gts[15] = "C/C/C/A/A/T";
           /* Tetra-allelic */
-          gts[6]  == "C/A/T/G";
-          gts[11] == "C/C/A/T/G";
-          gts[15] == "C/C/C/A/T/G";
-          gts[16] == "C/C/A/A/T/G";
-          gts[24] == "C/C/C/C/A/T/G";
-          gts[25] == "C/C/C/A/A/T/G";
-          gts[26] == "C/C/A/A/T/T/G";
+          gts[6]  = "C/A/T/G";
+          gts[11] = "C/C/A/T/G";
+          gts[15] = "C/C/C/A/T/G";
+          gts[16] = "C/C/A/A/T/G";
+          gts[24] = "C/C/C/C/A/T/G";
+          gts[25] = "C/C/C/A/A/T/G";
+          gts[26] = "C/C/A/A/T/T/G";
       }
     } else if(nucs[1] == 2){
       /* Bi-allelic */
-      gts[1] == "C/G";
-      gts[2]  == "C/C/G";
-      gts[4]  == "C/C/C/G";
-      gts[7]  == "C/C/C/C/G";
-      gts[8]  == "C/C/C/G/G";
-      gts[12] == "C/C/C/C/C/G";
-      gts[17] == "C/C/C/C/C/C/G";
-      gts[18] == "C/C/C/C/C/G/G";
-      gts[19] == "C/C/C/C/G/G/G";
+      gts[1]  = "C/G";
+      gts[2]  = "C/C/G";
+      gts[4]  = "C/C/C/G";
+      gts[7]  = "C/C/C/C/G";
+      gts[8]  = "C/C/C/G/G";
+      gts[12] = "C/C/C/C/C/G";
+      gts[17] = "C/C/C/C/C/C/G";
+      gts[18] = "C/C/C/C/C/G/G";
+      gts[19] = "C/C/C/C/G/G/G";
       if(nucs[2] == 0){
         /* Tri-allelic */
-        gts[3]  == "C/G/A";
-        gts[5]  == "C/C/G/A";
-        gts[9]  == "C/C/C/G/A";
-        gts[10] == "C/C/G/G/A";
-        gts[14] == "C/C/C/C/G/A";
-        gts[15] == "C/C/C/G/G/A";
+        gts[3]  = "C/G/A";
+        gts[5]  = "C/C/G/A";
+        gts[9]  = "C/C/C/G/A";
+        gts[10] = "C/C/G/G/A";
+        gts[14] = "C/C/C/C/G/A";
+        gts[15] = "C/C/C/G/G/A";
           /* Tetra-allelic */
-          gts[6]  == "C/G/A/T";
-          gts[11] == "C/C/G/A/T";
-          gts[15] == "C/C/C/G/A/T";
-          gts[16] == "C/C/G/G/A/T";
-          gts[24] == "C/C/C/C/G/A/T";
-          gts[25] == "C/C/C/G/G/A/T";
-          gts[26] == "C/C/G/G/A/A/T";
+          gts[6]  = "C/G/A/T";
+          gts[11] = "C/C/G/A/T";
+          gts[15] = "C/C/C/G/A/T";
+          gts[16] = "C/C/G/G/A/T";
+          gts[24] = "C/C/C/C/G/A/T";
+          gts[25] = "C/C/C/G/G/A/T";
+          gts[26] = "C/C/G/G/A/A/T";
       } else if(nucs[2] == 3){
         /* Tri-allelic */
-        gts[3]  == "C/G/T";
-        gts[5]  == "C/C/G/T";
-        gts[9]  == "C/C/C/G/T";
-        gts[10] == "C/C/G/G/T";
-        gts[14] == "C/C/C/C/G/T";
-        gts[15] == "C/C/C/G/G/T";
+        gts[3]  = "C/G/T";
+        gts[5]  = "C/C/G/T";
+        gts[9]  = "C/C/C/G/T";
+        gts[10] = "C/C/G/G/T";
+        gts[14] = "C/C/C/C/G/T";
+        gts[15] = "C/C/C/G/G/T";
           /* Tetra-allelic */
-          gts[6]  == "C/G/T/A";
-          gts[11] == "C/C/G/T/A";
-          gts[15] == "C/C/C/G/T/A";
-          gts[16] == "C/C/G/G/T/A";
-          gts[24] == "C/C/C/C/G/T/A";
-          gts[25] == "C/C/C/G/G/T/A";
-          gts[26] == "C/C/G/G/T/T/A";
+          gts[6]  = "C/G/T/A";
+          gts[11] = "C/C/G/T/A";
+          gts[15] = "C/C/C/G/T/A";
+          gts[16] = "C/C/G/G/T/A";
+          gts[24] = "C/C/C/C/G/T/A";
+          gts[25] = "C/C/C/G/G/T/A";
+          gts[26] = "C/C/G/G/T/T/A";
       }
     } else if(nucs[1] == 3){
       /* Bi-allelic */
-      gts[1] == "C/T";
-      gts[2]  == "C/C/T";
-      gts[4]  == "C/C/C/T";
-      gts[7]  == "C/C/C/C/T";
-      gts[8]  == "C/C/C/T/T";
-      gts[12] == "C/C/C/C/C/T";
-      gts[17] == "C/C/C/C/C/C/T";
-      gts[18] == "C/C/C/C/C/T/T";
-      gts[19] == "C/C/C/C/T/T/T";
+      gts[1]  = "C/T";
+      gts[2]  = "C/C/T";
+      gts[4]  = "C/C/C/T";
+      gts[7]  = "C/C/C/C/T";
+      gts[8]  = "C/C/C/T/T";
+      gts[12] = "C/C/C/C/C/T";
+      gts[17] = "C/C/C/C/C/C/T";
+      gts[18] = "C/C/C/C/C/T/T";
+      gts[19] = "C/C/C/C/T/T/T";
       if(nucs[2] == 0){
         /* Tri-allelic */
-        gts[3]  == "C/T/A";
-        gts[5]  == "C/C/T/A";
-        gts[9]  == "C/C/C/T/A";
-        gts[10] == "C/C/T/T/A";
-        gts[14] == "C/C/C/C/T/A";
-        gts[15] == "C/C/C/T/T/A";
+        gts[3]  = "C/T/A";
+        gts[5]  = "C/C/T/A";
+        gts[9]  = "C/C/C/T/A";
+        gts[10] = "C/C/T/T/A";
+        gts[14] = "C/C/C/C/T/A";
+        gts[15] = "C/C/C/T/T/A";
           /* Tetra-allelic */
-          gts[6]  == "C/T/A/G";
-          gts[11] == "C/C/T/A/G";
-          gts[15] == "C/C/C/T/A/G";
-          gts[16] == "C/C/T/T/A/G";
-          gts[24] == "C/C/C/C/T/A/G";
-          gts[25] == "C/C/C/T/T/A/G";
-          gts[26] == "C/C/T/T/A/A/G";
+          gts[6]  = "C/T/A/G";
+          gts[11] = "C/C/T/A/G";
+          gts[15] = "C/C/C/T/A/G";
+          gts[16] = "C/C/T/T/A/G";
+          gts[24] = "C/C/C/C/T/A/G";
+          gts[25] = "C/C/C/T/T/A/G";
+          gts[26] = "C/C/T/T/A/A/G";
       } else if(nucs[2] == 2){
         /* Tri-allelic */
-        gts[3]  == "C/T/G";
-        gts[5]  == "C/C/T/G";
-        gts[9]  == "C/C/C/T/G";
-        gts[10] == "C/C/T/T/G";
-        gts[14] == "C/C/C/C/T/G";
-        gts[15] == "C/C/C/T/T/G";
+        gts[3]  = "C/T/G";
+        gts[5]  = "C/C/T/G";
+        gts[9]  = "C/C/C/T/G";
+        gts[10] = "C/C/T/T/G";
+        gts[14] = "C/C/C/C/T/G";
+        gts[15] = "C/C/C/T/T/G";
           /* Tetra-allelic */
-          gts[6]  == "C/T/G/A";
-          gts[11] == "C/C/T/G/A";
-          gts[15] == "C/C/C/T/G/A";
-          gts[16] == "C/C/T/T/G/A";
-          gts[24] == "C/C/C/C/T/G/A";
-          gts[25] == "C/C/C/T/T/G/A";
-          gts[26] == "C/C/T/T/G/G/A";
+          gts[6]  = "C/T/G/A";
+          gts[11] = "C/C/T/G/A";
+          gts[15] = "C/C/C/T/G/A";
+          gts[16] = "C/C/T/T/G/A";
+          gts[24] = "C/C/C/C/T/G/A";
+          gts[25] = "C/C/C/T/T/G/A";
+          gts[26] = "C/C/T/T/G/G/A";
       }
     }
   } else if (nucs[0] == 2) {
     gts[0] = "G/G";
     if(nucs[1] == 0){
       /* Bi-allelic */
-      gts[1] == "G/A";
-      gts[2]  == "G/G/A";
-      gts[4]  == "G/G/G/A";
-      gts[7]  == "G/G/G/G/A";
-      gts[8]  == "G/G/G/A/A";
-      gts[12] == "G/G/G/G/G/A";
-      gts[17] == "G/G/G/G/G/G/A";
-      gts[18] == "G/G/G/G/G/A/A";
-      gts[19] == "G/G/G/G/A/A/A";
+      gts[1]  = "G/A";
+      gts[2]  = "G/G/A";
+      gts[4]  = "G/G/G/A";
+      gts[7]  = "G/G/G/G/A";
+      gts[8]  = "G/G/G/A/A";
+      gts[12] = "G/G/G/G/G/A";
+      gts[17] = "G/G/G/G/G/G/A";
+      gts[18] = "G/G/G/G/G/A/A";
+      gts[19] = "G/G/G/G/A/A/A";
       if(nucs[2] == 1){
         /* Tri-allelic */
-        gts[3]  == "G/A/C";
-        gts[5]  == "G/G/A/C";
-        gts[9]  == "G/G/G/A/C";
-        gts[10] == "G/G/A/A/C";
-        gts[14] == "G/G/G/G/A/C";
-        gts[15] == "G/G/G/A/A/C";
+        gts[3]  = "G/A/C";
+        gts[5]  = "G/G/A/C";
+        gts[9]  = "G/G/G/A/C";
+        gts[10] = "G/G/A/A/C";
+        gts[14] = "G/G/G/G/A/C";
+        gts[15] = "G/G/G/A/A/C";
           /* Tetra-allelic */
-          gts[6]  == "G/A/C/T";
-          gts[11] == "G/G/A/C/T";
-          gts[15] == "G/G/G/A/C/T";
-          gts[16] == "G/G/A/A/C/T";
-          gts[24] == "G/G/G/G/A/C/T";
-          gts[25] == "G/G/G/A/A/C/T";
-          gts[26] == "G/G/A/A/C/C/T";
+          gts[6]  = "G/A/C/T";
+          gts[11] = "G/G/A/C/T";
+          gts[15] = "G/G/G/A/C/T";
+          gts[16] = "G/G/A/A/C/T";
+          gts[24] = "G/G/G/G/A/C/T";
+          gts[25] = "G/G/G/A/A/C/T";
+          gts[26] = "G/G/A/A/C/C/T";
       } else if(nucs[2] == 3){
         /* Tri-allelic */
-        gts[3]  == "G/A/T";
-        gts[5]  == "G/G/A/T";
-        gts[9]  == "G/G/G/A/T";
-        gts[10] == "G/G/A/A/T";
-        gts[14] == "G/G/G/G/A/T";
-        gts[15] == "G/G/G/A/A/T";
+        gts[3]  = "G/A/T";
+        gts[5]  = "G/G/A/T";
+        gts[9]  = "G/G/G/A/T";
+        gts[10] = "G/G/A/A/T";
+        gts[14] = "G/G/G/G/A/T";
+        gts[15] = "G/G/G/A/A/T";
           /* Tetra-allelic */
-          gts[6]  == "G/A/T/C";
-          gts[11] == "G/G/A/T/C";
-          gts[15] == "G/G/G/A/T/C";
-          gts[16] == "G/G/A/A/T/C";
-          gts[24] == "G/G/G/G/A/T/C";
-          gts[25] == "G/G/G/A/A/T/C";
-          gts[26] == "G/G/A/A/T/T/C";
+          gts[6]  = "G/A/T/C";
+          gts[11] = "G/G/A/T/C";
+          gts[15] = "G/G/G/A/T/C";
+          gts[16] = "G/G/A/A/T/C";
+          gts[24] = "G/G/G/G/A/T/C";
+          gts[25] = "G/G/G/A/A/T/C";
+          gts[26] = "G/G/A/A/T/T/C";
       }
     } else if(nucs[1] == 1){
       /* Bi-allelic */
-      gts[1] == "G/C";
-      gts[2]  == "G/G/C";
-      gts[4]  == "G/G/G/C";
-      gts[7]  == "G/G/G/G/C";
-      gts[8]  == "G/G/G/C/C";
-      gts[12] == "G/G/G/G/G/C";
-      gts[17] == "G/G/G/G/G/G/C";
-      gts[18] == "G/G/G/G/G/C/C";
-      gts[19] == "G/G/G/G/C/C/C";
+      gts[1]  = "G/C";
+      gts[2]  = "G/G/C";
+      gts[4]  = "G/G/G/C";
+      gts[7]  = "G/G/G/G/C";
+      gts[8]  = "G/G/G/C/C";
+      gts[12] = "G/G/G/G/G/C";
+      gts[17] = "G/G/G/G/G/G/C";
+      gts[18] = "G/G/G/G/G/C/C";
+      gts[19] = "G/G/G/G/C/C/C";
       if(nucs[2] == 0){
         /* Tri-allelic */
-        gts[3]  == "G/C/A";
-        gts[5]  == "G/G/C/A";
-        gts[9]  == "G/G/G/C/A";
-        gts[10] == "G/G/C/C/A";
-        gts[14] == "G/G/G/G/C/A";
-        gts[15] == "G/G/G/C/C/A";
+        gts[3]  = "G/C/A";
+        gts[5]  = "G/G/C/A";
+        gts[9]  = "G/G/G/C/A";
+        gts[10] = "G/G/C/C/A";
+        gts[14] = "G/G/G/G/C/A";
+        gts[15] = "G/G/G/C/C/A";
           /* Tetra-allelic */
-          gts[6]  == "G/C/A/T";
-          gts[11] == "G/G/C/A/T";
-          gts[15] == "G/G/G/C/A/T";
-          gts[16] == "G/G/C/C/A/T";
-          gts[24] == "G/G/G/G/C/A/T";
-          gts[25] == "G/G/G/C/C/A/T";
-          gts[26] == "G/G/C/C/A/A/T";
+          gts[6]  = "G/C/A/T";
+          gts[11] = "G/G/C/A/T";
+          gts[15] = "G/G/G/C/A/T";
+          gts[16] = "G/G/C/C/A/T";
+          gts[24] = "G/G/G/G/C/A/T";
+          gts[25] = "G/G/G/C/C/A/T";
+          gts[26] = "G/G/C/C/A/A/T";
       } else if(nucs[2] == 3){
         /* Tri-allelic */
-        gts[3]  == "G/C/T";
-        gts[5]  == "G/G/C/T";
-        gts[9]  == "G/G/G/C/T";
-        gts[10] == "G/G/C/C/T";
-        gts[14] == "G/G/G/G/C/T";
-        gts[15] == "G/G/G/C/C/T";
+        gts[3]  = "G/C/T";
+        gts[5]  = "G/G/C/T";
+        gts[9]  = "G/G/G/C/T";
+        gts[10] = "G/G/C/C/T";
+        gts[14] = "G/G/G/G/C/T";
+        gts[15] = "G/G/G/C/C/T";
           /* Tetra-allelic */
-          gts[6]  == "G/C/T/A";
-          gts[11] == "G/G/C/T/A";
-          gts[15] == "G/G/G/C/T/A";
-          gts[16] == "G/G/C/C/T/A";
-          gts[24] == "G/G/G/G/C/T/A";
-          gts[25] == "G/G/G/C/C/T/A";
-          gts[26] == "G/G/C/C/T/T/A";
+          gts[6]  = "G/C/T/A";
+          gts[11] = "G/G/C/T/A";
+          gts[15] = "G/G/G/C/T/A";
+          gts[16] = "G/G/C/C/T/A";
+          gts[24] = "G/G/G/G/C/T/A";
+          gts[25] = "G/G/G/C/C/T/A";
+          gts[26] = "G/G/C/C/T/T/A";
       }
     } else if(nucs[1] == 3){
       /* Bi-allelic */
-      gts[1] == "G/T";
-      gts[2]  == "G/G/T";
-      gts[4]  == "G/G/G/T";
-      gts[7]  == "G/G/G/G/T";
-      gts[8]  == "G/G/G/T/T";
-      gts[12] == "G/G/G/G/G/T";
-      gts[17] == "G/G/G/G/G/G/T";
-      gts[18] == "G/G/G/G/G/T/T";
-      gts[19] == "G/G/G/G/T/T/T";
+      gts[1]  = "G/T";
+      gts[2]  = "G/G/T";
+      gts[4]  = "G/G/G/T";
+      gts[7]  = "G/G/G/G/T";
+      gts[8]  = "G/G/G/T/T";
+      gts[12] = "G/G/G/G/G/T";
+      gts[17] = "G/G/G/G/G/G/T";
+      gts[18] = "G/G/G/G/G/T/T";
+      gts[19] = "G/G/G/G/T/T/T";
       if(nucs[2] == 0){
         /* Tri-allelic */
-        gts[3]  == "G/T/A";
-        gts[5]  == "G/G/T/A";
-        gts[9]  == "G/G/G/T/A";
-        gts[10] == "G/G/T/T/A";
-        gts[14] == "G/G/G/G/T/A";
-        gts[15] == "G/G/G/T/T/A";
+        gts[3]  = "G/T/A";
+        gts[5]  = "G/G/T/A";
+        gts[9]  = "G/G/G/T/A";
+        gts[10] = "G/G/T/T/A";
+        gts[14] = "G/G/G/G/T/A";
+        gts[15] = "G/G/G/T/T/A";
           /* Tetra-allelic */
-          gts[6]  == "G/T/A/C";
-          gts[11] == "G/G/T/A/C";
-          gts[15] == "G/G/G/T/A/C";
-          gts[16] == "G/G/T/T/A/C";
-          gts[24] == "G/G/G/G/T/A/C";
-          gts[25] == "G/G/G/T/T/A/C";
-          gts[26] == "G/G/T/T/A/A/C";
+          gts[6]  = "G/T/A/C";
+          gts[11] = "G/G/T/A/C";
+          gts[15] = "G/G/G/T/A/C";
+          gts[16] = "G/G/T/T/A/C";
+          gts[24] = "G/G/G/G/T/A/C";
+          gts[25] = "G/G/G/T/T/A/C";
+          gts[26] = "G/G/T/T/A/A/C";
       } else if(nucs[2] == 1){
         /* Tri-allelic */
-        gts[3]  == "G/T/C";
-        gts[5]  == "G/G/T/C";
-        gts[9]  == "G/G/G/T/C";
-        gts[10] == "G/G/T/T/C";
-        gts[14] == "G/G/G/G/T/C";
-        gts[15] == "G/G/G/T/T/C";
+        gts[3]  = "G/T/C";
+        gts[5]  = "G/G/T/C";
+        gts[9]  = "G/G/G/T/C";
+        gts[10] = "G/G/T/T/C";
+        gts[14] = "G/G/G/G/T/C";
+        gts[15] = "G/G/G/T/T/C";
           /* Tetra-allelic */
-          gts[6]  == "G/T/C/A";
-          gts[11] == "G/G/T/C/A";
-          gts[15] == "G/G/G/T/C/A";
-          gts[16] == "G/G/T/T/C/A";
-          gts[24] == "G/G/G/G/T/C/A";
-          gts[25] == "G/G/G/T/T/C/A";
-          gts[26] == "G/G/T/T/C/C/A";
+          gts[6]  = "G/T/C/A";
+          gts[11] = "G/G/T/C/A";
+          gts[15] = "G/G/G/T/C/A";
+          gts[16] = "G/G/T/T/C/A";
+          gts[24] = "G/G/G/G/T/C/A";
+          gts[25] = "G/G/G/T/T/C/A";
+          gts[26] = "G/G/T/T/C/C/A";
       }
     }
   } else if (nucs[0] == 3) {
     gts[0] = "T/T";
     if(nucs[1] == 0){
       /* Bi-allelic */
-      gts[1]  == "T/A";
-      gts[2]  == "T/T/A";
-      gts[4]  == "T/T/T/A";
-      gts[7]  == "T/T/T/T/A";
-      gts[8]  == "T/T/T/A/A";
-      gts[12] == "T/T/T/T/T/A";
-      gts[17] == "T/T/T/T/T/T/A";
-      gts[18] == "T/T/T/T/T/A/A";
-      gts[19] == "T/T/T/T/A/A/A";
+      gts[1]  = "T/A";
+      gts[2]  = "T/T/A";
+      gts[4]  = "T/T/T/A";
+      gts[7]  = "T/T/T/T/A";
+      gts[8]  = "T/T/T/A/A";
+      gts[12] = "T/T/T/T/T/A";
+      gts[17] = "T/T/T/T/T/T/A";
+      gts[18] = "T/T/T/T/T/A/A";
+      gts[19] = "T/T/T/T/A/A/A";
       if(nucs[2] == 1){
         /* Tri-allelic */
-        gts[3]  == "T/A/C";
-        gts[5]  == "T/T/A/C";
-        gts[9]  == "T/T/T/A/C";
-        gts[10] == "T/T/A/A/C";
-        gts[14] == "T/T/T/T/A/C";
-        gts[15] == "T/T/T/A/A/C";
+        gts[3]  = "T/A/C";
+        gts[5]  = "T/T/A/C";
+        gts[9]  = "T/T/T/A/C";
+        gts[10] = "T/T/A/A/C";
+        gts[14] = "T/T/T/T/A/C";
+        gts[15] = "T/T/T/A/A/C";
           /* Tetra-allelic */
-          gts[6]  == "T/A/C/G";
-          gts[11] == "T/T/A/C/G";
-          gts[15] == "T/T/T/A/C/G";
-          gts[16] == "T/T/A/A/C/G";
-          gts[24] == "T/T/T/T/A/C/G";
-          gts[25] == "T/T/T/A/A/C/G";
-          gts[26] == "T/T/A/A/C/C/G";
+          gts[6]  = "T/A/C/G";
+          gts[11] = "T/T/A/C/G";
+          gts[15] = "T/T/T/A/C/G";
+          gts[16] = "T/T/A/A/C/G";
+          gts[24] = "T/T/T/T/A/C/G";
+          gts[25] = "T/T/T/A/A/C/G";
+          gts[26] = "T/T/A/A/C/C/G";
       } else if(nucs[2] == 2){
         /* Tri-allelic */
-        gts[3]  == "T/A/G";
-        gts[5]  == "T/T/A/G";
-        gts[9]  == "T/T/T/A/G";
-        gts[10] == "T/T/A/A/G";
-        gts[14] == "T/T/T/T/A/G";
-        gts[15] == "T/T/T/A/A/G";
+        gts[3]  = "T/A/G";
+        gts[5]  = "T/T/A/G";
+        gts[9]  = "T/T/T/A/G";
+        gts[10] = "T/T/A/A/G";
+        gts[14] = "T/T/T/T/A/G";
+        gts[15] = "T/T/T/A/A/G";
           /* Tetra-allelic */
-          gts[6]  == "T/A/G/C";
-          gts[11] == "T/T/A/G/C";
-          gts[15] == "T/T/T/A/G/C";
-          gts[16] == "T/T/A/A/G/C";
-          gts[24] == "T/T/T/T/A/G/C";
-          gts[25] == "T/T/T/A/A/G/C";
-          gts[26] == "T/T/A/A/G/G/C";
+          gts[6]  = "T/A/G/C";
+          gts[11] = "T/T/A/G/C";
+          gts[15] = "T/T/T/A/G/C";
+          gts[16] = "T/T/A/A/G/C";
+          gts[24] = "T/T/T/T/A/G/C";
+          gts[25] = "T/T/T/A/A/G/C";
+          gts[26] = "T/T/A/A/G/G/C";
       }
     } else if(nucs[1] == 1){
       /* Bi-allelic */
-      gts[1]  == "T/C";
-      gts[2]  == "T/T/C";
-      gts[4]  == "T/T/T/C";
-      gts[7]  == "T/T/T/T/C";
-      gts[8]  == "T/T/T/C/C";
-      gts[12] == "T/T/T/T/T/C";
-      gts[17] == "T/T/T/T/T/T/C";
-      gts[18] == "T/T/T/T/T/C/C";
-      gts[19] == "T/T/T/T/C/C/C";
+      gts[1]  = "T/C";
+      gts[2]  = "T/T/C";
+      gts[4]  = "T/T/T/C";
+      gts[7]  = "T/T/T/T/C";
+      gts[8]  = "T/T/T/C/C";
+      gts[12] = "T/T/T/T/T/C";
+      gts[17] = "T/T/T/T/T/T/C";
+      gts[18] = "T/T/T/T/T/C/C";
+      gts[19] = "T/T/T/T/C/C/C";
       if(nucs[2] == 0){
         /* Tri-allelic */
-        gts[3]  == "T/C/A";
-        gts[5]  == "T/T/C/A";
-        gts[9]  == "T/T/T/C/A";
-        gts[10] == "T/T/C/C/A";
-        gts[14] == "T/T/T/T/C/A";
-        gts[15] == "T/T/T/C/C/A";
+        gts[3]  = "T/C/A";
+        gts[5]  = "T/T/C/A";
+        gts[9]  = "T/T/T/C/A";
+        gts[10] = "T/T/C/C/A";
+        gts[14] = "T/T/T/T/C/A";
+        gts[15] = "T/T/T/C/C/A";
           /* Tetra-allelic */
-          gts[6]  == "T/C/A/G";
-          gts[11] == "T/T/C/A/G";
-          gts[15] == "T/T/T/C/A/G";
-          gts[16] == "T/T/C/C/A/G";
-          gts[24] == "T/T/T/T/C/A/G";
-          gts[25] == "T/T/T/C/C/A/G";
-          gts[26] == "T/T/C/C/A/A/G";
+          gts[6]  = "T/C/A/G";
+          gts[11] = "T/T/C/A/G";
+          gts[15] = "T/T/T/C/A/G";
+          gts[16] = "T/T/C/C/A/G";
+          gts[24] = "T/T/T/T/C/A/G";
+          gts[25] = "T/T/T/C/C/A/G";
+          gts[26] = "T/T/C/C/A/A/G";
       } else if(nucs[2] == 2){
         /* Tri-allelic */
-        gts[3]  == "T/C/G";
-        gts[3]  == "T/C/G";
-        gts[5]  == "T/T/C/G";
-        gts[9]  == "T/T/T/C/G";
-        gts[10] == "T/T/C/C/G";
-        gts[14] == "T/T/T/T/C/G";
-        gts[15] == "T/T/T/C/C/G";
+        gts[3]  = "T/C/G";
+        gts[3]  = "T/C/G";
+        gts[5]  = "T/T/C/G";
+        gts[9]  = "T/T/T/C/G";
+        gts[10] = "T/T/C/C/G";
+        gts[14] = "T/T/T/T/C/G";
+        gts[15] = "T/T/T/C/C/G";
           /* Tetra-allelic */
-          gts[6]  == "T/C/G/A";
-          gts[11] == "T/T/C/G/A";
-          gts[15] == "T/T/T/C/G/A";
-          gts[16] == "T/T/C/C/G/A";
-          gts[24] == "T/T/T/T/C/G/A";
-          gts[25] == "T/T/T/C/C/G/A";
-          gts[26] == "T/T/C/C/G/G/A";
+          gts[6]  = "T/C/G/A";
+          gts[11] = "T/T/C/G/A";
+          gts[15] = "T/T/T/C/G/A";
+          gts[16] = "T/T/C/C/G/A";
+          gts[24] = "T/T/T/T/C/G/A";
+          gts[25] = "T/T/T/C/C/G/A";
+          gts[26] = "T/T/C/C/G/G/A";
       }
 
     } else if(nucs[1] == 2){
       /* Bi-allelic */
-      gts[1] == "T/G";
-      gts[2]  == "T/T/G";
-      gts[4]  == "T/T/T/G";
-      gts[7]  == "T/T/T/T/G";
-      gts[8]  == "T/T/T/G/G";
-      gts[12] == "T/T/T/T/T/G";
-      gts[17] == "T/T/T/T/T/T/G";
-      gts[18] == "T/T/T/T/T/G/G";
-      gts[19] == "T/T/T/T/G/G/G";
+      gts[1]  = "T/G";
+      gts[2]  = "T/T/G";
+      gts[4]  = "T/T/T/G";
+      gts[7]  = "T/T/T/T/G";
+      gts[8]  = "T/T/T/G/G";
+      gts[12] = "T/T/T/T/T/G";
+      gts[17] = "T/T/T/T/T/T/G";
+      gts[18] = "T/T/T/T/T/G/G";
+      gts[19] = "T/T/T/T/G/G/G";
       if(nucs[2] == 0){
         /* Tri-allelic */
-        gts[3]  == "T/G/A";
-        gts[5]  == "T/T/G/A";
-        gts[9]  == "T/T/T/G/A";
-        gts[10] == "T/T/G/G/A";
-        gts[14] == "T/T/T/T/G/A";
-        gts[15] == "T/T/T/G/G/A";
+        gts[3]  = "T/G/A";
+        gts[5]  = "T/T/G/A";
+        gts[9]  = "T/T/T/G/A";
+        gts[10] = "T/T/G/G/A";
+        gts[14] = "T/T/T/T/G/A";
+        gts[15] = "T/T/T/G/G/A";
           /* Tetra-allelic */
-          gts[6]  == "T/G/A/C";
-          gts[11] == "T/T/G/A/C";
-          gts[15] == "T/T/T/G/A/C";
-          gts[16] == "T/T/G/G/A/C";
-          gts[24] == "T/T/T/T/G/A/C";
-          gts[25] == "T/T/T/G/G/A/C";
-          gts[26] == "T/T/G/G/A/A/C";
+          gts[6]  = "T/G/A/C";
+          gts[11] = "T/T/G/A/C";
+          gts[15] = "T/T/T/G/A/C";
+          gts[16] = "T/T/G/G/A/C";
+          gts[24] = "T/T/T/T/G/A/C";
+          gts[25] = "T/T/T/G/G/A/C";
+          gts[26] = "T/T/G/G/A/A/C";
       } else if(nucs[2] == 1){
         /* Tri-allelic */
-        gts[3]  == "T/G/C";
-        gts[3]  == "T/G/C";
-        gts[5]  == "T/T/G/C";
-        gts[9]  == "T/T/T/G/C";
-        gts[10] == "T/T/G/G/C";
-        gts[14] == "T/T/T/T/G/C";
-        gts[15] == "T/T/T/G/G/C";
+        gts[3]  = "T/G/C";
+        gts[3]  = "T/G/C";
+        gts[5]  = "T/T/G/C";
+        gts[9]  = "T/T/T/G/C";
+        gts[10] = "T/T/G/G/C";
+        gts[14] = "T/T/T/T/G/C";
+        gts[15] = "T/T/T/G/G/C";
           /* Tetra-allelic */
-          gts[6]  == "T/G/C/A";
-          gts[11] == "T/T/G/C/A";
-          gts[15] == "T/T/T/G/C/A";
-          gts[16] == "T/T/G/G/C/A";
-          gts[24] == "T/T/T/T/G/C/A";
-          gts[25] == "T/T/T/G/G/C/A";
-          gts[26] == "T/T/G/G/C/C/A";
+          gts[6]  = "T/G/C/A";
+          gts[11] = "T/T/G/C/A";
+          gts[15] = "T/T/T/G/C/A";
+          gts[16] = "T/T/G/G/C/A";
+          gts[24] = "T/T/T/T/G/C/A";
+          gts[25] = "T/T/T/G/G/C/A";
+          gts[26] = "T/T/G/G/C/C/A";
       }
     }
   }
+
+/*
+  cout << "*** Debug int_to_nucs ***";
+  cout << "\n";
+  cout << nucs[0] << "," << nucs[1] << "," << nucs[2]<< "," << nucs[3];
+  cout << "\n";
+  cout << gts[0] << "," << gts[1];
+  cout << "\n";
+*/
+
 //  cout << "\n";
 }
 
@@ -947,12 +957,27 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
 //  gts[1] = "0";
   int_to_nucs(gts, moves);
 
-//  debug = 1;
+  debug = 1;
   if(debug == 1){
     cout << "\n";
     cout << "*** Debug counts_2_phredlh ***\n";
     cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2]<< "," << nuc_cnt[3] << ":";
     cout << "poss_counts=" << poss_counts;
+    cout << ":";
+    cout << "\n";
+    cout << gts[0];
+//    cout << "," << gts[1];
+//    cout << "\n";
+    for (int j = 1; j < 27; j++){
+      cout << "," << gts[j];
+    }
+    cout << "\n";
+
+    cout << mls[0];
+    for (int j = 1; j < 27; j++){
+      cout << "," << mls[j];
+    }
+
     cout << "\n";
   }
 
@@ -970,7 +995,7 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
 //void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
 
 /* Parse each site to samples */
-void mult_pl(int pls[][27], int nsamp, float err, int nuc_cnts[][8]){
+void mult_pl(int pls[][27], string gts[27]; int nsamp, float err, int nuc_cnts[][8]){
 //  cout <<  "##### New site (row) #####\n";
   for(int i=0; i<nsamp; i++){
 //    counts_2_plh(pls[i], nuc_cnts[i], err, min_cnt);
@@ -1095,6 +1120,7 @@ int main(int argc, char **argv) {
     string gts [nsamp]; // Genotypes.
 //    int pls [nsamp][51];  // Phred scaled likelihoods. 
     int pls [nsamp][27];  // Phred scaled likelihoods. 
+    string gts[27];
 
     /* Initialize variables. */
     for(int i=0; i<nsamp; i++){
@@ -1130,7 +1156,8 @@ int main(int argc, char **argv) {
 
     /* Calculate Phred-scaled likelihoods */
 //    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
-    mult_pl(pls, nsamp, error, nuc_cnts);
+    string gts[27];
+    mult_pl(pls, gts, nsamp, error, nuc_cnts);
 
     /* Determine a genotype */
 //    det_gt(gts, nsamp, rds, nuc_cnts, pls);
