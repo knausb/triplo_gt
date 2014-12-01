@@ -732,7 +732,7 @@ bool comparator ( const mypair& l, const mypair& r)
 
 
 //void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int debug=0){
-void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
+void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
 
   /* Add forward and reverse counts. */
   int nuc_cnt[4];
@@ -741,10 +741,8 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
   nuc_cnt[2] = nuc_cnts[4] + nuc_cnts[5];
   nuc_cnt[3] = nuc_cnts[6] + nuc_cnts[7];
 
-
 //  cout << "counts_2_plh\t";
 //  cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2] << "," << nuc_cnt[3] << ":"; 
-
 
   /* Sort nucleotide counts. */
   vector<pair<int,int>> moves = {
@@ -934,7 +932,7 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
 
   /* Phred scale the likelihoods. */
 //  for (int j = 0; j < 51; j++){
-  for (int j = 0; j < 26; j++){
+  for (int j = 0; j < 27; j++){
     if (mls[j] == 0){
       mls[j] = 9999;
     } else {
@@ -945,7 +943,7 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
 
   /* Convert ints to nucleotides */
 //  vector <string> gts[26];
-  string gts[26];
+  string gts[27];
 //  gts[1] = "0";
   int_to_nucs(gts, moves);
 
@@ -960,7 +958,7 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
 
   /* Transfer likelihoods to parent array. */
 //  for (int j = 0; j < 51; j++){
-  for (int j = 0; j < 26; j++){
+  for (int j = 0; j < 27; j++){
 //    pls[i][j] = int(mls[j]);
     mlhs[j] = int(mls[j]);
   }
@@ -972,7 +970,7 @@ void counts_2_plh(int mlhs[26], int nuc_cnts[8], float error, int debug=0){
 //void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
 
 /* Parse each site to samples */
-void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8]){
+void mult_pl(int pls[][27], int nsamp, float err, int nuc_cnts[][8]){
 //  cout <<  "##### New site (row) #####\n";
   for(int i=0; i<nsamp; i++){
 //    counts_2_plh(pls[i], nuc_cnts[i], err, min_cnt);
@@ -1096,7 +1094,7 @@ int main(int argc, char **argv) {
     int rds [nsamp]; // Read depth.
     string gts [nsamp]; // Genotypes.
 //    int pls [nsamp][51];  // Phred scaled likelihoods. 
-    int pls [nsamp][26];  // Phred scaled likelihoods. 
+    int pls [nsamp][27];  // Phred scaled likelihoods. 
 
     /* Initialize variables. */
     for(int i=0; i<nsamp; i++){
