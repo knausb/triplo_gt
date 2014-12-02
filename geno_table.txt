@@ -2,9 +2,9 @@ mls[0]  = /* Homozygote. */
 mls[1]  = /* Bi-allelic heterozygote. */
 mls[2]  = /* Bi-allelic triploid. */
 mls[3]  = /* Tri-allelic triploid loci. */
-mls[4]  = /* Bi-allelic tetraploid loci */
-mls[5]  = /* Tri-allelic tetraploid loci */
-mls[6]  = /* Tetra-allelic tetraploid loci */
+mls[4]  = /* Bi-allelic tetraploid loci */ 3,1
+mls[5]  = /* Tri-allelic tetraploid loci */ 2,1,1
+mls[6]  = /* Tetra-allelic tetraploid loci */ 1,1,1,1
 
 mls[7]  = /* Bi-allelic pentaploid loci */ 0.8
 mls[8]  = /* Bi-allelic pentaploid loci */ 0.6
