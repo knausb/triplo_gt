@@ -838,7 +838,8 @@ bool comparator ( const mypair& l, const mypair& r)
 
 
 //void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int debug=0){
-void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
+//void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
+void counts_2_plh(int& mlhs, string& gt, int nuc_cnts[8], float error, int debug=0){
 
   /* Add forward and reverse counts. */
   int nuc_cnt[4];
@@ -846,9 +847,6 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
   nuc_cnt[1] = nuc_cnts[2] + nuc_cnts[3];
   nuc_cnt[2] = nuc_cnts[4] + nuc_cnts[5];
   nuc_cnt[3] = nuc_cnts[6] + nuc_cnts[7];
-
-//  cout << "counts_2_plh\t";
-//  cout << nuc_cnt[0] << "," << nuc_cnt[1] << "," << nuc_cnt[2] << "," << nuc_cnt[3] << ":"; 
 
   /* Sort nucleotide counts. */
   vector<pair<int,int>> moves = {
@@ -860,16 +858,8 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
 
   std::sort(moves.begin(), moves.end(), comparator);
 
-//  cout << moves[0].first << "," << moves[1].first;
-//  cout << "," << moves[2].first << "," << moves[3].first;
-//  cout << ":" << moves[0].second << "," << moves[1].second;
-//  cout << "," << moves[2].second << "," << moves[3].second;
-//  cout << "\n";
-
   /* Possible ways to obtain observed counts */
   double poss_counts = possible_counts(nuc_cnt);
-//  cout << " poss_counts=" << poss_counts;
-//  cout << "\n";
 
 
   /* --*-- --*-- --*-- */
@@ -1052,7 +1042,7 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
   }
 
   /* Phred scale the likelihoods. */
-/*
+
   for (int j = 0; j < 27; j++){
     if (mls[j] == 0){
       mls[j] = 9999;
@@ -1061,13 +1051,10 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
       if(mls[j] == -0){mls[j] = 0;}
     }
   }
-*/
-
-
 
 
   /* Debuging */
-  debug = 1;
+//  debug = 1;
   if(debug == 1){
     cout << "\n";
     cout << "*** Debug counts_2_phredlh ***\n";
@@ -1086,8 +1073,6 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
 
     cout << "Most likely genotype: " << gts[maxl];
     cout << "\n";
-//      cout << "All genotypes equally likely: sum = " << suml << " ./.";
-//      cout << "\n";
     if(suml >= 27){
       cout << "All genotypes equally likely: sum = " << suml;
       cout << "\n";
@@ -1096,30 +1081,79 @@ void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
     }
   }
 
-
-
-  /* Transfer likelihoods to parent array. */
-//  for (int j = 0; j < 51; j++){
-  for (int j = 0; j < 27; j++){
-//    pls[i][j] = int(mls[j]);
-    mlhs[j] = int(mls[j]);
+  /* Transfer values to parent. */
+  if(suml >= 27){
+    /* All likelihoods are equal. */
+    mlhs = int(mls[maxl]);
+    gt = "./.";
+  } else if(maxl >= 17){
+    /* Called genotype is septaploid */
+    mlhs = int(mls[maxl]);
+    gt = "./.";
+  } else {
+    mlhs = int(mls[maxl]);
+    gt = gts[maxl];
   }
 
 }
 
-
-/* Likelihoods */
-//void mult_pl(int pls[][26], int nsamp, float err, int nuc_cnts[][8], int min_cnt){
 
 /* Parse each site to samples */
-void mult_pl(int pls[][27], int nsamp, float err, int nuc_cnts[][8]){
-//  cout <<  "##### New site (row) #####\n";
+//void mult_pl(int pls[][27], int nsamp, float err, int nuc_cnts[][8]){
+void mult_pl(int pls[], string gts[], int nsamp, float err, int nuc_cnts[][8]){
   for(int i=0; i<nsamp; i++){
-//    counts_2_plh(pls[i], nuc_cnts[i], err, min_cnt);
-    counts_2_plh(pls[i], nuc_cnts[i], err);
+    counts_2_plh(pls[i], gts[i], nuc_cnts[i], err);
+  }
+
+
+
+}
+
+
+
+/* Determine if a site is polymorphic */
+int site_polymorphic(int nsamp, string gts[]){
+//  cout << gts[0];
+  int comp = 0;
+  if(gts[0] == gts[1]){comp = 1;}
+  for(int i=1; i<nsamp; i++){
+//    cout << "," << gts[i];
+    if(gts[0] == gts[i]){comp = comp + 1;}
+//    comp = comp + gts[0] == gts[i];
+  }
+//  cout << "\n";
+//  cout << "Comparison = " << comp;
+//  cout << "; Number of samples = " << nsamp;
+//  cout << "\n";
+//  cout << "\n";
+  if(comp == nsamp){
+    return(0);
+  } else {
+    return(1);
   }
 }
 
+
+//int diff_ref(int nsamp, string gts[]){
+int diff_ref(string ref, int nsamp, string gts[]){
+  vector <string> haps;
+  int gtsum = 0;
+
+  for(int i=0; i<nsamp; i++){
+    if(gts[i] != "./."){
+      split( haps, gts[i], boost::algorithm::is_any_of( "/" ) );
+      for(int j=1; j<haps.size(); j++){
+        if(haps[j] != ref){gtsum++;}
+      }
+    }
+  }
+
+  if(gtsum > 0){
+    return(1);
+  } else {
+    return (0);
+  }
+}
 
 
 /* ----- ----- ***** ----- ----- */
@@ -1134,19 +1168,20 @@ void print_usage(){
   cerr << "  -m print vcf header (meta) information.\n";
   cerr << "  -p print phred scaled likelihoods in genotype section.\n";
   cerr << "  -s file with sample names in same order as in\n     the s/bam file, one name per line.\n";
-//  cerr << "  -t minimum threshold for calling an allele [default = 0].\n";
+  cerr << "\n";
+  cerr << "Expects piped output from SAMTools::mpileup where\n";
+  cerr << "each sample consists of three columns starting at\n";
+  cerr << "the fourth column.\n";
   cerr << "\n";
 }
 
 
-//void print_header(float error, int min_cnt, string sfile){
 void print_header(float error, string sfile){
   cout << "##fileformat=VCFv4.2\n";
   cout << "##source=gtV0.0.0\n";
-//  cout << "##FILTER=<ID=NA,Description=\"Per nucleotide minimum threshold of " << min_cnt << "\">\n";
   cout << "##FILTER=<ID=NA,Description=\"Error rate of " << error << " used for likelihood calculation\">\n";
   cout << "##FORMAT=<ID=RD,Number=1,Type=Integer,Description=\"Read depth\">\n";
-  cout << "##FORMAT=<ID=CT,Number=4,Type=Integer,Description=\"Count of each nucleotide (A,C,G,T)\">\n";
+  cout << "##FORMAT=<ID=CT,Number=8,Type=Integer,Description=\"Count of each nucleotide (A,a,C,c,G,g,T,t)\">\n";
   cout << "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">\n";
   cout << "##FORMAT=<ID=PL,Number=26,Type=Integer,Description=\"Phred scaled likelihood for 26 genotpyes\">\n";
   cout << "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT";
@@ -1169,6 +1204,46 @@ void print_header(float error, string sfile){
 }
 
 
+void print_fix(vector <string> fields){
+  cout << fields[0] << "\t" << fields[1] << "\t" << ".";
+  cout << "\t" << fields[2] << "\t" << ".";
+  cout << "\t" << "." << "\t" << ".";
+  cout << "\t" << ".";
+}
+
+
+//void print_locus(vector <string> fields, int counts, int phred, int nsamp, int rds[], int nuc_cnts[][8], int pls[][51], string gts[]){
+void print_locus(vector <string> fields, int counts, int phred, int nsamp, int rds[], int nuc_cnts[][8], int pls[], string gts[]){
+  /* Print fixed portion of locus. */
+  print_fix(fields);
+
+  cout << "\t";
+  cout << "RD";
+  if(counts == 1){cout << ":CT";}
+  if(phred == 1){cout << ":PL";}
+  cout << ":GT";
+
+  for(int i=0; i<nsamp; i++){
+    cout << "\t";
+    // Read depth.
+    cout << rds[i];
+    // Counts.
+    if(counts == 1){
+      cout << ":" << nuc_cnts[i][0];
+      for(int j=1; j<8; j++){cout << "," << nuc_cnts[i][j];}
+    }
+    // Phred-scaled likelihoods.
+    if(phred == 1){
+      cout << ":" << pls[i];
+//      for(int j=1; j<25; j++){cout << "," << pls[i][j];}
+    }
+    // Genotype.
+    cout << ":" << gts[i];
+  }
+  cout << "\n";
+}
+
+
 
 
 /* ----- ----- ***** ----- ----- */
@@ -1184,7 +1259,6 @@ int main(int argc, char **argv) {
   int counts = 0; // print counts 
   int phred = 0; // Scale likelihoods as phred values
   float error = 0.000000001; // Can not be zero!!!
-//  int min_cnt = 0; // Minimum threshold.
   string sfile = "NA";
 
   /* Parse command line options. */
@@ -1209,11 +1283,7 @@ int main(int argc, char **argv) {
       case 's': // file containing sample names
         sfile = optarg;
         break;
-//      case 't': // Minimum threshold
-//        min_cnt = atoi(optarg);
-//        break;
       default: /* '?' */
-//        fprintf(stderr, "Usage: %s [-ce:hmpst:]\n", argv[0]);
         fprintf(stderr, "Usage: %s [-ce:hmps]\n", argv[0]);
         print_usage();
         exit(EXIT_FAILURE);
@@ -1221,28 +1291,27 @@ int main(int argc, char **argv) {
   }
 
   /* Print header */
-//  if(header == 1){print_header(error, min_cnt, sfile);}
   if(header == 1){print_header(error, sfile);}
 
-  /* Parse line by line or site by site. */
+  /* Parse line by line aka site by site. */
   while (getline(cin,lineInput)) {
-//    cout << "##### ----- New variant (row) ----- #####\n";
-//    cout << lineInput << "\n";
     split( fields, lineInput, boost::algorithm::is_any_of( "\t " ) );
+
     /* Declare variables */
     int nsamp = (fields.size()-3)/3;  // Determine the number of samples.
 //    int nsamp = (fields.size()-2)/2;  // Determine the number of samples.
     int nuc_cnts [nsamp][8]; // A,a,C,c,G,g,T,t.
     int rds [nsamp]; // Read depth.
+
     string gts [nsamp]; // Genotypes.
-//    int pls [nsamp][51];  // Phred scaled likelihoods. 
-    int pls [nsamp][27];  // Phred scaled likelihoods. 
-//    string gts[27];
+    int pls [nsamp];  // Phred scaled likelihoods. 
+//    int pls [nsamp][27];  // Phred scaled likelihoods. 
 
     /* Initialize variables. */
     for(int i=0; i<nsamp; i++){
       rds[i] = 0;
       gts[i] = "./.";
+      pls[i] = 9999;
     }
 
     /* Process each sample in the line. */
@@ -1274,21 +1343,35 @@ int main(int argc, char **argv) {
     /* Calculate Phred-scaled likelihoods */
 //    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
 //    string gts[27];
-    mult_pl(pls, nsamp, error, nuc_cnts);
+//    mult_pl(pls, nsamp, error, nuc_cnts);
+    mult_pl(pls, gts, nsamp, error, nuc_cnts);
 
-    /* Determine a genotype */
-//    det_gt(gts, nsamp, rds, nuc_cnts, pls);
 
-    /* Minimum threshold. */
-//    min_tresh(gts, nsamp, min_cnt, nuc_cnts);
+/*
+    cout << gts[0];
+    for(int j=1; j<nsamp; j++){
+      cout << "," << gts[j];
+    }
+    cout << "\n";
+
+    cout << pls[0];
+    for(int j=1; j<nsamp; j++){
+      cout << "," << pls[j];
+    }
+    cout << "\n";
+*/
+
 
     /* Print locus. */
-//    int unique_gt = cnt_gts(nsamp, gts);
-//    if(unique_gt > 1){
-//      print_locus(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
+//    int unique_gt = site_polymorphic(nsamp, gts);
+    int unique_gt = diff_ref(fields[2], nsamp, gts);
+//    int unique_gt = diff_ref(nsamp, gts);
+
+    if(unique_gt == 1){
+      print_locus(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
       /* Debug */
 //      debug1(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts, error, min_cnt);
-//    }
+    }
   }
   return 0;
 }
