@@ -839,7 +839,8 @@ bool comparator ( const mypair& l, const mypair& r)
 
 //void counts_2_plh(int mlhs[51], int nuc_cnts[8], float error, int min_cnt, int debug=0){
 //void counts_2_plh(int mlhs[27], int nuc_cnts[8], float error, int debug=0){
-void counts_2_plh(int& mlhs, string& gt, int nuc_cnts[8], float error, int debug=0){
+void counts_2_plh(int& mlhs, string& gt, int nuc_cnts[8], float error, 
+                  int min_count, int max_count, int debug=0){
 
   /* Add forward and reverse counts. */
   int nuc_cnt[4];
@@ -847,6 +848,11 @@ void counts_2_plh(int& mlhs, string& gt, int nuc_cnts[8], float error, int debug
   nuc_cnt[1] = nuc_cnts[2] + nuc_cnts[3];
   nuc_cnt[2] = nuc_cnts[4] + nuc_cnts[5];
   nuc_cnt[3] = nuc_cnts[6] + nuc_cnts[7];
+
+  /* Apply minimum threshold */
+  for(int i=0; i < 4; i++){
+    if(nuc_cnt[i] < min_count){nuc_cnt[i] = 0;}
+  }
 
   /* Sort nucleotide counts. */
   vector<pair<int,int>> moves = {
@@ -1090,19 +1096,21 @@ void counts_2_plh(int& mlhs, string& gt, int nuc_cnts[8], float error, int debug
     /* Called genotype is septaploid */
     mlhs = int(mls[maxl]);
     gt = "./.";
+  } else if(nuc_cnt[0] + nuc_cnt[1] + nuc_cnt[2] + nuc_cnt[3] >= max_count){
+    /* Called genotype has coverage above max threshold */
+    gt = "./.";
   } else {
     mlhs = int(mls[maxl]);
     gt = gts[maxl];
   }
-
 }
 
 
 /* Parse each site to samples */
 //void mult_pl(int pls[][27], int nsamp, float err, int nuc_cnts[][8]){
-void mult_pl(int pls[], string gts[], int nsamp, float err, int nuc_cnts[][8]){
+void mult_pl(int pls[], string gts[], int nsamp, float err, int nuc_cnts[][8], vector <int> min_count, vector <int> max_count){
   for(int i=0; i<nsamp; i++){
-    counts_2_plh(pls[i], gts[i], nuc_cnts[i], err);
+    counts_2_plh(pls[i], gts[i], nuc_cnts[i], err, min_count[i], max_count[i]);
   }
 
 
@@ -1168,6 +1176,8 @@ void print_usage(){
   cerr << "  -m print vcf header (meta) information.\n";
   cerr << "  -p print phred scaled likelihoods in genotype section.\n";
   cerr << "  -s file with sample names in same order as in\n     the s/bam file, one name per line.\n";
+  cerr << "  -s file with lower and upper count thresholds for calling genotypes\n";
+  cerr << "     on row one and two, same number of columns as samples.\n";
   cerr << "\n";
   cerr << "Expects piped output from SAMTools::mpileup where\n";
   cerr << "each sample consists of three columns starting at\n";
@@ -1176,9 +1186,42 @@ void print_usage(){
 }
 
 
-void print_header(float error, string sfile){
+void print_header(float error, string sfile, string tfile){
+  vector <string> fields;
   cout << "##fileformat=VCFv4.2\n";
   cout << "##source=gtV0.0.0\n";
+
+  /* Threshold file */
+  if(tfile != "NA"){
+    string line;
+    ifstream myfile (tfile);
+    if (myfile.is_open())
+    {
+      cout << "##FILTER=<ID=NA,Description=\"Lower count threshold for calling genotypes = ";
+      getline (myfile,line);
+      split( fields, line, boost::algorithm::is_any_of( "\t " ) );
+      cout << fields[0];
+      for(int i=1; i<fields.size(); i++){
+        cout << "," << fields[i];
+      }
+      cout << "\">";
+      cout << "\n";
+      cout << "##FILTER=<ID=NA,Description=\"Upper count threshold for calling genotypes = ";
+      getline (myfile,line);
+      split( fields, line, boost::algorithm::is_any_of( "\t " ) );
+      cout << fields[0];
+      for(int i=1; i<fields.size(); i++){
+        cout << "," << fields[i];
+      }
+      cout << "\">";
+      cout << "\n";
+    myfile.close();
+    }
+    else cout << "Unable to open file"; 
+  }
+//
+//  cout << "\n";
+
   cout << "##FILTER=<ID=NA,Description=\"Error rate of " << error << " used for likelihood calculation\">\n";
   cout << "##FORMAT=<ID=RD,Number=1,Type=Integer,Description=\"Read depth\">\n";
   cout << "##FORMAT=<ID=CT,Number=8,Type=Integer,Description=\"Count of each nucleotide (A,a,C,c,G,g,T,t)\">\n";
@@ -1254,21 +1297,25 @@ void print_locus(vector <string> fields, int counts, int phred, int nsamp, int r
 int main(int argc, char **argv) {
   string lineInput;
   vector <string> fields;
+  vector <int> min_count;
+  vector <int> max_count;
+
   int opt; // options
   int header = 0; // print header/meta data
   int counts = 0; // print counts 
   int phred = 0; // Scale likelihoods as phred values
   float error = 0.000000001; // Can not be zero!!!
   string sfile = "NA";
+  string tfile = "NA";
 
   /* Parse command line options. */
 //  while ((opt = getopt(argc, argv, "ce:hmps:t:")) != -1) {
-  while ((opt = getopt(argc, argv, "ce:hmps:")) != -1) {
+  while ((opt = getopt(argc, argv, "ce:hmps:t:")) != -1) {
     switch (opt) {
       case 'c': // print counts
         counts = 1;
         break;
-      case 'e': // permisable error
+      case 'e': // permissible error
         error = atof(optarg);
         break;
       case 'h': // print usage and exit
@@ -1283,6 +1330,9 @@ int main(int argc, char **argv) {
       case 's': // file containing sample names
         sfile = optarg;
         break;
+      case 't': // file containing upper and lower count thresholds
+        tfile = optarg;
+        break;
       default: /* '?' */
         fprintf(stderr, "Usage: %s [-ce:hmps]\n", argv[0]);
         print_usage();
@@ -1291,9 +1341,43 @@ int main(int argc, char **argv) {
   }
 
   /* Print header */
-  if(header == 1){print_header(error, sfile);}
+  if(header == 1){print_header(error, sfile, tfile);}
 
-  /* Parse line by line aka site by site. */
+  /* Read in thresholds */
+  if(tfile != "NA"){
+    string line;
+    ifstream myfile (tfile);
+    if (myfile.is_open()){
+
+      /* Minimum threshold */
+      getline (myfile,line);
+      split( fields, line, boost::algorithm::is_any_of( "\t " ) );
+      for(int i=0; i<fields.size(); i++){
+        min_count.push_back(stoi(fields[i]));
+      }
+
+      /* Maximum threshold */
+      getline (myfile,line);
+      split( fields, line, boost::algorithm::is_any_of( "\t " ) );
+      for(int i=0; i<fields.size(); i++){
+        max_count.push_back(stoi(fields[i]));
+      }
+
+    myfile.close();
+    }
+    else cout << "Unable to open file"; 
+  }
+
+/*
+  for(int i=0; i < min_count.size(); i++){
+    cout << min_count[i] << "\t" << max_count[i] << "\n";
+  }
+*/
+
+
+//  }
+
+  /* Parse each line (site) by sample (column). */
   while (getline(cin,lineInput)) {
     split( fields, lineInput, boost::algorithm::is_any_of( "\t " ) );
 
@@ -1312,6 +1396,10 @@ int main(int argc, char **argv) {
       rds[i] = 0;
       gts[i] = "./.";
       pls[i] = 9999;
+      if(tfile == "NA"){
+        min_count.push_back(0);
+        max_count.push_back(0);
+      }
     }
 
     /* Process each sample in the line. */
@@ -1344,7 +1432,7 @@ int main(int argc, char **argv) {
 //    mult_pl(pls, nsamp, error, nuc_cnts, min_cnt);
 //    string gts[27];
 //    mult_pl(pls, nsamp, error, nuc_cnts);
-    mult_pl(pls, gts, nsamp, error, nuc_cnts);
+    mult_pl(pls, gts, nsamp, error, nuc_cnts, min_count, max_count);
 
 
 /*
