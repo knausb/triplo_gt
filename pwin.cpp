@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <stdio.h>
+#include <regex>
 //#include <math.h> /* log10 */
 //#include <gmp.h> // GNU multiple precision arithmetic library, not standard: libgmp3-dev.
 #include <boost/algorithm/string.hpp> // Not standard on Macs or Ubuntu: libboost1.46-dev.
@@ -15,6 +16,55 @@ using namespace boost;
 /* ----- ----- ***** ----- ----- */
 /*           Functions           */
 /* ----- ----- ***** ----- ----- */
+
+void count_gts_regex(int nGT[], int P1[], int P2[], int P3[],
+                     int P4[], int P5[], int P6[], int P7[],
+                     int sampn, string GT){
+
+  /* Homozygotes. */
+  if (std::regex_match (GT, std::regex("(^A/A$|^C/C$|^G/G$|^T/T$)") )){
+    nGT[sampn]++;
+    P1[sampn]++;
+  }
+
+  /* Heterozygotes. */
+  if (std::regex_match (GT, std::regex("(^A/C$|^A/G$|^A/T$|^C/G$|^C/T$|^G/T$)") )){
+    nGT[sampn]++;
+    P2[sampn]++;
+  }
+
+  /* Triploids. */
+  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]$") )){
+    nGT[sampn]++;
+    P3[sampn]++;
+  }
+
+  /* Tetraploids. */
+  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]/[ACGT]$") )){
+    nGT[sampn]++;
+    P4[sampn]++;
+  }
+
+  /* Pentaploids. */
+  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]$") )){
+    nGT[sampn]++;
+    P5[sampn]++;
+  }
+
+  /* Hexaploids. */
+  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]$") )){
+    nGT[sampn]++;
+    P6[sampn]++;
+  }
+
+  /* Septaploids. */
+  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]$") )){
+    nGT[sampn]++;
+    P7[sampn]++;
+  }
+
+}
+
 
 void count_gts(int nGT[], int P1[], int P2[], int P3[], int P4[], int sampn, string GT){
 
@@ -243,15 +293,6 @@ void count_gts(int nGT[], int P1[], int P2[], int P3[], int P4[], int sampn, str
 
 void proc_win(string chromo, int start, int stop, vector <string> lines){
 
-/*
-  cout << "proc_win\n";
-  cout << lines[0];
-  cout << "\n";
-  cout << "\n";
-*/
-
-//  cout << "Got here\n";
-
   /* Initialize on first row (variant). */
 
   vector <string> fields;
@@ -269,8 +310,11 @@ void proc_win(string chromo, int start, int stop, vector <string> lines){
   int P2[nsamps];
   int P3[nsamps];
   int P4[nsamps];
+  int P5[nsamps];
+  int P6[nsamps];
+  int P7[nsamps];
 
-  /* Initialize dynamic arrays to zero. */
+  /* Initialize arrays to zero. */
   for(int i=0; i<nsamps; i++){
     nGTs[i] = 0;
     RDs[i] = 0;
@@ -393,7 +437,6 @@ int main(int argc, char **argv) {
   string line;
   vector <string> snames;
   vector <string> fields;
-//  vector <string> lines;
   int opt, win = 999;
   int nsamp;
 
@@ -407,7 +450,6 @@ int main(int argc, char **argv) {
         win = atoi(optarg) - 1;
         break;
       default: /* '?' */
-//        fprintf(stderr, "\n");
         fprintf(stderr, "Usage: %s [-h:w:]\n", argv[0]);
         print_usage();
         exit(EXIT_FAILURE);
@@ -420,6 +462,7 @@ int main(int argc, char **argv) {
   /* Case no header */
   if(line[0] != '#'){
     cout << "Error, this does not appear to be a properly formatted file:\n";
+    cout << "Expecting a header beginning with '#'.\n";
     cout << line << "\n\n";
     exit(EXIT_FAILURE);
   }
@@ -459,55 +502,38 @@ int main(int argc, char **argv) {
   }
 
   /* Windows with records. */
-//  while ( getline (cin,line) ){
   std::vector <string> lines;
   lines.push_back(line);
   while(getline (cin,line)){
     split( fields, line, is_any_of( "\t" ) );
 
     if(atoi(fields[1].c_str()) <= stop){
-      /* Continue current window. */
+      /* Position is within current window */
       lines.push_back(line);
     } else {
+      /* Position is beyond current window */
       /* Process window. */
-//      cout << "Got here.\n";
       proc_win(fields[0], start, stop, lines);
 
-
-      /* Begin new window. */
-
       /* Begin the next window. */
-
-//      lines.push_back(line);
       last = stop;
       start = stop + 1;
       stop = start + win;
-//      split( fields, line, is_any_of( "\t" ) );
 
       /* Do we have empty windows? */
       if(atoi(fields[1].c_str()) > stop){
-//        cout << "POS: " << fields[1] << ". Stop: " << stop << "\n";
         int i = (atoi(fields[1].c_str())-stop)/(win+1);
-
-//        cout << "Jump " << i+1 << " windows.\n";
         for(int j=0; j<=i; j++){
-//          cout << j+1 << "\t";
           print_null(fields[0], start, stop, snames);
           last = stop;
           start = stop + 1;
           stop = start + win;
         }
-//        cout << "\n";
       }
-
       lines.clear();
       lines.push_back(line);
     }
   }
-
-
-  /*  */
-
   return 0;
 }
 
