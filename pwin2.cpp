@@ -32,11 +32,76 @@ void init_win_sums(int nsamp, int nGTs[], int nNAs[],
 
 
 void proc_sample(int RD, int GT, int &nGTs, int &nNAs, int &RDs, int nPDs[7], string data){
+  std::regex query;
   vector <string> fields;
   boost::algorithm::split( fields, data, boost::algorithm::is_any_of( ":" ) );
 
   RDs = RDs + stoi(fields[RD]);
 
+//  cout << "Genotype: " << fields[GT] << "\n";
+
+  query = ("(./.|.\\|.)");
+  if (std::regex_match (fields[GT], query) ){
+    nNAs = nNAs + 1;
+  }
+
+  /* Homozygotes. */
+  query = ("(A/A|C/C|G/G|T/T)");
+  if (std::regex_match (fields[GT], query) ){
+//    cout << "Found a homozygote.\n";
+//    cout << "nGT: " << nGTs << "\t";
+    nGTs = nGTs + 1;
+//    cout << "nGT: " << nGTs << "\n";
+    nPDs[0] = nPDs[0] + 1;
+  }
+
+  /* Heterozygotes. */
+  query = "(A/C|A/G|A/T|C/G|C/T|G/T)";
+  if (std::regex_match (fields[GT], query) ){
+//    cout << "Found a heterozygote.\n";
+    nGTs = nGTs + 1;
+    nPDs[1] = nPDs[1] + 1;
+  }
+
+  /* Triploids. */
+  query = "[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (fields[GT], query) ){
+//    cout << "Found a triploid.\n";
+    nGTs = nGTs + 1;
+    nPDs[2] = nPDs[2] + 1;
+  }
+
+  /* Tetraploids. */
+  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (fields[GT], query) ){
+//    cout << "Found a tetraploid.\n";
+    nGTs = nGTs + 1;
+    nPDs[3] = nPDs[3] + 1;
+  }
+
+  /* Pentaploids. */
+  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (fields[GT], query) ){
+//    cout << "Found a pentaploid.\n";
+    nGTs = nGTs + 1;
+    nPDs[4] = nPDs[4] + 1;
+  }
+
+  /* Hexaploids. */
+  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (fields[GT], query) ){
+//    cout << "Found a hexaploid.\n";
+    nGTs = nGTs + 1;
+    nPDs[5] = nPDs[5] + 1;
+  }
+
+  /* Septaploids. */
+  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (fields[GT], query) ){
+//    cout << "Found a septaploid.\n";
+    nGTs = nGTs + 1;
+    nPDs[6] = nPDs[6] + 1;
+  }
 }
 
 
@@ -112,6 +177,41 @@ void print_null(string chromo, int start, int stop, vector <string> snames){
   }
   cout << "\n";
 }
+
+
+void print_win(vector <string> fields, int start, int stop,
+               int nsamp, int nGTs[], int nNAs[], int RDs[],
+               int nPDs[][7]){
+  cout <<  fields[0];
+  cout << "\t";
+  cout <<  start;
+  cout << "\t";
+  cout <<  stop;
+  cout << "\t" << "." << "\t";
+  cout << "." << "\t" << "." << "\t" << "." << "\t" << "." << "\t";
+  cout << "GT:RD:PD:MP";
+  cout << "\t";
+  for(int i=0; i<nsamp; i++){
+    cout << nGTs[i];
+    cout << ":";
+    cout << RDs[i];
+    cout << ":";
+
+    cout << nPDs[0];
+    for(int j=1; j<7; j++){
+      cout << "," << nPDs[j];
+    }
+
+    cout << "\t";
+  }
+
+  cout << "\n";
+
+
+}
+
+
+
 
 
 /* ----- ----- ***** ----- ----- */
@@ -199,9 +299,11 @@ int main(int argc, char **argv) {
   while(getline (cin,line) ){
     boost::algorithm::split( fields, line, boost::algorithm::is_any_of( "\t" ) );
     if(atoi(fields[1].c_str()) > stop){
-      /* Begin a new window. */
+      /* Process and print the last window. */
       proc_win(nsamp, nGTs, nNAs, RDs, nPDs, MPs, lines);
-//      print_win();
+      print_win(fields, start, stop, nsamp, nGTs, nNAs, RDs, nPDs);
+
+      /* Begin a new window. */
       init_win_sums(nsamp, nGTs, nNAs, RDs, nPDs, MPs);
       start = stop + 1;
       stop = start + win;
