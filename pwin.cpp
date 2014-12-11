@@ -343,7 +343,7 @@ void proc_win(string chromo, int start, int stop, vector <string> lines){
   int P6[nsamps];
   int P7[nsamps];
 
-  int ploids[nsamps][7];
+//  int ploids[nsamps][7];
 
   /* Initialize arrays to zero. */
   for(int i=0; i<nsamps; i++){
@@ -510,10 +510,10 @@ int main(int argc, char **argv) {
     }
   }
 
-  /* Parse line by line. */
+  /* Read the first line. */
   getline (cin,line);
 
-  /* Case no header */
+  /* In case there is no header */
   if(line[0] != '#'){
     cout << "Error, this does not appear to be a properly formatted file:\n";
     cout << "Expecting a header beginning with '#'.\n";
@@ -533,7 +533,10 @@ int main(int argc, char **argv) {
     }
   }
 
+  /*     ********     */
   /* Process records. */
+  /*     ********     */
+
   print_header(snames);
 
   int start = 1;
