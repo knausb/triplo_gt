@@ -28,8 +28,8 @@ void count_gts_regex(int nGT[], int P1[], int P2[], int P3[],
 
   /* Homozygotes. */
   std::regex query("(A/A|C/C|G/G|T/T)");
-//  if (std::regex_search (GT, query, std::regex_constants::ECMAScript) ){
-  if (std::regex_match (GT, query) ){
+  if (std::regex_match (GT, query, std::regex_constants::ECMAScript) ){
+//  if (std::regex_match (GT, query) ){
     cout << "Found a homozygote.\n";
 
   }
