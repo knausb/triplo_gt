@@ -379,6 +379,7 @@ void proc_win(string chromo, int start, int stop, vector <string> lines){
 
   /* Iterate over rows (variants). */
   for(int i=1; i<lines.size(); i++){
+    cout << "\nLine: " << i << "\n";
     split( fields, lines[i], is_any_of( "\t" ) );
     /* Determine format positions */
     split( format, fields[8], is_any_of( ":" ) );
@@ -393,6 +394,7 @@ void proc_win(string chromo, int start, int stop, vector <string> lines){
       split(sample, fields[j], is_any_of(":"));
       RDs[j-9] = RDs[j-9] + atoi(sample[RD].c_str());
 //      count_gts(nGTs, P1, P2, P3, P4, j-9, sample[GT]);
+      cout << "Sample: " << j-9 << "\n";
       count_gts_regex(nGTs, P1, P2, P3, P4, P5, P6, P7, i-9, sample[GT]);
     }
 
