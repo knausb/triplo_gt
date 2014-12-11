@@ -1,5 +1,5 @@
 // Compile with:
-// g++ -std=c++0x pwin.cpp -lgmpxx -lgmp -o pwin
+// g++-4.9 -std=c++0x pwin.cpp -lgmpxx -lgmp -o pwin
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -23,73 +23,75 @@ void count_gts_regex(int nGT[], int P1[], int P2[], int P3[],
                      int P4[], int P5[], int P6[], int P7[],
                      int sampn, string GT){
 
-  cout << "Got here.\n";
-  cout << "GT: " << GT << "\n";
+//  cout << "Got here.\n";
+//  cout << "GT: " << GT << "\n";
+
+  /* Missing data. */
+/*  if( GT == "./." ){
+
+  }
+*/
 
   /* Homozygotes. */
   std::regex query("(A/A|C/C|G/G|T/T)");
   if (std::regex_match (GT, query) ){
     cout << "Found a homozygote.\n";
-
+    cout << "nGT: " << nGT[sampn] << "\t";
+    nGT[sampn] = nGT[sampn] + 1;
+    cout << "nGT: " << nGT[sampn] << "\n";
+//    P1[sampn]++;
   }
 
-//  if (std::regex_match (GT, std::regex("(^A/A$|^C/C$|^G/G$|^T/T$)") )){
-//  if (std::regex_match (GT, std::regex("A/A|C/C|G/G|T/T", std::regex_constants::ECMAScript) )){
-//  boost::basic_regex e("A/A|C/C|G/G|T/T");
-//  boost::regex e("[0-9]");
-//  boost::regex e("(\\d{4}[- ]){3}\\d{4}");
-//  boost::regex e("A");
 
-//  if(regex_match(GT, e)){
-/*    cout << "Found a homozygote.\n";
+  /* Heterozygotes. */
+/*  query = "(A/C|A/G|A/T|C/G|C/T|G/T)";
+  if (std::regex_match (GT, query) ){
+//    cout << "Found a heterozygote.\n";
     nGT[sampn]++;
-    P1[sampn]++;
+    P2[sampn]++;
   }
 */
 
-  /* Heterozygotes. */
-/*
-  if (std::regex_match (GT, std::regex("(^A/C$|^A/G$|^A/T$|^C/G$|^C/T$|^G/T$)") )){
-    nGT[sampn]++;
-    P2[sampn]++;
-  }*/
-
   /* Triploids. */
-/*
-  if (std::regex_match (GT, std::regex ("[ACGT]/[ACGT]/[ACGT]", std::regex_constants::basic) )){
-//  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]$") )){
-    cout << "Found a triploid.\n";
+/*  query = "[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (GT, query) ){
+//    cout << "Found a triploid.\n";
     nGT[sampn]++;
     P3[sampn]++;
-  }*/
-
+  }
+*/
   /* Tetraploids. */
-/*
-  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]/[ACGT]$", std::regex_constants::basic) )){
-    cout << "Found a tetraploid.\n";
+/*  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (GT, query) ){
+//    cout << "Found a tetraploid.\n";
     nGT[sampn]++;
     P4[sampn]++;
-  }*/
-
+  }
+*/
   /* Pentaploids. */
-/*  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]$", std::regex_constants::basic) )){
-    cout << "Found a pentaploid.\n";
+/*  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (GT, query) ){
+//    cout << "Found a pentaploid.\n";
     nGT[sampn]++;
     P5[sampn]++;
-  }*/
-
+  }
+*/
   /* Hexaploids. */
-/*  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]$", std::regex_constants::basic) )){
+/*  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (GT, query) ){
     nGT[sampn]++;
     P6[sampn]++;
-  }*/
-
+  }
+*/
   /* Septaploids. */
-/*  if (std::regex_match (GT, std::regex("^[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]$", std::regex_constants::basic) )){
+/*  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]";
+  if (std::regex_match (GT, query) ){
     nGT[sampn]++;
     P7[sampn]++;
-  }*/
+  }
+*/
 }
+
 
 
 void count_gts(int nGT[], int P1[], int P2[], int P3[], int P4[], int sampn, string GT){
@@ -330,6 +332,7 @@ void proc_win(string chromo, int start, int stop, vector <string> lines){
 
   int nsamps = fields.size() - 9;
 
+  int nNAs[nsamps];
   int nGTs[nsamps];
   int RDs[nsamps];
   int P1[nsamps];
@@ -340,8 +343,11 @@ void proc_win(string chromo, int start, int stop, vector <string> lines){
   int P6[nsamps];
   int P7[nsamps];
 
+  int ploids[nsamps][7];
+
   /* Initialize arrays to zero. */
   for(int i=0; i<nsamps; i++){
+    nNAs[i] = 0;
     nGTs[i] = 0;
     RDs[i] = 0;
     P1[i] = 0;
@@ -408,6 +414,7 @@ void proc_win(string chromo, int start, int stop, vector <string> lines){
 
     /* Find majority rule ploidy. */
     int mjploid = 0;
+
     if(P1[i] + P2[i] + P3[i] + P4[i] + P5[i] + P6[i] + P7[i] > 0){mjploid=1;}
     int ploids[] = {P1[i], P2[i], P3[i], P4[i], P5[i], P6[i], P7[i]};
     if(P2[i] > ploids[mjploid]){mjploid=2;}
@@ -514,10 +521,10 @@ int main(int argc, char **argv) {
     exit(EXIT_FAILURE);
   }
 
-  /* Omit meta lines. */
+  /* Omit meta lines which begin with '##'. */
   while(line[0] == '#' & line[1] == '#') getline(cin,line);
 
-  /* Manage header line. */
+  /* Manage header line which begins with '#CHROM'. */
   if(line[0] == '#' & line[1] == 'C'){
     split( fields, line, is_any_of( "\t" ) );
     nsamp = fields.size() - 9;  // Determine the number of samples.
