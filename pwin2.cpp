@@ -35,7 +35,8 @@ void init_win_sums(int nsamp, int nGTs[], int nNAs[],
 void maj_rule_ploid(int &MPs, int nPDs[]){
 //  int maxp = 0;
 //  cout << "nPDs[0]: " << nPDs[0] << "\n";
-//  cout << "MPs: " << MPs << "\n";
+  cout << "\n";
+  cout << "MPs: " << MPs << "\n";
 
   if(nPDs[1] > nPDs[MPs]){MPs = 1;}
   if(nPDs[2] > nPDs[MPs]){MPs = 2;}
@@ -43,6 +44,15 @@ void maj_rule_ploid(int &MPs, int nPDs[]){
   if(nPDs[4] > nPDs[MPs]){MPs = 4;}
   if(nPDs[5] > nPDs[MPs]){MPs = 5;}
   if(nPDs[6] > nPDs[MPs]){MPs = 6;}
+
+
+//  cout << "\n";
+  cout << "maj_rule_ploid nPDs[0]: " << nPDs[0] << "," << nPDs[1] << ",";
+  cout << nPDs[2] << "," << nPDs[3] << "," << nPDs[4] << ",";
+  cout << nPDs[5] << "," << nPDs[6];
+  cout << ":" << MPs;
+  cout << "\n";
+
 
 /*
   cout << nPDs[0] << "," << nPDs[1] << "," << nPDs[2] << "," << nPDs[3] << ",";
@@ -169,8 +179,15 @@ void proc_win(int nsamp, int nGTs[], int nNAs[], int RDs[],
       maj_rule_ploid(MPs[j-9], nPDs[j-9]);
 //      cout << "nPDs[j][0]: " << nPDs[j] << "\n";
     }
-//  cout << "\n";
+
   }
+  cout << "\n";
+  cout << "proc_win nPDs[0]: " << nPDs[0][0] << "," << nPDs[0][1] << ",";
+  cout << nPDs[0][2] << "," << nPDs[0][3] << "," << nPDs[0][4] << ",";
+  cout << nPDs[0][5] << "," << nPDs[0][6];
+  cout << ":" << MPs[0];
+  cout << "\n";
+
 }
 
 
