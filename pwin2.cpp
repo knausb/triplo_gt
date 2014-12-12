@@ -31,6 +31,38 @@ void init_win_sums(int nsamp, int nGTs[], int nNAs[],
 }
 
 
+
+void maj_rule_ploid(int &MPs, int nPDs[]){
+//  int maxp = 0;
+//  cout << "nPDs[0]: " << nPDs[0] << "\n";
+//  cout << "MPs: " << MPs << "\n";
+
+  if(nPDs[1] > nPDs[MPs]){MPs = 1;}
+  if(nPDs[2] > nPDs[MPs]){MPs = 2;}
+  if(nPDs[3] > nPDs[MPs]){MPs = 3;}
+  if(nPDs[4] > nPDs[MPs]){MPs = 4;}
+  if(nPDs[5] > nPDs[MPs]){MPs = 5;}
+  if(nPDs[6] > nPDs[MPs]){MPs = 6;}
+
+/*
+  cout << nPDs[0] << "," << nPDs[1] << "," << nPDs[2] << "," << nPDs[3] << ",";
+  cout << nPDs[4] << "," << nPDs[5] << "," << nPDs[6];
+  cout << ":" << MPs;
+  cout << "\n";
+*/
+
+/*
+  if(nPDs[1] > nPDs[maxp]){maxp = 1;}
+  if(nPDs[2] > nPDs[maxp]){maxp = 2;}
+  if(nPDs[3] > nPDs[maxp]){maxp = 3;}
+  if(nPDs[4] > nPDs[maxp]){maxp = 4;}
+  if(nPDs[5] > nPDs[maxp]){maxp = 5;}
+  if(nPDs[6] > nPDs[maxp]){maxp = 6;}
+  MPs = maxp;
+*/
+}
+
+
 void proc_sample(int RD, int GT, int &nGTs, int &nNAs, int &RDs, int nPDs[7], string data){
   std::regex query;
   vector <string> fields;
@@ -102,6 +134,8 @@ void proc_sample(int RD, int GT, int &nGTs, int &nNAs, int &RDs, int nPDs[7], st
     nGTs = nGTs + 1;
     nPDs[6] = nPDs[6] + 1;
   }
+
+//  cout << "nPDs[0]: " << nPDs[0] << "\n";
 }
 
 
@@ -132,6 +166,8 @@ void proc_win(int nsamp, int nGTs[], int nNAs[], int RDs[],
     for(int j=9; j<data.size(); j++){
 //      cout << fields[j] << "\t";
       proc_sample(RD, GT, nGTs[j-9], nNAs[j-9], RDs[j-9], nPDs[j-9], data[j]);
+      maj_rule_ploid(MPs[j-9], nPDs[j-9]);
+//      cout << "nPDs[j][0]: " << nPDs[j] << "\n";
     }
 //  cout << "\n";
   }
@@ -181,7 +217,7 @@ void print_null(string chromo, int start, int stop, vector <string> snames){
 
 void print_win(vector <string> fields, int start, int stop,
                int nsamp, int nGTs[], int nNAs[], int RDs[],
-               int nPDs[][7]){
+               int nPDs[][7], int MPs[]){
   cout <<  fields[0];
   cout << "\t";
   cout <<  start;
@@ -197,10 +233,13 @@ void print_win(vector <string> fields, int start, int stop,
     cout << RDs[i];
     cout << ":";
 
-    cout << nPDs[0];
+    cout << *nPDs[0];
     for(int j=1; j<7; j++){
-      cout << "," << nPDs[j];
+      cout << "," << *nPDs[j];
     }
+
+    cout << ":";
+    cout << MPs[i];
 
     cout << "\t";
   }
@@ -293,6 +332,8 @@ int main(int argc, char **argv) {
 
   init_win_sums(nsamp, nGTs, nNAs, RDs, nPDs, MPs);
 
+//  cout << "Initial nPDs[0]: " << nPDs[0][0] << "\n";
+
   print_header(snames);
 
 
@@ -301,7 +342,14 @@ int main(int argc, char **argv) {
     if(atoi(fields[1].c_str()) > stop){
       /* Process and print the last window. */
       proc_win(nsamp, nGTs, nNAs, RDs, nPDs, MPs, lines);
-      print_win(fields, start, stop, nsamp, nGTs, nNAs, RDs, nPDs);
+      cout << "Post proc_win nPDs[0]: " << nPDs[0][0] << "," << nPDs[0][1] << ",";
+      cout << nPDs[0][2] << "," << nPDs[0][3] << "," << nPDs[0][4] << ",";
+      cout << nPDs[0][5] << "," << nPDs[0][6];
+      cout << ":" << MPs[0];
+
+      cout << "\n";
+
+      print_win(fields, start, stop, nsamp, nGTs, nNAs, RDs, nPDs, MPs);
 
       /* Begin a new window. */
       init_win_sums(nsamp, nGTs, nNAs, RDs, nPDs, MPs);
