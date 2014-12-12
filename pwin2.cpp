@@ -342,6 +342,12 @@ int main(int argc, char **argv) {
     }
   }
 
+  /* Process the last window. */
+  proc_win(nsamp, nGTs, nNAs, RDs, nPDs, lines);
+  proc_ploid(nsamp, MPs, nPDs);
+  stop = stoi(fields[1]);
+  print_win(fields, start, stop, nsamp, nGTs, nNAs, RDs, nPDs, MPs);
+
   return 0;
 }
 
