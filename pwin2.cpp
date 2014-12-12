@@ -88,6 +88,45 @@ void maj_rule_ploid(int &MPs, int nPDs[]){
 
 
 
+void proc_sample_len(int RD, int GT, int &nGTs, int &nNAs, int &RDs, int nPDs[7], string data){
+  vector <string> fields;
+  boost::algorithm::split( fields, data, boost::algorithm::is_any_of( ":" ) );
+  string qGT = fields[GT];
+  RDs = RDs + stoi(fields[RD]);
+
+  if (qGT == "./." || fields[GT] == ".|."){
+    nNAs = nNAs + 1;
+  } else if (qGT=="A/A"||qGT=="C/C"||qGT=="G/G"||qGT=="T/T"){
+    nGTs = nGTs + 1;
+    nPDs[0] = nPDs[0] + 1;
+  } else if (qGT=="A/C"||qGT=="A/G"||qGT=="A/T"||qGT=="C/G"||qGT=="C/T"||qGT=="G/T"){
+    nGTs = nGTs + 1;
+    nPDs[1] = nPDs[1] + 1;
+  } else if (qGT.length() == 5){
+    // Triploid
+    nGTs = nGTs + 1;
+    nPDs[2] = nPDs[2] + 1;
+  } else if (qGT.length() == 7){
+    // Tetraploid
+    nGTs = nGTs + 1;
+    nPDs[3] = nPDs[3] + 1;
+  } else if (qGT.length() == 9){
+    // Pentaploid
+    nGTs = nGTs + 1;
+    nPDs[4] = nPDs[4] + 1;
+  } else if (qGT.length() == 11){
+    // Hexaploid
+    nGTs = nGTs + 1;
+    nPDs[5] = nPDs[5] + 1;
+  } else if (qGT.length() == 13){
+    // Septaploid
+    nGTs = nGTs + 1;
+    nPDs[6] = nPDs[6] + 1;
+  }
+}
+
+
+
 void proc_sample(int RD, int GT, int &nGTs, int &nNAs, int &RDs, int nPDs[7], string data){
   std::regex query;
   vector <string> fields;
@@ -189,7 +228,8 @@ void proc_win(int nsamp, int nGTs[], int nNAs[], int RDs[],
 
     for(int j=9; j<data.size(); j++){
 //      cout << fields[j] << "\t";
-      proc_sample(RD, GT, nGTs[j-9], nNAs[j-9], RDs[j-9], nPDs[j-9], data[j]);
+//      proc_sample(RD, GT, nGTs[j-9], nNAs[j-9], RDs[j-9], nPDs[j-9], data[j]);
+      proc_sample_len(RD, GT, nGTs[j-9], nNAs[j-9], RDs[j-9], nPDs[j-9], data[j]);
 //      cout << "nPDs[j][0]: " << nPDs[j] << "\n";
     }
   }
