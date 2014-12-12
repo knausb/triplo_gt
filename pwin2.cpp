@@ -35,8 +35,8 @@ void init_win_sums(int nsamp, int nGTs[], int nNAs[],
 void maj_rule_ploid(int &MPs, int nPDs[]){
 //  int maxp = 0;
 //  cout << "nPDs[0]: " << nPDs[0] << "\n";
-  cout << "\n";
-  cout << "MPs: " << MPs << "\n";
+//  cout << "\n";
+//  cout << "MPs: " << MPs << "\n";
 
   if(nPDs[1] > nPDs[MPs]){MPs = 1;}
   if(nPDs[2] > nPDs[MPs]){MPs = 2;}
@@ -47,12 +47,13 @@ void maj_rule_ploid(int &MPs, int nPDs[]){
 
 
 //  cout << "\n";
+/*
   cout << "maj_rule_ploid nPDs[0]: " << nPDs[0] << "," << nPDs[1] << ",";
   cout << nPDs[2] << "," << nPDs[3] << "," << nPDs[4] << ",";
   cout << nPDs[5] << "," << nPDs[6];
   cout << ":" << MPs;
   cout << "\n";
-
+*/
 
 /*
   cout << nPDs[0] << "," << nPDs[1] << "," << nPDs[2] << "," << nPDs[3] << ",";
@@ -71,6 +72,20 @@ void maj_rule_ploid(int &MPs, int nPDs[]){
   MPs = maxp;
 */
 }
+
+
+//void proc_ploid(int nPDs[7], int MPs){
+
+  /* Determine most abundant ploidy. */
+/*
+  for(int i=9; i<nsamp; i++){
+    maj_rule_ploid(MPs[i], nPDs[i]);
+  }
+
+
+}
+*/
+
 
 
 void proc_sample(int RD, int GT, int &nGTs, int &nNAs, int &RDs, int nPDs[7], string data){
@@ -151,8 +166,7 @@ void proc_sample(int RD, int GT, int &nGTs, int &nNAs, int &RDs, int nPDs[7], st
 
 
 void proc_win(int nsamp, int nGTs[], int nNAs[], int RDs[],
-              int nPDs[][7], int MPs[],  
-              std::vector <string> lines){
+              int nPDs[][7], std::vector <string> lines){
 
   vector <string> data;
   vector <string> fields;
@@ -176,17 +190,20 @@ void proc_win(int nsamp, int nGTs[], int nNAs[], int RDs[],
     for(int j=9; j<data.size(); j++){
 //      cout << fields[j] << "\t";
       proc_sample(RD, GT, nGTs[j-9], nNAs[j-9], RDs[j-9], nPDs[j-9], data[j]);
-      maj_rule_ploid(MPs[j-9], nPDs[j-9]);
 //      cout << "nPDs[j][0]: " << nPDs[j] << "\n";
     }
-
   }
+
+
+
+/*
   cout << "\n";
   cout << "proc_win nPDs[0]: " << nPDs[0][0] << "," << nPDs[0][1] << ",";
   cout << nPDs[0][2] << "," << nPDs[0][3] << "," << nPDs[0][4] << ",";
   cout << nPDs[0][5] << "," << nPDs[0][6];
   cout << ":" << MPs[0];
   cout << "\n";
+*/
 
 }
 
@@ -358,13 +375,17 @@ int main(int argc, char **argv) {
     boost::algorithm::split( fields, line, boost::algorithm::is_any_of( "\t" ) );
     if(atoi(fields[1].c_str()) > stop){
       /* Process and print the last window. */
-      proc_win(nsamp, nGTs, nNAs, RDs, nPDs, MPs, lines);
+      proc_win(nsamp, nGTs, nNAs, RDs, nPDs, lines);
+
+//      proc_ploid(MPs, nPDs);
+
       cout << "Post proc_win nPDs[0]: " << nPDs[0][0] << "," << nPDs[0][1] << ",";
       cout << nPDs[0][2] << "," << nPDs[0][3] << "," << nPDs[0][4] << ",";
       cout << nPDs[0][5] << "," << nPDs[0][6];
       cout << ":" << MPs[0];
 
       cout << "\n";
+
 
       print_win(fields, start, stop, nsamp, nGTs, nNAs, RDs, nPDs, MPs);
 
