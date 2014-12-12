@@ -34,17 +34,16 @@ void init_win_sums(int nsamp, int nGTs[], int nNAs[],
 
 void maj_rule_ploid(int &MPs, int nPDs[]){
 
-  if(nPDs[1] > nPDs[MPs]){MPs = 1;}
-//  MPs = 1; // Don't count homozygotes
+//  if(nPDs[1] > nPDs[MPs]){MPs = 1;}
+  MPs = 1; // Don't count homozygotes
   if(nPDs[2] > nPDs[MPs]){MPs = 2;}
   if(nPDs[3] > nPDs[MPs]){MPs = 3;}
   if(nPDs[4] > nPDs[MPs]){MPs = 4;}
   if(nPDs[5] > nPDs[MPs]){MPs = 5;}
   if(nPDs[6] > nPDs[MPs]){MPs = 6;}
 
-
-//  cout << "\n";
 /*
+  cout << "\n";
   cout << "maj_rule_ploid nPDs[0]: " << nPDs[0] << "," << nPDs[1] << ",";
   cout << nPDs[2] << "," << nPDs[3] << "," << nPDs[4] << ",";
   cout << nPDs[5] << "," << nPDs[6];
@@ -52,36 +51,15 @@ void maj_rule_ploid(int &MPs, int nPDs[]){
   cout << "\n";
 */
 
-/*
-  cout << nPDs[0] << "," << nPDs[1] << "," << nPDs[2] << "," << nPDs[3] << ",";
-  cout << nPDs[4] << "," << nPDs[5] << "," << nPDs[6];
-  cout << ":" << MPs;
-  cout << "\n";
-*/
-
-/*
-  if(nPDs[1] > nPDs[maxp]){maxp = 1;}
-  if(nPDs[2] > nPDs[maxp]){maxp = 2;}
-  if(nPDs[3] > nPDs[maxp]){maxp = 3;}
-  if(nPDs[4] > nPDs[maxp]){maxp = 4;}
-  if(nPDs[5] > nPDs[maxp]){maxp = 5;}
-  if(nPDs[6] > nPDs[maxp]){maxp = 6;}
-  MPs = maxp;
-*/
 }
 
-
-//void proc_ploid(int nPDs[7], int MPs){
-
+void proc_ploid(int nsamp, int MPs[], int nPDs[][7]){
   /* Determine most abundant ploidy. */
-/*
-  for(int i=9; i<nsamp; i++){
+  for(int i=0; i<nsamp; i++){
     maj_rule_ploid(MPs[i], nPDs[i]);
   }
-
-
 }
-*/
+
 
 
 
@@ -237,7 +215,7 @@ void print_win(vector <string> fields, int start, int stop,
     }
 
     cout << ":";
-    cout << MPs[i];
+    cout << MPs[i] + 1; // Convert zero based ploidy to one based.
 
     cout << "\t";
   }
@@ -340,8 +318,7 @@ int main(int argc, char **argv) {
     if(atoi(fields[1].c_str()) > stop){
       /* Process and print the last window. */
       proc_win(nsamp, nGTs, nNAs, RDs, nPDs, lines);
-
-//      proc_ploid(MPs, nPDs);
+      proc_ploid(nsamp, MPs, nPDs);
 
 /*
       cout << "Post proc_win nPDs[0]: " << nPDs[0][0] << "," << nPDs[0][1] << ",";
