@@ -380,13 +380,14 @@ int main(int argc, char **argv) {
 
 //      proc_ploid(MPs, nPDs);
 
+/*
       cout << "Post proc_win nPDs[0]: " << nPDs[0][0] << "," << nPDs[0][1] << ",";
       cout << nPDs[0][2] << "," << nPDs[0][3] << "," << nPDs[0][4] << ",";
       cout << nPDs[0][5] << "," << nPDs[0][6];
       cout << ":" << MPs[0];
 
       cout << "\n";
-
+*/
 
       print_win(fields, start, stop, nsamp, nGTs, nNAs, RDs, nPDs, MPs);
 
