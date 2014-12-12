@@ -249,6 +249,7 @@ void print_null(string chromo, int start, int stop, vector <string> snames){
 }
 
 
+
 void print_win(vector <string> fields, int start, int stop,
                int nsamp, int nGTs[], int nNAs[], int RDs[],
                int nPDs[][7], int MPs[]){
@@ -267,9 +268,9 @@ void print_win(vector <string> fields, int start, int stop,
     cout << RDs[i];
     cout << ":";
 
-    cout << *nPDs[0];
+    cout << nPDs[i][0];
     for(int j=1; j<7; j++){
-      cout << "," << *nPDs[j];
+      cout << "," << nPDs[i][j];
     }
 
     cout << ":";
