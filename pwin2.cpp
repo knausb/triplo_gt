@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <stdio.h>
-#include <regex>
+//#include <regex>
 
 #include <boost/algorithm/string.hpp> // Not standard on Macs or Ubuntu: libboost1.46-dev.
 
@@ -33,12 +33,9 @@ void init_win_sums(int nsamp, int nGTs[], int nNAs[],
 
 
 void maj_rule_ploid(int &MPs, int nPDs[]){
-//  int maxp = 0;
-//  cout << "nPDs[0]: " << nPDs[0] << "\n";
-//  cout << "\n";
-//  cout << "MPs: " << MPs << "\n";
 
   if(nPDs[1] > nPDs[MPs]){MPs = 1;}
+//  MPs = 1; // Don't count homozygotes
   if(nPDs[2] > nPDs[MPs]){MPs = 2;}
   if(nPDs[3] > nPDs[MPs]){MPs = 3;}
   if(nPDs[4] > nPDs[MPs]){MPs = 4;}
@@ -127,80 +124,6 @@ void proc_sample_len(int RD, int GT, int &nGTs, int &nNAs, int &RDs, int nPDs[7]
 
 
 
-void proc_sample(int RD, int GT, int &nGTs, int &nNAs, int &RDs, int nPDs[7], string data){
-  std::regex query;
-  vector <string> fields;
-  boost::algorithm::split( fields, data, boost::algorithm::is_any_of( ":" ) );
-
-  RDs = RDs + stoi(fields[RD]);
-
-//  cout << "Genotype: " << fields[GT] << "\n";
-
-  query = ("(./.|.\\|.)");
-  if (std::regex_match (fields[GT], query) ){
-    nNAs = nNAs + 1;
-  }
-
-  /* Homozygotes. */
-  query = ("(A/A|C/C|G/G|T/T)");
-  if (std::regex_match (fields[GT], query) ){
-//    cout << "Found a homozygote.\n";
-//    cout << "nGT: " << nGTs << "\t";
-    nGTs = nGTs + 1;
-//    cout << "nGT: " << nGTs << "\n";
-    nPDs[0] = nPDs[0] + 1;
-  }
-
-  /* Heterozygotes. */
-  query = "(A/C|A/G|A/T|C/G|C/T|G/T)";
-  if (std::regex_match (fields[GT], query) ){
-//    cout << "Found a heterozygote.\n";
-    nGTs = nGTs + 1;
-    nPDs[1] = nPDs[1] + 1;
-  }
-
-  /* Triploids. */
-  query = "[ACGT]/[ACGT]/[ACGT]";
-  if (std::regex_match (fields[GT], query) ){
-//    cout << "Found a triploid.\n";
-    nGTs = nGTs + 1;
-    nPDs[2] = nPDs[2] + 1;
-  }
-
-  /* Tetraploids. */
-  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]";
-  if (std::regex_match (fields[GT], query) ){
-//    cout << "Found a tetraploid.\n";
-    nGTs = nGTs + 1;
-    nPDs[3] = nPDs[3] + 1;
-  }
-
-  /* Pentaploids. */
-  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]";
-  if (std::regex_match (fields[GT], query) ){
-//    cout << "Found a pentaploid.\n";
-    nGTs = nGTs + 1;
-    nPDs[4] = nPDs[4] + 1;
-  }
-
-  /* Hexaploids. */
-  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]";
-  if (std::regex_match (fields[GT], query) ){
-//    cout << "Found a hexaploid.\n";
-    nGTs = nGTs + 1;
-    nPDs[5] = nPDs[5] + 1;
-  }
-
-  /* Septaploids. */
-  query = "[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]/[ACGT]";
-  if (std::regex_match (fields[GT], query) ){
-//    cout << "Found a septaploid.\n";
-    nGTs = nGTs + 1;
-    nPDs[6] = nPDs[6] + 1;
-  }
-
-//  cout << "nPDs[0]: " << nPDs[0] << "\n";
-}
 
 
 
