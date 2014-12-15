@@ -7,6 +7,7 @@
 #include <vector>
 #include <stdio.h>
 #include <math.h> /* log10 */
+#include <cstddef>
 #include <gmp.h> // GNU multiple precision arithmetic library, not standard: libgmp3-dev.
 #include <boost/algorithm/string.hpp> // Not standard on Macs or Ubuntu: libboost1.46-dev.
 
