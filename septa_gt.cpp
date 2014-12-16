@@ -1344,6 +1344,7 @@ int main(int argc, char **argv) {
   /* Print header */
   if(header == 1){print_header(error, sfile, tfile);}
 
+
   /* Read in thresholds */
   if(tfile != "NA"){
     string line;
@@ -1369,11 +1370,14 @@ int main(int argc, char **argv) {
     else cout << "Unable to open file"; 
   }
 
+
 /*
   for(int i=0; i < min_count.size(); i++){
     cout << min_count[i] << "\t" << max_count[i] << "\n";
   }
 */
+
+
 
 
 //  }
@@ -1399,9 +1403,10 @@ int main(int argc, char **argv) {
       pls[i] = 9999;
       if(tfile == "NA"){
         min_count.push_back(0);
-        max_count.push_back(0);
+        max_count.push_back(10000000);
       }
     }
+
 
     /* Process each sample in the line. */
     int sampn = -1;  // sample counter.
@@ -1451,11 +1456,14 @@ int main(int argc, char **argv) {
 */
 
 
+
     /* Print locus. */
 //    int unique_gt = site_polymorphic(nsamp, gts);
     int unique_gt = diff_ref(fields[2], nsamp, gts);
 //    int unique_gt = diff_ref(nsamp, gts);
 
+
+//    print_locus(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
     if(unique_gt == 1){
       print_locus(fields, counts, phred, nsamp, rds, nuc_cnts, pls, gts);
       /* Debug */
