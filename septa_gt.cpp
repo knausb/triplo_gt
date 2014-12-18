@@ -850,6 +850,10 @@ void counts_2_plh(int& mlhs, string& gt, int nuc_cnts[8], float error,
   nuc_cnt[2] = nuc_cnts[4] + nuc_cnts[5];
   nuc_cnt[3] = nuc_cnts[6] + nuc_cnts[7];
 
+  /* Sum total coverage. */
+  int total_cov = nuc_cnt[0] + nuc_cnt[1] + nuc_cnt[2] + nuc_cnt[3];
+
+
   /* Apply minimum threshold */
   for(int i=0; i < 4; i++){
     if(nuc_cnt[i] < min_count){nuc_cnt[i] = 0;}
@@ -1097,7 +1101,8 @@ void counts_2_plh(int& mlhs, string& gt, int nuc_cnts[8], float error,
     /* Called genotype is septaploid */
     mlhs = int(mls[maxl]);
     gt = "./.";
-  } else if(nuc_cnt[0] + nuc_cnt[1] + nuc_cnt[2] + nuc_cnt[3] >= max_count){
+//  } else if(nuc_cnt[0] + nuc_cnt[1] + nuc_cnt[2] + nuc_cnt[3] >= max_count){
+  } else if(total_cov > max_count){
     /* Called genotype has coverage above max threshold */
     gt = "./.";
   } else {
@@ -1113,9 +1118,6 @@ void mult_pl(int pls[], string gts[], int nsamp, float err, int nuc_cnts[][8], v
   for(int i=0; i<nsamp; i++){
     counts_2_plh(pls[i], gts[i], nuc_cnts[i], err, min_count[i], max_count[i]);
   }
-
-
-
 }
 
 
