@@ -1177,7 +1177,7 @@ void print_usage(){
   cerr << "  -m print vcf header (meta) information.\n";
   cerr << "  -p print phred scaled likelihoods in genotype section.\n";
   cerr << "  -s file with sample names in same order as in\n     the s/bam file, one name per line.\n";
-  cerr << "  -s file with lower and upper count thresholds for calling genotypes\n";
+  cerr << "  -t file with lower and upper count thresholds for calling genotypes\n";
   cerr << "     on row one and two, same number of columns as samples.\n";
   cerr << "\n";
   cerr << "Expects piped output from SAMTools::mpileup where\n";
